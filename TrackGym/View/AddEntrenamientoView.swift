@@ -42,6 +42,17 @@ struct AddEntrenamientoView: View {
         )
         context.insert(nuevo)
         try? context.save()
+        // 🔹 Arrancar Live Activity aquí
+        // 🔹 Arrancar Live Activity aquí
+        Task {
+            print("➡️ Intentando iniciar Live Activity...")
+            await LiveActivityManager.shared.start(
+                title: "Entrenamiento",
+                startedAt: nuevo.startDate ?? Date(),
+                entrenamientoID: nuevo.id
+            )
+            print("✅ Live Activity iniciada (si permisos y dispositivo lo permiten)")
+        }
         dismiss()
     }
 }

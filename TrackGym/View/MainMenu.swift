@@ -7,32 +7,54 @@
 
 import SwiftUI
 
-struct MainMenu: View {
+private struct EntrenosTab: View {
+    @Environment(Router.self) private var router
     var body: some View {
-        TabView {
-            NavigationStack {
-                EntrenamientoListView()
-                    .navigationTitle("Entrenos")
+        @Bindable var router = router
+        NavigationStack(path: $router.entrenosPath) {
+            EntrenamientoListView()
+                .navigationTitle("Entrenos")
+                .navigationDestination(for: AppRoute.self) { route in
+                    switch route {
+                    case .entrenamientoDetail(let id):
+                        EntrenamientoDetailLoaderView(entrenamientoID: id)
+                    }
+                }
+        }
+        .onChange(of: router.pendingEntrenamientoID, initial: true) { oldValue, newValue in
+            if let id = newValue {
+                print("🧭 onChange pendingEntrenamientoID (old: \(String(describing: oldValue)) -> new: \(id)) — empujamos en siguiente ciclo")
+                DispatchQueue.main.async {
+                    router.entrenosPath = [.entrenamientoDetail(id)]
+                    router.pendingEntrenamientoID = nil
+                }
             }
-            .tabItem {
-                Label("Entrenos", systemImage: "dumbbell")
-            }
+        }
+    }
+}
+
+struct MainMenu: View {
+    @Environment(Router.self) private var router
+    var body: some View {
+        @Bindable var router = router
+        TabView(selection: $router.selectedTab) {
+            EntrenosTab()
+                .tabItem { Label("Entrenos", systemImage: "dumbbell") }
+                .tag(Router.Tab.entrenos)
 
             NavigationStack {
                 Text("Progreso")
                     .navigationTitle("Progreso")
             }
-            .tabItem {
-                Label("Progreso", systemImage: "chart.bar.fill")
-            }
+            .tabItem { Label("Progreso", systemImage: "chart.bar.fill") }
+            .tag(Router.Tab.progreso)
 
             NavigationStack {
                 Text("Perfil")
                     .navigationTitle("Perfil")
             }
-            .tabItem {
-                Label("Perfil", systemImage: "person.fill")
-            }
+            .tabItem { Label("Perfil", systemImage: "person.fill") }
+            .tag(Router.Tab.perfil)
         }
     }
 }

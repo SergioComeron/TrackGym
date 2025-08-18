@@ -31,6 +31,9 @@ struct EntrenamientoDetailView: View {
                     Button {
                         entrenamiento.endDate = Date()
                         try? context.save()
+                        Task {
+                            await LiveActivityManager.shared.end()
+                        }
                     } label: {
                         Label("Terminar entrenamiento", systemImage: "stop.circle")
                     }

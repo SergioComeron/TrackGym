@@ -10,7 +10,7 @@ import Foundation
 
 @Model
 final class Entrenamiento {
-    var id: UUID?
+    var id: UUID
     var startDate: Date?
     var endDate: Date?
     

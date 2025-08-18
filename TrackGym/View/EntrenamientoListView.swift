@@ -23,100 +23,94 @@ struct EntrenamientoListView: View {
     private var entrenamientosTerminados: [Entrenamiento] { entrenamientos.filter { $0.endDate != nil } }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if entrenamientosEnCurso.isEmpty && entrenamientosTerminados.isEmpty {
-                    ContentUnavailableView(
-                        "Sin entrenamientos",
-                        systemImage: "dumbbell",
-                        description: Text("Pulsa + para añadir tu primer entreno.")
-                    )
-                } else {
-                    List {
-                        if !entrenamientosEnCurso.isEmpty {
-                            Section("En curso") {
-                                ForEach(entrenamientosEnCurso) { e in
-                                    NavigationLink {
-                                        EntrenamientoDetailView(entrenamiento: e)
-                                    } label: {
-                                        HStack(spacing: 12) {
-                                            Image(systemName: "clock.arrow.circlepath")
-                                            VStack(alignment: .leading) {
-                                                Text(fechaInicioText(e))
-                                                    .font(.headline)
-                                                if let start = e.startDate {
-                                                    Text(elapsedText(since: start))
-                                                        .font(.subheadline)
-                                                        .foregroundStyle(.secondary)
-                                                } else {
-                                                    Text("En curso")
-                                                        .font(.subheadline)
-                                                        .foregroundStyle(.secondary)
-                                                }
+        Group {
+            if entrenamientosEnCurso.isEmpty && entrenamientosTerminados.isEmpty {
+                ContentUnavailableView(
+                    "Sin entrenamientos",
+                    systemImage: "dumbbell",
+                    description: Text("Pulsa + para añadir tu primer entreno.")
+                )
+            } else {
+                List {
+                    if !entrenamientosEnCurso.isEmpty {
+                        Section("En curso") {
+                            ForEach(entrenamientosEnCurso) { e in
+                                NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "clock.arrow.circlepath")
+                                        VStack(alignment: .leading) {
+                                            Text(fechaInicioText(e))
+                                                .font(.headline)
+                                            if let start = e.startDate {
+                                                Text(elapsedText(since: start))
+                                                    .font(.subheadline)
+                                                    .foregroundStyle(.secondary)
+                                            } else {
+                                                Text("En curso")
+                                                    .font(.subheadline)
+                                                    .foregroundStyle(.secondary)
                                             }
-                                            Spacer()
                                         }
-                                        .padding(.vertical, 4)
+                                        Spacer()
                                     }
-                                }
-                                .onDelete { offsets in
-                                    delete(entrenamientosEnCurso, at: offsets)
+                                    .padding(.vertical, 4)
                                 }
                             }
+                            .onDelete { offsets in
+                                delete(entrenamientosEnCurso, at: offsets)
+                            }
                         }
+                    }
 
-                        if !entrenamientosTerminados.isEmpty {
-                            Section("Terminados") {
-                                ForEach(entrenamientosTerminados) { e in
-                                    NavigationLink {
-                                        EntrenamientoDetailView(entrenamiento: e)
-                                    } label: {
-                                        HStack(spacing: 12) {
-                                            Image(systemName: "clock")
-                                            VStack(alignment: .leading) {
-                                                Text(fechaInicioText(e))
-                                                    .font(.headline)
-                                                if let end = e.endDate, let start = e.startDate {
-                                                    Text(rangoFechasText(start: start, end: end))
-                                                        .font(.subheadline)
-                                                        .foregroundStyle(.secondary)
-                                                }
+                    if !entrenamientosTerminados.isEmpty {
+                        Section("Terminados") {
+                            ForEach(entrenamientosTerminados) { e in
+                                NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "clock")
+                                        VStack(alignment: .leading) {
+                                            Text(fechaInicioText(e))
+                                                .font(.headline)
+                                            if let end = e.endDate, let start = e.startDate {
+                                                Text(rangoFechasText(start: start, end: end))
+                                                    .font(.subheadline)
+                                                    .foregroundStyle(.secondary)
                                             }
-                                            Spacer()
                                         }
-                                        .padding(.vertical, 4)
+                                        Spacer()
                                     }
+                                    .padding(.vertical, 4)
                                 }
-                                .onDelete { offsets in
-                                    delete(entrenamientosTerminados, at: offsets)
-                                }
+                            }
+                            .onDelete { offsets in
+                                delete(entrenamientosTerminados, at: offsets)
                             }
                         }
                     }
                 }
             }
-            .navigationTitle("Entrenamientos")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingAddSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .accessibilityLabel("Añadir entrenamiento")
-                    .disabled(!entrenamientosEnCurso.isEmpty)
+        }
+        .navigationTitle("Entrenamientos")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingAddSheet = true
+                } label: {
+                    Image(systemName: "plus")
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                }
+                .accessibilityLabel("Añadir entrenamiento")
+                .disabled(!entrenamientosEnCurso.isEmpty)
             }
-            .sheet(isPresented: $showingAddSheet) {
-                AddEntrenamientoView()
-                    .presentationDetents([.medium, .large])
+            ToolbarItem(placement: .topBarLeading) {
+                EditButton()
             }
-            .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { date in
-                now = date
-            }
+        }
+        .sheet(isPresented: $showingAddSheet) {
+            AddEntrenamientoView()
+                .presentationDetents([.medium, .large])
+        }
+        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { date in
+            now = date
         }
     }
 
