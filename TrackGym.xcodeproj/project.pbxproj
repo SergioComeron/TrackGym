@@ -6,14 +6,75 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A606C7C42E527E1800E918CC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A606C7C32E527E1800E918CC /* WidgetKit.framework */; };
+		A606C7C62E527E1800E918CC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A606C7C52E527E1800E918CC /* SwiftUI.framework */; };
+		A606C7D72E527E1900E918CC /* TrackGymWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A606C7D52E527E1900E918CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A606C7962E522A7C00E918CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A606C7C02E527E1800E918CC;
+			remoteInfo = TrackGymWidgetsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A606C7DC2E527E1900E918CC /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A606C7D72E527E1900E918CC /* TrackGymWidgetsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A606C79E2E522A7C00E918CC /* TrackGym.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackGym.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TrackGymWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A606C7C32E527E1800E918CC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A606C7C52E527E1800E918CC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A606C7D82E527E1900E918CC /* Exceptions for "TrackGymWidgets" folder in "TrackGymWidgetsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A606C7C02E527E1800E918CC /* TrackGymWidgetsExtension */;
+		};
+		A606C7DE2E527F5E00E918CC /* Exceptions for "TrackGym" folder in "TrackGymWidgetsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WorkoutActivityAttributes.swift,
+			);
+			target = A606C7C02E527E1800E918CC /* TrackGymWidgetsExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A606C7A02E522A7C00E918CC /* TrackGym */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A606C7DE2E527F5E00E918CC /* Exceptions for "TrackGym" folder in "TrackGymWidgetsExtension" target */,
+			);
 			path = TrackGym;
+			sourceTree = "<group>";
+		};
+		A606C7C72E527E1800E918CC /* TrackGymWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A606C7D82E527E1900E918CC /* Exceptions for "TrackGymWidgets" folder in "TrackGymWidgetsExtension" target */,
+			);
+			path = TrackGymWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +87,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A606C7BE2E527E1800E918CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A606C7C62E527E1800E918CC /* SwiftUI.framework in Frameworks */,
+				A606C7C42E527E1800E918CC /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				A606C7A02E522A7C00E918CC /* TrackGym */,
+				A606C7C72E527E1800E918CC /* TrackGymWidgets */,
+				A606C7C22E527E1800E918CC /* Frameworks */,
 				A606C79F2E522A7C00E918CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +113,18 @@
 			isa = PBXGroup;
 			children = (
 				A606C79E2E522A7C00E918CC /* TrackGym.app */,
+				A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A606C7C22E527E1800E918CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A606C7C32E527E1800E918CC /* WidgetKit.framework */,
+				A606C7C52E527E1800E918CC /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +137,12 @@
 				A606C79A2E522A7C00E918CC /* Sources */,
 				A606C79B2E522A7C00E918CC /* Frameworks */,
 				A606C79C2E522A7C00E918CC /* Resources */,
+				A606C7DC2E527E1900E918CC /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A606C7D62E527E1900E918CC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A606C7A02E522A7C00E918CC /* TrackGym */,
@@ -69,6 +153,28 @@
 			productName = TrackGym;
 			productReference = A606C79E2E522A7C00E918CC /* TrackGym.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A606C7C02E527E1800E918CC /* TrackGymWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A606C7D92E527E1900E918CC /* Build configuration list for PBXNativeTarget "TrackGymWidgetsExtension" */;
+			buildPhases = (
+				A606C7BD2E527E1800E918CC /* Sources */,
+				A606C7BE2E527E1800E918CC /* Frameworks */,
+				A606C7BF2E527E1800E918CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A606C7C72E527E1800E918CC /* TrackGymWidgets */,
+			);
+			name = TrackGymWidgetsExtension;
+			packageProductDependencies = (
+			);
+			productName = TrackGymWidgetsExtension;
+			productReference = A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +187,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					A606C79D2E522A7C00E918CC = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					A606C7C02E527E1800E918CC = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -100,12 +209,20 @@
 			projectRoot = "";
 			targets = (
 				A606C79D2E522A7C00E918CC /* TrackGym */,
+				A606C7C02E527E1800E918CC /* TrackGymWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A606C79C2E522A7C00E918CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A606C7BF2E527E1800E918CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +239,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A606C7BD2E527E1800E918CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A606C7D62E527E1900E918CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A606C7C02E527E1800E918CC /* TrackGymWidgetsExtension */;
+			targetProxy = A606C7D52E527E1900E918CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A606C7A72E522A7D00E918CC /* Debug */ = {
@@ -329,6 +461,71 @@
 			};
 			name = Release;
 		};
+		A606C7DA2E527E1900E918CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6PUHQ5CYQS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrackGymWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TrackGymWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sergiocomeron.TrackGym.TrackGymWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A606C7DB2E527E1900E918CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6PUHQ5CYQS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrackGymWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TrackGymWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sergiocomeron.TrackGym.TrackGymWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -346,6 +543,15 @@
 			buildConfigurations = (
 				A606C7AA2E522A7D00E918CC /* Debug */,
 				A606C7AB2E522A7D00E918CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A606C7D92E527E1900E918CC /* Build configuration list for PBXNativeTarget "TrackGymWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A606C7DA2E527E1900E918CC /* Debug */,
+				A606C7DB2E527E1900E918CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
