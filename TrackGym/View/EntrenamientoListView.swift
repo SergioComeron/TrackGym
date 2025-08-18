@@ -50,6 +50,10 @@ struct EntrenamientoListView: View {
                                                     .font(.subheadline)
                                                     .foregroundStyle(.secondary)
                                             }
+                                            Text(gruposResumen(e))
+                                                .font(.footnote)
+                                                .foregroundStyle(.secondary)
+                                                .lineLimit(1)
                                         }
                                         Spacer()
                                     }
@@ -72,10 +76,14 @@ struct EntrenamientoListView: View {
                                             Text(fechaInicioText(e))
                                                 .font(.headline)
                                             if let end = e.endDate, let start = e.startDate {
-                                                Text(rangoFechasText(start: start, end: end))
+                                                Text("Inicio " + horaSoloText(start) + " · Duración " + duracionText(from: start, to: end))
                                                     .font(.subheadline)
                                                     .foregroundStyle(.secondary)
                                             }
+                                            Text(gruposResumen(e))
+                                                .font(.footnote)
+                                                .foregroundStyle(.secondary)
+                                                .lineLimit(1)
                                         }
                                         Spacer()
                                     }
@@ -145,6 +153,40 @@ struct EntrenamientoListView: View {
         } else {
             return String(format: "Lleva %02d:%02d", m, s)
         }
+    }
+
+    private func horaSoloText(_ date: Date) -> String {
+        let df = DateFormatter()
+        df.locale = .current
+        df.timeStyle = .short
+        df.dateStyle = .none
+        return df.string(from: date)
+    }
+
+    private func duracionText(from start: Date, to end: Date) -> String {
+        let seconds = max(0, Int(end.timeIntervalSince(start)))
+        let h = seconds / 3600
+        let m = (seconds % 3600) / 60
+        let s = seconds % 60
+        if h > 0 {
+            return String(format: "%02d:%02d:%02d", h, m, s)
+        } else {
+            return String(format: "%02d:%02d", m, s)
+        }
+    }
+
+    private func gruposResumen(_ e: Entrenamiento) -> String {
+        let unique = Array(Set(e.gruposMusculares))
+        if unique.isEmpty { return "Sin grupos" }
+        return unique.map { grupoNombre($0) }.sorted().joined(separator: " · ")
+    }
+
+    private func grupoNombre(_ g: GrupoMuscular) -> String {
+        // Fallback genérico basado en el nombre del case
+        let raw = String(describing: g)
+        return raw.replacingOccurrences(of: "_", with: " ")
+                  .replacingOccurrences(of: "-", with: " ")
+                  .capitalized
     }
 }
 

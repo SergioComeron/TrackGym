@@ -13,10 +13,35 @@ final class Entrenamiento {
     var id: UUID
     var startDate: Date?
     var endDate: Date?
+    var gruposMusculares: [GrupoMuscular] = []
     
     init(id: UUID = UUID(), startDate: Date? = Date(), endDate: Date? = nil) {
         self.id = id
         self.startDate = startDate
         self.endDate = endDate
+    }
+    
+    // 🔹 Helper para obtener los grupos sin duplicados y ordenados
+    var gruposUnicos: [GrupoMuscular] {
+        Array(Set(gruposMusculares)).sorted { $0.rawValue < $1.rawValue }
+    }
+    
+    // 🔹 Helper para añadir/quitar un grupo muscular
+    func toggle(_ grupo: GrupoMuscular) {
+        if let i = gruposMusculares.firstIndex(of: grupo) {
+            gruposMusculares.remove(at: i)
+        } else {
+            gruposMusculares.append(grupo)
+        }
+    }
+}
+
+enum GrupoMuscular: String, Codable, CaseIterable {
+    case pecho, espalda, hombro, biceps, triceps, cuadriceps, femoral, gluteo, gemelo, abdomen, aductor, abductor
+}
+
+extension Entrenamiento {
+    var gruposMuscularesNoDuplicados: [GrupoMuscular] {
+        Array(Set(gruposMusculares)).sorted { $0.rawValue < $1.rawValue }
     }
 }
