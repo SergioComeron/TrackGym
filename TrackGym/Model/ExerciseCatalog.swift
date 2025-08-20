@@ -92,10 +92,22 @@ let gluteoExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "glute_kickback_polea", group: .gluteo)
 ]
 
+// Abdomen
+let abdomenExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "plancha", group: .abdomen),
+    ExerciseSeed(slug: "elevacion_piernas_tumbado", group: .abdomen),
+    ExerciseSeed(slug: "giros_rusos_disco", group: .abdomen),
+    ExerciseSeed(slug: "crunch_abdominal", group: .abdomen),
+    ExerciseSeed(slug: "crunch_maquina", group: .abdomen),
+    ExerciseSeed(slug: "crunch_inverso", group: .abdomen),
+    ExerciseSeed(slug: "ab_wheel", group: .abdomen)
+]
+
 // Si ya tienes defaultExercises:
 let defaultExercises = backExercises
     + hombroExercises
     + femoralExercises
     + aductorExercises
     + abductorExercises
-    + gluteoExercises // + (cuando quieras, añades otros grupos)
+    + gluteoExercises
+    + abdomenExercises // + (cuando quieras, añades otros grupos)
