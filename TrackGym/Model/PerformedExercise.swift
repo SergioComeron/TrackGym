@@ -15,11 +15,15 @@ final class PerformedExercise {
     var slug: String = ""            // p.ej. "remo_barra" (se asigna en init)
     var createdAt: Date = Date()
     @Relationship(inverse: \Entrenamiento.ejercicios)
-    var entrenamiento: Entrenamiento?    // var series: [Serie] = []
-    // <- lo añadiremos más tarde
+    var entrenamiento: Entrenamiento?
+
+    @Relationship(deleteRule: .cascade)
+    var sets: [ExerciseSet] = []
 
     init(slug: String, entrenamiento: Entrenamiento? = nil) {
         self.slug = slug
         self.entrenamiento = entrenamiento
     }
 }
+
+

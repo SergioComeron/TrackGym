@@ -78,6 +78,9 @@
     "Añadir entrenamiento" : {
 
     },
+    "Añadir serie" : {
+
+    },
     "Aún no has añadido ejercicios" : {
 
     },
@@ -1006,6 +1009,9 @@
         }
       }
     },
+    "kg" : {
+
+    },
     "lumbar_banco_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1158,6 +1164,9 @@
       }
     },
     "Perfil" : {
+
+    },
+    "Peso" : {
 
     },
     "peso_muerto_desc" : {
@@ -2084,10 +2093,19 @@
         }
       }
     },
+    "reps" : {
+
+    },
+    "Reps" : {
+
+    },
     "Resumen" : {
 
     },
     "Se registrará" : {
+
+    },
+    "Serie %lld:" : {
 
     },
     "Sin entrenamientos" : {

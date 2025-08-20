@@ -15,6 +15,7 @@ struct EntrenamientoDetailView: View {
     @Bindable var entrenamiento: Entrenamiento
     @State private var isShowingExercisePicker = false
     @State private var isGroupSectionExpanded = false
+    @State private var selectedExercise: PerformedExercise?
 
     private var isFinished: Bool { entrenamiento.endDate != nil }
 
@@ -71,13 +72,17 @@ struct EntrenamientoDetailView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(uniqueEjercicios) { pe in
-                        if let seed = defaultExercises.first(where: { $0.slug == pe.slug }) {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(seed.name).font(.headline)
-                                Text(seed.desc).font(.caption).foregroundStyle(.secondary)
+                        Button {
+                            selectedExercise = pe
+                        } label: {
+                            if let seed = defaultExercises.first(where: { $0.slug == pe.slug }) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(seed.name).font(.headline)
+                                    Text(seed.desc).font(.caption).foregroundStyle(.secondary)
+                                }
+                            } else {
+                                Text(pe.slug) // Fallback si no existe en el catálogo
                             }
-                        } else {
-                            Text(pe.slug) // Fallback si no existe en el catálogo
                         }
                     }
                     .onDelete(perform: removePerformedExercises)
@@ -127,6 +132,9 @@ struct EntrenamientoDetailView: View {
                     addExerciseSafely(slug: seed.slug)
                 }
             )
+        }
+        .navigationDestination(item: $selectedExercise) { exercise in
+            ExerciseSetsEditorView(performedExercise: exercise, isFinished: entrenamiento.endDate != nil)
         }
         .onAppear {
             // Limpieza al cargar la vista (útil después de sincronización)
@@ -292,3 +300,174 @@ private struct ExercisePickerView: View {
     }
 }
 
+// MARK: - ExerciseSetsEditorView
+private struct ExerciseSetsEditorView: View {
+    @Environment(\.modelContext) private var context
+
+    @Bindable var performedExercise: PerformedExercise
+    let isFinished: Bool
+
+    // Estados locales para reps y weight string (por índice)
+    @State private var repsStrings: [String] = []
+    @State private var weightStrings: [String] = []
+
+    var body: some View {
+        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
+        
+        List {
+            let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+            ForEach(Array(sortedSets.enumerated()), id: \.element.id) { index, set in
+                HStack {
+                    Text("Serie \(set.order + 1):")
+                    Spacer()
+                    TextField("Reps", text: Binding(
+                        get: {
+                            if index < repsStrings.count {
+                                return repsStrings[index]
+                            }
+                            return ""
+                        },
+                        set: { newValue in
+                            // Filtrar solo dígitos, max 3 chars para reps
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            let limited = String(filtered.prefix(3))
+                            if index < repsStrings.count {
+                                repsStrings[index] = limited
+                            }
+                        }
+                    ))
+                    .disabled(isFinished)
+                    .keyboardType(.numberPad)
+                    .frame(width: 50)
+                    .multilineTextAlignment(.trailing)
+                    .onChange(of: repsStrings) {
+                        guard index < performedExercise.sets.count else { return }
+                        if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
+                            performedExercise.sets[index].reps = intValue
+                            saveContext()
+                        }
+                    }
+                    Text("reps")
+                    TextField("Peso", text: Binding(
+                        get: {
+                            if index < weightStrings.count {
+                                return weightStrings[index]
+                            }
+                            return ""
+                        },
+                        set: { newValue in
+                            // Filtrar caracteres válidos para decimal: dígitos y un solo punto
+                            let filtered = newValue.filter { "0123456789.".contains($0) }
+                            var clean = ""
+                            var dotCount = 0
+                            for char in filtered {
+                                if char == "." {
+                                    dotCount += 1
+                                    if dotCount > 1 { continue }
+                                }
+                                clean.append(char)
+                            }
+                            // Limitar a 6 caracteres max para evitar textos largos
+                            let limited = String(clean.prefix(6))
+                            if index < weightStrings.count {
+                                weightStrings[index] = limited
+                            }
+                        }
+                    ))
+                    .disabled(isFinished)
+                    .keyboardType(.decimalPad)
+                    .frame(width: 70)
+                    .multilineTextAlignment(.trailing)
+                    .onChange(of: weightStrings) {
+                        guard index < performedExercise.sets.count else { return }
+                        if let doubleValue = Double(weightStrings[safe: index] ?? ""), doubleValue >= 0 {
+                            performedExercise.sets[index].weight = doubleValue
+                            saveContext()
+                        }
+                    }
+                    Text("kg")
+                }
+                .contentShape(Rectangle())
+            }
+            .onDelete(perform: deleteSets)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    Text(exerciseSeed?.name ?? performedExercise.slug)
+                        .font(.headline)
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                if !isFinished {
+                    Button("Añadir serie") {
+                        addSet()
+                    }
+                }
+            }
+        }
+        .onAppear {
+            syncStringsWithModel()
+        }
+        .onChange(of: performedExercise.sets) {
+            syncStringsWithModel()
+        }
+        .onDisappear {
+            saveContext()
+        }
+    }
+
+    // Sincroniza los arrays de String con los valores actuales del modelo
+    private func syncStringsWithModel() {
+        let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+        let newRepsStrings = sortedSets.map { String($0.reps) }
+        let newWeightStrings = sortedSets.map { String(format: "%.1f", $0.weight) }
+        
+        // Actualizar solo si difiere para evitar redibujos innecesarios
+        if newRepsStrings != repsStrings {
+            repsStrings = newRepsStrings
+        }
+        if newWeightStrings != weightStrings {
+            weightStrings = newWeightStrings
+        }
+    }
+
+    private func addSet() {
+        let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
+        let newSet = ExerciseSet(reps: 10, weight: 50, order: newOrder, performedExercise: performedExercise)
+        newSet.id = UUID()
+        context.insert(newSet)
+        performedExercise.sets.append(newSet)
+        saveContext()
+        syncStringsWithModel()
+    }
+
+    private func deleteSets(at offsets: IndexSet) {
+        let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+        let setsToRemove = offsets.map { sortedSets[$0] }
+        for set in setsToRemove {
+            if let index = performedExercise.sets.firstIndex(of: set) {
+                performedExercise.sets.remove(at: index)
+                context.delete(set)
+            }
+        }
+        saveContext()
+        syncStringsWithModel()
+    }
+
+    private func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print("❌ Error al guardar cambios en series: \(error)")
+            context.rollback()
+        }
+    }
+}
+
+// Extension para acceso seguro a array indices sin causar crash
+private extension Array {
+    subscript(safe index: Int) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
