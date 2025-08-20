@@ -15,6 +15,9 @@ final class Entrenamiento {
     var endDate: Date?
     var gruposMusculares: [GrupoMuscular] = []
     
+    @Relationship(deleteRule: .cascade)
+    var ejercicios: [PerformedExercise] = []
+    
     init(id: UUID = UUID(), startDate: Date? = Date(), endDate: Date? = nil) {
         self.id = id
         self.startDate = startDate
@@ -40,8 +43,9 @@ enum GrupoMuscular: String, Codable, CaseIterable {
     case pecho, espalda, hombro, biceps, triceps, cuadriceps, femoral, gluteo, gemelo, abdomen, aductor, abductor
 }
 
-extension Entrenamiento {
-    var gruposMuscularesNoDuplicados: [GrupoMuscular] {
-        Array(Set(gruposMusculares)).sorted { $0.rawValue < $1.rawValue }
+extension GrupoMuscular {
+    /// Nombre localizado del grupo muscular para UI.
+    var localizedName: String {
+        NSLocalizedString("group_\(rawValue)", comment: "")
     }
 }

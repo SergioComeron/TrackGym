@@ -43,8 +43,7 @@ struct MainMenu: View {
                 .tag(Router.Tab.entrenos)
 
             NavigationStack {
-                Text("Progreso")
-                    .navigationTitle("Progreso")
+                ProgresoView()
             }
             .tabItem { Label("Progreso", systemImage: "chart.bar.fill") }
             .tag(Router.Tab.progreso)

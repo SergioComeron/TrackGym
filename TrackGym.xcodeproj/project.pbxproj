@@ -10,6 +10,8 @@
 		A606C7C42E527E1800E918CC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A606C7C32E527E1800E918CC /* WidgetKit.framework */; };
 		A606C7C62E527E1800E918CC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A606C7C52E527E1800E918CC /* SwiftUI.framework */; };
 		A606C7D72E527E1900E918CC /* TrackGymWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A657ECD22E548009003909BF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A657ECD12E548009003909BF /* Localizable.xcstrings */; };
+		A657ECD32E548009003909BF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A657ECD12E548009003909BF /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,7 @@
 		A606C7C12E527E1800E918CC /* TrackGymWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TrackGymWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A606C7C32E527E1800E918CC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		A606C7C52E527E1800E918CC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A657ECD12E548009003909BF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -110,6 +113,7 @@
 		A606C7952E522A7C00E918CC = {
 			isa = PBXGroup;
 			children = (
+				A657ECD12E548009003909BF /* Localizable.xcstrings */,
 				A606C7A02E522A7C00E918CC /* TrackGym */,
 				A606C7C72E527E1800E918CC /* TrackGymWidgets */,
 				A606C7C22E527E1800E918CC /* Frameworks */,
@@ -208,6 +212,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = A606C7952E522A7C00E918CC;
 			minimizedProjectReferenceProxies = 1;
@@ -227,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A657ECD22E548009003909BF /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +240,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A657ECD32E548009003909BF /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +330,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -378,6 +386,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
