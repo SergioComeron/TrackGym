@@ -1,0 +1,356 @@
+{
+  "sourceLanguage" : "en",
+  "strings": {
+    "group_pecho": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Pecho" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Chest" } }
+      }
+    },
+    "group_espalda": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Espalda" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Back" } }
+      }
+    },
+    "group_hombro": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Hombro" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Shoulder" } }
+      }
+    },
+    "group_biceps": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Bíceps" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Biceps" } }
+      }
+    },
+    "group_triceps": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Tríceps" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Triceps" } }
+      }
+    },
+    "group_cuadriceps": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Cuádriceps" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Quads" } }
+      }
+    },
+    "group_femoral": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Femoral" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Hamstrings" } }
+      }
+    },
+    "group_gluteo": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Glúteo" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Glutes" } }
+      }
+    },
+    "group_gemelo": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Gemelo" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Calves" } }
+      }
+    },
+    "group_abdomen": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Abdomen" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Abs" } }
+      }
+    },
+    "group_aductor": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Aductor" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Adductors" } }
+      }
+    },
+    "group_abductor": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Abductor" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Abductors" } }
+      }
+    },
+    "dominadas_pronas_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Dominadas pronas" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pull-ups (pronated)" } }
+      }
+    },
+    "dominadas_pronas_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Dominadas con agarre prono (palmas al frente) enfocando dorsales y parte superior de la espalda." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pull-ups with pronated grip (palms forward), targeting lats and upper back." } }
+      }
+    },
+    "dominadas_supinas_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Dominadas supinas" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Chin-ups (supinated)" } }
+      }
+    },
+    "dominadas_supinas_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Dominadas con agarre supino (palmas hacia ti) con mayor implicación de bíceps." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pull-ups with supinated grip (palms facing you), more biceps involvement." } }
+      }
+    },
+    "pull_ups_neutras_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Pull-ups neutras" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Neutral-grip pull-ups" } }
+      }
+    },
+    "pull_ups_neutras_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Dominadas con agarre neutro; cómodas para el hombro y efectivas para dorsales." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Neutral-grip pull-ups; shoulder-friendly and effective for lats." } }
+      }
+    },
+    "jalon_agarre_abierto_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón agarre abierto" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Wide-grip lat pulldown" } }
+      }
+    },
+    "jalon_agarre_abierto_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón en polea con agarre ancho para enfatizar dorsales y parte superior de la espalda." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pulldown with wide grip to emphasize lats and upper back." } }
+      }
+    },
+    "jalon_maquina_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón máquina" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Lat pulldown machine" } }
+      }
+    },
+    "jalon_maquina_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón en máquina/polea para dorsales, priorizando control de escápulas y recorrido." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pulldown on machine/cable, focusing on scapula control and range." } }
+      }
+    },
+    "jalon_agarre_cerrado_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón agarre cerrado" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Close-grip lat pulldown" } }
+      }
+    },
+    "jalon_agarre_cerrado_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón con agarre estrecho; mayor recorrido y énfasis en la espalda media." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pulldown with narrow grip; more range and focus on mid-back." } }
+      }
+    },
+    "jalon_agarre_abierto_neutro_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón agarre abierto neutro" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Wide neutral-grip pulldown" } }
+      }
+    },
+    "jalon_agarre_abierto_neutro_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Jalón con agarre neutro y ancho; cómodo y efectivo para dorsales." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pulldown with wide neutral grip; comfortable and effective for lats." } }
+      }
+    },
+    "remo_barra_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo con barra" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Barbell row" } }
+      }
+    },
+    "remo_barra_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo inclinado con barra; trabaja dorsales, romboides y erectores espinales." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Bent-over row with barbell; works lats, rhomboids and erector spinae." } }
+      }
+    },
+    "remo_en_punta_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo en punta" } },
+        "en": { "stringUnit": { "state": "translated", "value": "T-bar row" } }
+      }
+    },
+    "remo_en_punta_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo en T; gran carga y estabilidad para la espalda media." } },
+        "en": { "stringUnit": { "state": "translated", "value": "T-bar row; heavy load and stable for mid-back." } }
+      }
+    },
+    "remo_mancuerna_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo con mancuerna" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Dumbbell row" } }
+      }
+    },
+    "remo_mancuerna_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo a una mano con mancuerna; enfoque unilateral y estabilidad del core." } },
+        "en": { "stringUnit": { "state": "translated", "value": "One-arm dumbbell row; unilateral focus and core stability." } }
+      }
+    },
+    "remo_polea_baja_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo en polea baja" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Seated cable row" } }
+      }
+    },
+    "remo_polea_baja_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo sentado en polea baja; tensión constante y técnica controlada." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Seated row on low pulley; constant tension and controlled form." } }
+      }
+    },
+    "remo_gironda_agarre_cerrado_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda agarre cerrado" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda row (close grip)" } }
+      }
+    },
+    "remo_gironda_agarre_cerrado_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Variación Gironda con agarre cerrado para enfatizar la espalda media." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda variation with close grip to emphasize mid-back." } }
+      }
+    },
+    "remo_gironda_barra_ancha_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda barra ancha" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda row (wide bar)" } }
+      }
+    },
+    "remo_gironda_barra_ancha_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Gironda con barra y agarre ancho para dorsales y romboides." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda with bar and wide grip for lats and rhomboids." } }
+      }
+    },
+    "remo_gironda_prono_a_neutro_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda prono→neutro" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda row (prone→neutral)" } }
+      }
+    },
+    "remo_gironda_prono_a_neutro_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Gironda variando de prono a neutro para cubrir más fibras." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda varying from pronated to neutral grip to hit more fibers." } }
+      }
+    },
+    "remo_gironda_barra_ancha_inclinado_adelante_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda barra ancha inclinado" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda row wide bar forward lean" } }
+      }
+    },
+    "remo_gironda_barra_ancha_inclinado_adelante_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Gironda con barra ancha e inclinación adelantada; foco en dorsales altos." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda with wide bar and forward lean; focus on upper lats." } }
+      }
+    },
+    "remo_gironda_barra_agarre_neutro_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda agarre neutro" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda row neutral grip" } }
+      }
+    },
+    "remo_gironda_barra_agarre_neutro_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda con agarre neutro para equilibrio entre dorsales y romboides." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Gironda with neutral grip for balanced lats and rhomboids." } }
+      }
+    },
+    "remo_gironda_una_mano_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Remo Gironda a una mano" } },
+        "en": { "stringUnit": { "state": "translated", "value": "One-arm Gironda row" } }
+      }
+    },
+    "remo_gironda_una_mano_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Variación unilateral del remo Gironda, con énfasis en dorsales y romboides trabajando cada lado por separado." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Unilateral variation of the Gironda row, focusing on lats and rhomboids by working each side independently." } }
+      }
+    },
+    "lumbar_banco_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Lumbar en banco" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Back extensions" } }
+      }
+    },
+    "lumbar_banco_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Extensiones de lumbar en banco; fortalece la zona baja de la espalda." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Back extensions on bench; strengthens lower back." } }
+      }
+    },
+    "pull_over_polea_name": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Pull-over polea" } },
+        "en": { "stringUnit": { "state": "translated", "value": "Cable pull-over" } }
+      }
+    },
+    "pull_over_polea_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": { "stringUnit": { "state": "translated", "value": "Pull-over con polea; aislamiento de dorsales con recorrido largo." } },
+        "en": { "stringUnit": { "state": "translated", "value": "Pull-over on cable; isolates lats with long range." } }
+      }
+    }
+  },
+  "version" : "1.1"
+}
