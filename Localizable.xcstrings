@@ -1,6 +1,36 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ kg x %lld reps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ kg x %2$lld reps"
+          }
+        }
+      }
+    },
+    "%@ kg x %lld reps — última vez (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ kg x %2$lld reps — última vez (%3$@)"
+          }
+        }
+      }
+    },
+    "%lld reps x %@ kg" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld reps x %2$@ kg"
+          }
+        }
+      }
+    },
     "A an example control that runs a timer." : {
 
     },
@@ -1050,6 +1080,9 @@
 
     },
     "Nuevo entrenamiento" : {
+
+    },
+    "Nunca has registrado este ejercicio" : {
 
     },
     "Off" : {
