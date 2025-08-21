@@ -770,6 +770,9 @@
     "Fecha y hora actual al guardar" : {
 
     },
+    "Generando resumen..." : {
+
+    },
     "giros_rusos_disco_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2407,6 +2410,9 @@
 
     },
     "Resumen" : {
+
+    },
+    "Resumen de tu último entrenamiento (AI)" : {
 
     },
     "Se registrará" : {

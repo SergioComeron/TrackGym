@@ -4,6 +4,7 @@
 
 import SwiftUI
 import SwiftData
+import FoundationModels
 #if canImport(Charts)
 import Charts
 #endif
@@ -14,10 +15,31 @@ struct ProgresoView: View {
     
     // 1. Cambia la inicialización de selectedSlug para que dependa del primer slug disponible (el más frecuente si es posible) y quita el valor "" por defecto:
     @State private var selectedSlug: String? = nil
+    @State private var resumenEntrenoHoy: String? = nil
+    @State private var cargandoResumenEntrenoHoy = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
+                
+                if cargandoResumenEntrenoHoy {
+                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
+                        HStack(spacing: 10) {
+                            ProgressView()
+                            Text("Generando resumen...").font(.callout)
+                        }
+                        .padding(.vertical, 8)
+                    }
+                }
+                
+                if let resumen = resumenEntrenoHoy {
+                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
+                        Text(resumen)
+                            .font(.callout)
+                            .padding(.vertical, 8)
+                    }
+                }
+                
                 resumenVisual
                 
                 #if canImport(Charts)
@@ -94,6 +116,7 @@ struct ProgresoView: View {
             if selectedSlug == nil, let primero = ejercicioMasFrecuenteSlug ?? slugsEjerciciosRealizados.first {
                 selectedSlug = primero
             }
+            generarResumenEntrenoHoy()
         }
     }
 
@@ -197,6 +220,35 @@ struct ProgresoView: View {
             return "\(m)m"
         }
     }
+
+    private func generarResumenEntrenoHoy() {
+        cargandoResumenEntrenoHoy = true
+        resumenEntrenoHoy = nil
+        guard let entreno = entrenamientosTerminados.first else {
+            cargandoResumenEntrenoHoy = false
+            return
+        }
+        let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
+        let ejerciciosStr = entreno.ejercicios.map { ejercicio in
+            let setsText = ejercicio.sets.map { "\($0.reps)x\(String(format: "%.1f", $0.weight))kg" }.joined(separator: ", ")
+            return "\(nombreEjercicioDesdeSlug(ejercicio.slug)): \(setsText)"
+        }.joined(separator: "\n")
+        let gruposTrabajados = Set(entreno.gruposMusculares)
+        let ejerciciosDisponibles = defaultExercises.filter { gruposTrabajados.contains($0.group) }
+            .map { $0.name }
+            .joined(separator: ", ")
+        
+
+        let prompt = "Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres y si no es necesario dime por qué he hecho bien este entrenamiento. Dame también algo para motivarme a seguir tirando fuerte el próximo entrenamiento. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
+        print(prompt)
+        Task {
+            let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
+            if let respuesta = try? await session.respond(to: prompt) {
+                await MainActor.run { resumenEntrenoHoy = respuesta.content }
+            }
+            await MainActor.run { cargandoResumenEntrenoHoy = false }
+        }
+    }
 }
 
 private func nombreEjercicioDesdeSlug(_ slug: String) -> String {
@@ -270,3 +322,4 @@ private struct PesoChartView: View {
 #Preview {
     ProgresoView()
 }
+
