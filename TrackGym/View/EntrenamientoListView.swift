@@ -19,12 +19,13 @@ struct EntrenamientoListView: View {
     @State private var showingAddSheet = false
     @State private var now = Date()
 
-    private var entrenamientosEnCurso: [Entrenamiento] { entrenamientos.filter { $0.endDate == nil } }
+    private var entrenamientosPendientes: [Entrenamiento] { entrenamientos.filter { $0.startDate == nil } }
+    private var entrenamientosEnCurso: [Entrenamiento] { entrenamientos.filter { $0.endDate == nil && $0.startDate != nil } }
     private var entrenamientosTerminados: [Entrenamiento] { entrenamientos.filter { $0.endDate != nil } }
 
     var body: some View {
         Group {
-            if entrenamientosEnCurso.isEmpty && entrenamientosTerminados.isEmpty {
+            if entrenamientosPendientes.isEmpty && entrenamientosEnCurso.isEmpty && entrenamientosTerminados.isEmpty {
                 ContentUnavailableView(
                     "Sin entrenamientos",
                     systemImage: "dumbbell",
@@ -32,6 +33,31 @@ struct EntrenamientoListView: View {
                 )
             } else {
                 List {
+                    if !entrenamientosPendientes.isEmpty {
+                        Section("Pendientes") {
+                            ForEach(entrenamientosPendientes) { e in
+                                NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "pause.circle")
+                                        VStack(alignment: .leading) {
+                                            Text("Sin inicio")
+                                                .font(.headline)
+                                            Text(gruposResumen(e))
+                                                .font(.footnote)
+                                                .foregroundStyle(.secondary)
+                                                .lineLimit(1)
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding(.vertical, 4)
+                                }
+                            }
+                            .onDelete { offsets in
+                                delete(entrenamientosPendientes, at: offsets)
+                            }
+                        }
+                    }
+
                     if !entrenamientosEnCurso.isEmpty {
                         Section("En curso") {
                             ForEach(entrenamientosEnCurso) { e in

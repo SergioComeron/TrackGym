@@ -416,6 +416,9 @@
     "Ejercicios" : {
 
     },
+    "El entrenamiento aún no ha comenzado. Puedes preparar ejercicios o grupos." : {
+
+    },
     "Elegir ejercicio" : {
 
     },
@@ -656,6 +659,9 @@
           }
         }
       }
+    },
+    "Empezar entrenamiento" : {
+
     },
     "En curso" : {
 
@@ -1399,6 +1405,9 @@
           }
         }
       }
+    },
+    "Pendientes" : {
+
     },
     "Perfil" : {
 
@@ -2383,6 +2392,9 @@
 
     },
     "Sin grupos marcados" : {
+
+    },
+    "Sin inicio" : {
 
     },
     "Start a timer" : {

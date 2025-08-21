@@ -19,6 +19,9 @@ struct EntrenamientoDetailView: View {
 
     private var isFinished: Bool { entrenamiento.endDate != nil }
 
+    @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
+    private var entrenamientos: [Entrenamiento]
+
     var body: some View {
         Form {
             Section("Inicio") {
@@ -98,7 +101,31 @@ struct EntrenamientoDetailView: View {
             }
 
             Section("Estado") {
-                if let end = entrenamiento.endDate {
+                if entrenamiento.startDate == nil {
+                    Button {
+                        entrenamiento.startDate = Date()
+                        try? context.save()
+                        // Calcula la media de entrenamientos finalizados:
+                        let entrenosFinalizados = entrenamientos.filter { $0.startDate != nil && $0.endDate != nil }
+                        let totalDuracion = entrenosFinalizados.reduce(0.0) { sum, e in
+                            sum + (e.endDate!.timeIntervalSince(e.startDate!))
+                        }
+                        let media: TimeInterval = entrenosFinalizados.isEmpty ? 1800 : totalDuracion / Double(entrenosFinalizados.count)
+                        Task {
+                            await LiveActivityManager.shared.start(
+                                title: "Entrenamiento",
+                                startedAt: entrenamiento.startDate ?? Date(),
+                                entrenamientoID: entrenamiento.id,
+                                mediaDuracion: media
+                            )
+                        }
+                    } label: {
+                        Label("Empezar entrenamiento", systemImage: "play.fill")
+                    }
+                    Text("El entrenamiento aún no ha comenzado. Puedes preparar ejercicios o grupos.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                } else if let end = entrenamiento.endDate {
                     Text("Terminado el \(DateFormatter.cachedDateTime.string(from: end))")
                         .foregroundStyle(.secondary)
                 } else {
@@ -336,6 +363,9 @@ private struct ExerciseSetsEditorView: View {
             }
             return date1 < date2
         })
+
+        // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
+        let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
         
         List {
             Section(header:
@@ -405,7 +435,7 @@ private struct ExerciseSetsEditorView: View {
                                 }
                             }
                         ))
-                        .disabled(isFinished)
+                        .disabled(!isEditable)
                         .keyboardType(.numberPad)
                         .frame(width: 50)
                         .multilineTextAlignment(.trailing)
@@ -443,7 +473,7 @@ private struct ExerciseSetsEditorView: View {
                                 }
                             }
                         ))
-                        .disabled(isFinished)
+                        .disabled(!isEditable)
                         .keyboardType(.decimalPad)
                         .frame(width: 70)
                         .multilineTextAlignment(.trailing)
@@ -463,7 +493,7 @@ private struct ExerciseSetsEditorView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if !isFinished {
+                if !isFinished && (performedExercise.entrenamiento?.startDate != nil) {
                     Button("Añadir serie") {
                         addSet()
                     }
@@ -549,3 +579,4 @@ private extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
