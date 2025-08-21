@@ -74,7 +74,7 @@ struct ProgresoView: View {
     }
 
     private var resumenVisual: some View {
-        HStack(spacing: 24) {
+        HStack(spacing: 16) {
             resumenBox(title: "Entrenos", value: "\(entrenamientosTerminados.count)", color: .blue)
             resumenBox(title: "Total", value: formatDuration(seconds: totalDuracion), color: .green)
             resumenBox(title: "Media", value: formatDuration(seconds: mediaDuracion), color: .orange)
@@ -85,7 +85,7 @@ struct ProgresoView: View {
     private func resumenBox(title: String, value: String, color: Color) -> some View {
         VStack(spacing: 6) {
             Text(value)
-                .font(.title)
+                .font(.title3)
                 .fontWeight(.bold)
                 .foregroundColor(color)
             Text(title)
@@ -93,7 +93,7 @@ struct ProgresoView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(8)
         .background(.thinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }

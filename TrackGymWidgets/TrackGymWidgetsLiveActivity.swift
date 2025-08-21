@@ -20,27 +20,37 @@ struct TrackGymWidgetsLiveActivity: Widget {
         ActivityConfiguration(for: WorkoutActivityAttributes.self) { context in
             // Lock screen / banner (Live Activity) UI
             let started = context.state.startedAt
+            let media = context.state.mediaDuracion
+            let elapsed = Date.now.timeIntervalSince(started)
+            let progress = min(elapsed / media, 1.0)
 
-            HStack(alignment: .center, spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(Color.accentColor.opacity(0.15))
-                        .frame(width: 40, height: 40)
-                    Image(systemName: "figure.strengthtraining.traditional")
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                }
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center, spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.accentColor.opacity(0.15))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: "figure.strengthtraining.traditional")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                    }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(context.attributes.title)
-                        .font(.headline)
-                        .lineLimit(1)
-                    Text("Inicio: \(started.shortDateTime)")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(context.attributes.title)
+                            .font(.headline)
+                            .lineLimit(1)
+                        Text("Inicio: \(started.shortDateTime)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                    Spacer(minLength: 0)
                 }
-                Spacer(minLength: 0)
+                ProgressView(value: progress)
+                    .progressViewStyle(.linear)
+                Text("Tiempo actual: \(Int(elapsed / 60)) min / Media: \(Int(media / 60)) min")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -67,19 +77,21 @@ struct TrackGymWidgetsLiveActivity: Widget {
                             .font(.caption)
                             .monospacedDigit()
                     }
+                    .padding(.trailing, 12)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     HStack(spacing: 8) {
                         Text(context.attributes.title)
                             .font(.subheadline)
                             .lineLimit(1)
-                        Spacer()
+                        Spacer(minLength: 0)
                         Text("Desde \(context.state.startedAt.shortTime)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .monospacedDigit()
                     }
-                    .padding(.top, 2)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
                 }
             } compactLeading: {
                 Image(systemName: "figure.strengthtraining.traditional")
@@ -105,12 +117,20 @@ extension WorkoutActivityAttributes {
 
 extension WorkoutActivityAttributes.ContentState {
     fileprivate static var smiley: WorkoutActivityAttributes.ContentState {
-        WorkoutActivityAttributes.ContentState(startedAt: Date())
-     }
+        WorkoutActivityAttributes.ContentState(
+            startedAt: Date().addingTimeInterval(-1200), // hace 20 minutos
+            endedAt: nil,
+            mediaDuracion: 1800.0 // media de 30 minutos
+        )
+    }
      
-     fileprivate static var starEyes: WorkoutActivityAttributes.ContentState {
-         WorkoutActivityAttributes.ContentState(startedAt: Date())
-     }
+    fileprivate static var starEyes: WorkoutActivityAttributes.ContentState {
+        WorkoutActivityAttributes.ContentState(
+            startedAt: Date().addingTimeInterval(-1700), // hace 28 minutos
+            endedAt: nil,
+            mediaDuracion: 1800.0
+        )
+    }
 }
 
 #Preview("Notification", as: .content, using: WorkoutActivityAttributes.preview) {

@@ -34,6 +34,40 @@
     "A an example control that runs a timer." : {
 
     },
+    "ab_wheel_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ab wheel rollout; strong anti-extension core demand."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rueda abdominal (rollout); alta demanda anti-extensión del core."
+          }
+        }
+      }
+    },
+    "ab_wheel_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ab wheel rollout"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rueda abdominal (rollout)"
+          }
+        }
+      }
+    },
     "abductor_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -132,99 +166,103 @@
     "crunch_abdominal_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Basic floor crunch; isolates rectus abdominis." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch en el suelo; aislamiento del recto abdominal." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic floor crunch; isolates rectus abdominis."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch en el suelo; aislamiento del recto abdominal."
+          }
+        }
       }
     },
     "crunch_abdominal_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Crunch" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch abdominal" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch abdominal"
+          }
+        }
       }
     },
     "crunch_inverso_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reverse crunch; focuses on lower abs by posterior pelvic tilt." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch inverso; énfasis en abdomen inferior con retroversión pélvica." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse crunch; focuses on lower abs by posterior pelvic tilt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch inverso; énfasis en abdomen inferior con retroversión pélvica."
+          }
+        }
       }
     },
     "crunch_inverso_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reverse crunch" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch inverso" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse crunch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch inverso"
+          }
+        }
       }
     },
     "crunch_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Machine crunch; guided path for progressive overload." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch en máquina; recorrido guiado para sobrecarga progresiva." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine crunch; guided path for progressive overload."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch en máquina; recorrido guiado para sobrecarga progresiva."
+          }
+        }
       }
     },
     "crunch_maquina_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Machine crunch" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crunch en máquina" } }
-      }
-    },
-    "ab_wheel_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ab wheel rollout; strong anti-extension core demand." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Rueda abdominal (rollout); alta demanda anti-extensión del core." } }
-      }
-    },
-    "ab_wheel_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ab wheel rollout" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Rueda abdominal (rollout)" } }
-      }
-    },
-    "elevacion_piernas_tumbado_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Supine leg raise; targets lower abs with pelvic control." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elevación de piernas tumbado; trabaja abdomen inferior con control pélvico." } }
-      }
-    },
-    "elevacion_piernas_tumbado_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lying leg raises" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elevación de piernas tumbado" } }
-      }
-    },
-    "giros_rusos_disco_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Russian twists holding a plate; strong oblique rotation." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Giros rusos con disco; rotación marcada de oblicuos." } }
-      }
-    },
-    "giros_rusos_disco_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Russian twists (plate)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Giros rusos con disco" } }
-      }
-    },
-    "plancha_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Plank; anti-extension isometric for full core stability." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Plancha; isométrico anti-extensión para estabilidad completa del core." } }
-      }
-    },
-    "plancha_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Plank" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Plancha" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine crunch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crunch en máquina"
+          }
+        }
       }
     },
     "curl_femoral_sentado_desc" : {
@@ -380,6 +418,40 @@
     },
     "Elegir ejercicio" : {
 
+    },
+    "elevacion_piernas_tumbado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supine leg raise; targets lower abs with pelvic control."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elevación de piernas tumbado; trabaja abdomen inferior con control pélvico."
+          }
+        }
+      }
+    },
+    "elevacion_piernas_tumbado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lying leg raises"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elevación de piernas tumbado"
+          }
+        }
+      }
     },
     "elevaciones_frontales_barra_desc" : {
       "extractionState" : "manual",
@@ -679,6 +751,40 @@
     },
     "Fecha y hora actual al guardar" : {
 
+    },
+    "giros_rusos_disco_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russian twists holding a plate; strong oblique rotation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giros rusos con disco; rotación marcada de oblicuos."
+          }
+        }
+      }
+    },
+    "giros_rusos_disco_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russian twists (plate)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giros rusos con disco"
+          }
+        }
+      }
     },
     "glute_kickback_polea_desc" : {
       "extractionState" : "manual",
@@ -1538,6 +1644,40 @@
         }
       }
     },
+    "plancha_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plank; anti-extension isometric for full core stability."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plancha; isométrico anti-extensión para estabilidad completa del core."
+          }
+        }
+      }
+    },
+    "plancha_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plank"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plancha"
+          }
+        }
+      }
+    },
     "press_arnold_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2265,6 +2405,16 @@
     },
     "This is an example widget." : {
 
+    },
+    "Tiempo actual: %lld min / Media: %lld min" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tiempo actual: %1$lld min / Media: %2$lld min"
+          }
+        }
+      }
     },
     "Time:" : {
 

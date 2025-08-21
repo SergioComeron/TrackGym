@@ -13,6 +13,7 @@ struct WorkoutActivityAttributes: ActivityAttributes {
         /// Si quieres, puedes poner datos cambiantes aquí (no hace falta para un simple cronómetro)
         var startedAt: Date
         var endedAt: Date?
+        var mediaDuracion: TimeInterval // en segundos
     }
 
     /// Atributos fijos de la actividad
