@@ -14,13 +14,15 @@ final class ExerciseSet {
     var reps: Int = 0
     var weight: Double = 0
     var order: Int = 0
+    var createdAt: Date = Date()
     @Relationship(inverse: \PerformedExercise.sets)
     var performedExercise: PerformedExercise?
 
-    init(reps: Int, weight: Double, order: Int = 0, performedExercise: PerformedExercise? = nil) {
+    init(reps: Int, weight: Double, order: Int = 0, performedExercise: PerformedExercise? = nil, createdAt: Date = Date()) {
         self.reps = reps
         self.weight = weight
         self.order = order
         self.performedExercise = performedExercise
+        self.createdAt = createdAt
     }
 }

@@ -414,7 +414,7 @@ private struct ExerciseSetsEditorView: View {
                     Divider()
                 }
             ) {
-                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                let sortedSets = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
                 ForEach(Array(sortedSets.enumerated()), id: \.element.id) { index, set in
                     HStack {
                         Text("Serie \(set.order + 1):")
@@ -528,7 +528,7 @@ private struct ExerciseSetsEditorView: View {
 
     private func addSet() {
         let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
-        let newSet = ExerciseSet(reps: 10, weight: 50, order: newOrder, performedExercise: performedExercise)
+        let newSet = ExerciseSet(reps: 10, weight: 50, order: newOrder, performedExercise: performedExercise, createdAt: Date())
         newSet.id = UUID()
         context.insert(newSet)
         performedExercise.sets.append(newSet)
@@ -579,4 +579,3 @@ private extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
-

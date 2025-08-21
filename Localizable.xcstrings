@@ -31,6 +31,9 @@
         }
       }
     },
+    "%lldm" : {
+
+    },
     "A an example control that runs a timer." : {
 
     },
@@ -136,6 +139,9 @@
         }
       }
     },
+    "Añade un ejercicio en un entrenamiento para ver tus gráficos y marcas aquí." : {
+
+    },
     "Añadir ejercicio" : {
 
     },
@@ -146,6 +152,9 @@
 
     },
     "Aún no has añadido ejercicios" : {
+
+    },
+    "Aún no has registrado este ejercicio." : {
 
     },
     "Aún no tienes entrenos finalizados" : {
@@ -333,9 +342,6 @@
         }
       }
     },
-    "Desde %@" : {
-
-    },
     "Detalle" : {
 
     },
@@ -411,6 +417,9 @@
 
     },
     "Duración últimos entrenos" : {
+
+    },
+    "Ejercicio seleccionado" : {
 
     },
     "Ejercicios" : {
@@ -744,6 +753,9 @@
 
     },
     "Estado" : {
+
+    },
+    "Evolución peso: %@" : {
 
     },
     "Favorite Emoji" : {
@@ -1286,7 +1298,13 @@
         }
       }
     },
+    "Mejores marcas: %@" : {
+
+    },
     "minutos" : {
+
+    },
+    "No hay datos para este ejercicio." : {
 
     },
     "Nuevo entrenamiento" : {
@@ -1653,6 +1671,9 @@
         }
       }
     },
+    "Peso: %@ kg" : {
+
+    },
     "plancha_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1858,6 +1879,9 @@
       }
     },
     "Progreso" : {
+
+    },
+    "Progreso por ejercicio" : {
 
     },
     "puente_gluteo_desc" : {
@@ -2379,6 +2403,9 @@
     "Reps" : {
 
     },
+    "Reps: %lld" : {
+
+    },
     "Resumen" : {
 
     },
@@ -2441,6 +2468,9 @@
 
     },
     "Timer Name Configuration" : {
+
+    },
+    "Transcurrido: %lld min" : {
 
     }
   },

@@ -18,47 +18,50 @@ private extension Date {
 struct TrackGymWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: WorkoutActivityAttributes.self) { context in
-            // Lock screen / banner (Live Activity) UI
-            let started = context.state.startedAt
-            let media = context.state.mediaDuracion
-            let elapsed = Date.now.timeIntervalSince(started)
-            let progress = min(elapsed / media, 1.0)
+            TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
+                // Lock screen / banner (Live Activity) UI
+                let started = context.state.startedAt
+                let media = context.state.mediaDuracion
+                let elapsed = Date.now.timeIntervalSince(started)
+                let progress = min(elapsed / media, 1.0)
 
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(alignment: .center, spacing: 12) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.accentColor.opacity(0.15))
-                            .frame(width: 40, height: 40)
-                        Image(systemName: "figure.strengthtraining.traditional")
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                    }
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(alignment: .center, spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.accentColor.opacity(0.15))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: "figure.strengthtraining.traditional")
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                        }
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(context.attributes.title)
-                            .font(.headline)
-                            .lineLimit(1)
-                        Text("Inicio: \(started.shortDateTime)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(context.attributes.title)
+                                .font(.headline)
+                                .lineLimit(1)
+                            Text("Inicio: \(started.shortDateTime)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                        Spacer(minLength: 0)
                     }
-                    Spacer(minLength: 0)
+                    ProgressView(value: progress)
+                        .progressViewStyle(.linear)
+                        .animation(.easeInOut(duration: 0.5), value: progress)
+                    Text("Tiempo actual: \(Int(elapsed / 60)) min / Media: \(Int(media / 60)) min")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
                 }
-                ProgressView(value: progress)
-                    .progressViewStyle(.linear)
-                Text("Tiempo actual: \(Int(elapsed / 60)) min / Media: \(Int(media / 60)) min")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
             .widgetURL(
                 URL(string: "trackgym://live-activity?entrenamiento=\(context.attributes.entrenamientoID.uuidString)")
             )
-            .activityBackgroundTint(Color(.systemBackground))
-            .activitySystemActionForegroundColor(.accentColor)
+//            .activityBackgroundTint(Color(.systemBackground))
+//            .activitySystemActionForegroundColor(.accentColor)
 
         } dynamicIsland: { context in
 
@@ -80,31 +83,39 @@ struct TrackGymWidgetsLiveActivity: Widget {
                     .padding(.trailing, 12)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 8) {
-                        Text(context.attributes.title)
-                            .font(.subheadline)
-                            .lineLimit(1)
-                        Spacer(minLength: 0)
-                        Text("Desde \(context.state.startedAt.shortTime)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .monospacedDigit()
+                    TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
+                        let elapsed = timeline.date.timeIntervalSince(context.state.startedAt)
+                        
+                        HStack(spacing: 8) {
+                            Text(context.attributes.title)
+                                .font(.subheadline)
+                                .lineLimit(1)
+                            Spacer(minLength: 0)
+                            Text("Transcurrido: \(Int(elapsed / 60)) min")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .monospacedDigit()
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 4)
                 }
             } compactLeading: {
                 Image(systemName: "figure.strengthtraining.traditional")
             } compactTrailing: {
-                Text(context.state.startedAt.shortTime)
-                    .monospacedDigit()
+                TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
+                    let elapsed = timeline.date.timeIntervalSince(context.state.startedAt)
+                    Text("\(Int(elapsed / 60))m")
+                        .monospacedDigit()
+                        .font(.caption2)
+                }
             } minimal: {
                 Image(systemName: "figure.strengthtraining.traditional")
             }
             .widgetURL(
                 URL(string: "trackgym://live-activity?entrenamiento=\(context.attributes.entrenamientoID.uuidString)")
             )
-            .keylineTint(.accentColor)
+//            .keylineTint(.accentColor)
         }
     }
 }
