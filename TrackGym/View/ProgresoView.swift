@@ -13,50 +13,45 @@ struct ProgresoView: View {
     @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
     private var entrenamientos: [Entrenamiento]
     
-    // 1. Cambia la inicialización de selectedSlug para que dependa del primer slug disponible (el más frecuente si es posible) y quita el valor "" por defecto:
     @State private var selectedSlug: String? = nil
     @State private var resumenEntrenoHoy: String? = nil
     @State private var cargandoResumenEntrenoHoy = false
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                
+            VStack(alignment: .leading, spacing: 28) {
+
+                HStack(spacing: 16) {
+                    resumenBox(title: "Entrenos", value: "\(entrenamientosTerminados.count)", color: .blue)
+                    resumenBox(title: "Total", value: formatDuration(seconds: totalDuracion), color: .green)
+                    resumenBox(title: "Media", value: formatDuration(seconds: mediaDuracion), color: .orange)
+                }
+                .padding(.top, 8)
+
+                #if canImport(Charts)
+                if entrenamientosTerminados.count > 1 {
+                    ChartSection(entrenamientos: entrenamientosTerminados)
+                }
+                #endif
+
                 if cargandoResumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
-                        HStack(spacing: 10) {
-                            ProgressView()
-                            Text("Generando resumen...").font(.callout)
-                        }
-                        .padding(.vertical, 8)
+                        ProgressView()
+                            .padding(.vertical, 8)
                     }
-                }
-                
-                if let resumen = resumenEntrenoHoy {
+                } else if let resumen = resumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
                         Text(resumen)
                             .font(.callout)
                             .padding(.vertical, 8)
                     }
                 }
-                
-                resumenVisual
-                
-                #if canImport(Charts)
-                if entrenamientosTerminados.count > 1 {
-                    ChartSection(entrenamientos: entrenamientosTerminados)
-                }
-                #endif
-                
-                Text("Historial reciente")
-                    .font(.headline)
-                
-                // 2. Mejora la UI del selector y la sección de datos:
-                // Sustituye el bloque del Picker+resumenEjercicioSeleccionado+PesoChartView por lo siguiente:
+
                 GroupBox(label: Label("Progreso por ejercicio", systemImage: "figure.strengthtraining.traditional")) {
                     if slugsEjerciciosRealizados.isEmpty {
                         Text("Añade un ejercicio en un entrenamiento para ver tus gráficos y marcas aquí.")
-                            .font(.callout).padding(.vertical, 12)
+                            .font(.callout)
+                            .padding(.vertical, 12)
                     } else {
                         VStack(alignment: .leading, spacing: 12) {
                             Picker("Ejercicio seleccionado", selection: Binding(
@@ -68,9 +63,8 @@ struct ProgresoView: View {
                                 }
                             }
                             .pickerStyle(.menu)
-                            .padding(.bottom, 6)
                             .labelsHidden()
-                            
+
                             if let slug = selectedSlug ?? slugsEjerciciosRealizados.first {
                                 resumenEjercicioSeleccionado(slug: slug)
                                 #if canImport(Charts)
@@ -81,37 +75,24 @@ struct ProgresoView: View {
                         .padding(.vertical, 4)
                     }
                 }
-                .padding(.bottom, 16)
-                
-                ForEach(entrenamientosTerminados.prefix(7)) { e in
-                    if let start = e.startDate, let end = e.endDate {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(DateFormatter.cachedDateTime.string(from: start))
-                                    .font(.subheadline)
-                                Text("Duración: " + duracionText(from: start, to: end))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                        }
-                        .padding(.vertical, 4)
-                    }
-                }
-                
+
                 if entrenamientosTerminados.isEmpty {
                     ContentUnavailableView(
                         "Aún no tienes entrenos finalizados",
                         systemImage: "chart.bar.doc.horizontal",
                         description: Text("Termina tu primer entreno para ver tu progreso aquí.")
                     )
+                    .padding(.vertical)
                 }
             }
             .padding()
+            .background(.thinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+            .padding(.horizontal)
+            .padding(.vertical, 22)
         }
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("Progreso")
-        .background(Color(.systemGroupedBackground))
-        // 4. Modifica onAppear para inicializar selectedSlug solo si hay ejercicios y aún está a nil:
         .onAppear {
             if selectedSlug == nil, let primero = ejercicioMasFrecuenteSlug ?? slugsEjerciciosRealizados.first {
                 selectedSlug = primero
@@ -126,7 +107,6 @@ struct ProgresoView: View {
 
     private var totalDuracion: TimeInterval {
         entrenamientosTerminados.reduce(0) { sum, e in
-            // Usar guard para evitar force unwrapping
             guard let start = e.startDate, let end = e.endDate else { return sum }
             return sum + end.timeIntervalSince(start)
         }
@@ -137,14 +117,12 @@ struct ProgresoView: View {
         return totalDuracion / Double(entrenamientosTerminados.count)
     }
 
-    // 2. Añade una propiedad computada para obtener los slugs de ejercicios realmente realizados
     private var slugsEjerciciosRealizados: [String] {
         let ejercicios = entrenamientosTerminados.flatMap { $0.ejercicios }
         let slugs = ejercicios.map { $0.slug }
         return Array(Set(slugs)).sorted()
     }
     
-    // 3. Cambia resumenEjercicioSeleccionado a función que recibe slug:
     private func resumenEjercicioSeleccionado(slug: String) -> some View {
         let ejercicios = entrenamientosTerminados.flatMap { $0.ejercicios }.filter { $0.slug == slug }
         let series = ejercicios.flatMap { $0.sets }
@@ -195,8 +173,6 @@ struct ProgresoView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(8)
-        .background(.thinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     private func duracionText(from start: Date, to end: Date) -> String {
@@ -239,7 +215,7 @@ struct ProgresoView: View {
             .joined(separator: ", ")
         
 
-        let prompt = "Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres y si no es necesario dime por qué he hecho bien este entrenamiento. Dame también algo para motivarme a seguir tirando fuerte el próximo entrenamiento. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
+        let prompt = "Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres y si no es necesario dime por qué he hecho bien este entrenamiento. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
         print(prompt)
         Task {
             let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
@@ -322,4 +298,3 @@ private struct PesoChartView: View {
 #Preview {
     ProgresoView()
 }
-

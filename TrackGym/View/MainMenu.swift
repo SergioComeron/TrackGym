@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 private struct EntrenosTab: View {
     @Environment(Router.self) private var router
@@ -49,8 +50,7 @@ struct MainMenu: View {
             .tag(Router.Tab.progreso)
 
             NavigationStack {
-                Text("Perfil")
-                    .navigationTitle("Perfil")
+                PerfilView()
             }
             .tabItem { Label("Perfil", systemImage: "person.fill") }
             .tag(Router.Tab.perfil)
