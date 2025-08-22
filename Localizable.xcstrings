@@ -292,6 +292,210 @@
         }
       }
     },
+    "curl_arana_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face-down curl on incline bench; peak contraction focus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl boca abajo en banco inclinado; foco en contracción pico."
+          }
+        }
+      }
+    },
+    "curl_arana_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spider curl (barbell)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl araña con barra"
+          }
+        }
+      }
+    },
+    "curl_arana_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prone curl using dumbbells on incline bench; strict form."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl prono con mancuernas en banco inclinado; técnica estricta."
+          }
+        }
+      }
+    },
+    "curl_arana_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spider curl (dumbbells)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl araña con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_banco_predicador_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preacher bench curl using barbell or EZ; strict arc."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl en banco predicador con barra o EZ; arco de movimiento estricto."
+          }
+        }
+      }
+    },
+    "curl_banco_predicador_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preacher curl (barbell)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl banco predicador con barra"
+          }
+        }
+      }
+    },
+    "curl_banco_predicador_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclined preacher bench with dumbbells; strict elbow position."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl en banco predicador con mancuernas; posición estricta del codo."
+          }
+        }
+      }
+    },
+    "curl_banco_predicador_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preacher curl (dumbbells)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl banco predicador con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classic bilateral curl with barbell; heavy loading potential."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl bilateral clásico con barra; gran potencial de carga."
+          }
+        }
+      }
+    },
+    "curl_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell curl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl con barra"
+          }
+        }
+      }
+    },
+    "curl_concentrado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seated unilateral curl with elbow braced on inner thigh."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl unilateral sentado apoyando el codo en el muslo interno."
+          }
+        }
+      }
+    },
+    "curl_concentrado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concentration curl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl concentrado"
+          }
+        }
+      }
+    },
     "curl_femoral_sentado_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -356,6 +560,210 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Femoral máquina tumbado"
+          }
+        }
+      }
+    },
+    "curl_inclinado_alterno_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternating curls on an incline bench; long range, biceps stretch."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl alterno en banco inclinado; gran recorrido y estiramiento del bíceps."
+          }
+        }
+      }
+    },
+    "curl_inclinado_alterno_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline dumbbell curl (alternating)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl inclinado alterno con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_inclinado_simultaneo_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simultaneous curls on an incline bench; stable shoulder position."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl simultáneo en banco inclinado; hombros estables y controlados."
+          }
+        }
+      }
+    },
+    "curl_inclinado_simultaneo_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline dumbbell curl (simultaneous)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl inclinado simultáneo con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_martillo_alterno_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neutral-grip curl alternating arms; brachialis emphasis."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl con agarre neutro alternando brazos; énfasis en braquial."
+          }
+        }
+      }
+    },
+    "curl_martillo_alterno_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hammer curl (alternating)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl martillo alterno con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_martillo_polea_baja_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low-pulley neutral-grip curl; constant tension through range."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl en polea baja con agarre neutro; tensión constante en el recorrido."
+          }
+        }
+      }
+    },
+    "curl_martillo_polea_baja_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hammer curl (low cable)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl martillo en polea baja"
+          }
+        }
+      }
+    },
+    "curl_martillo_simultaneo_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neutral-grip curl with both arms; steady torso and wrists."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl con agarre neutro con ambos brazos; tronco y muñecas estables."
+          }
+        }
+      }
+    },
+    "curl_martillo_simultaneo_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hammer curl (simultaneous)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl martillo simultáneo con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_simultaneo_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilateral dumbbell curl; stable stance and even loading."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl bilateral con mancuernas; postura estable y carga uniforme."
+          }
+        }
+      }
+    },
+    "curl_simultaneo_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dumbbell curl (simultaneous)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl con mancuernas simultáneo"
           }
         }
       }
@@ -782,6 +1190,74 @@
     "Evolución peso: %@" : {
 
     },
+    "extension_triceps_barra_polea_alta_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pushdown using straight or EZ bar attachment; stable path."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión con barra recta o EZ en polea; trayectoria estable."
+          }
+        }
+      }
+    },
+    "extension_triceps_barra_polea_alta_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cable bar triceps pushdown"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión tríceps barra (polea alta)"
+          }
+        }
+      }
+    },
+    "extension_triceps_cuerda_polea_alta_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High-pulley rope extension; constant tension on triceps."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión en polea alta con cuerda; tensión constante en tríceps."
+          }
+        }
+      }
+    },
+    "extension_triceps_cuerda_polea_alta_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cable rope triceps pushdown"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión tríceps cuerda (polea alta)"
+          }
+        }
+      }
+    },
     "Favorite Emoji" : {
 
     },
@@ -793,6 +1269,108 @@
     },
     "Fecha y hora actual al guardar" : {
 
+    },
+    "fondos_triceps_banco_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feet-elevated or floor bench dips; short range, strong lockout."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondo en banco con pies en el suelo o elevados; corto recorrido y fuerte bloqueo."
+          }
+        }
+      }
+    },
+    "fondos_triceps_banco_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bench triceps dips"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondos tríceps en banco"
+          }
+        }
+      }
+    },
+    "fondos_triceps_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assisted or plate-loaded dip with guided path."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondo asistido o con placas en máquina; recorrido guiado."
+          }
+        }
+      }
+    },
+    "fondos_triceps_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps dips (machine)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondos tríceps en máquina"
+          }
+        }
+      }
+    },
+    "fondos_triceps_paralelas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bodyweight dip focusing on triceps with upright torso."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondo con peso corporal en paralelas; torso erguido para enfatizar tríceps."
+          }
+        }
+      }
+    },
+    "fondos_triceps_paralelas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps dips (parallel bars)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fondos tríceps en paralelas"
+          }
+        }
+      }
     },
     "giros_rusos_disco_desc" : {
       "extractionState" : "manual",
@@ -1787,6 +2365,108 @@
         }
       }
     },
+    "press_frances_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overhead triceps extension with barbell; targets long head."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión de tríceps por encima de la cabeza con barra; foco en la cabeza larga."
+          }
+        }
+      }
+    },
+    "press_frances_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French press (barbell)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press francés con barra"
+          }
+        }
+      }
+    },
+    "press_frances_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overhead triceps extension with dumbbells; greater range of motion."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión de tríceps por encima de la cabeza con mancuernas; mayor rango de movimiento."
+          }
+        }
+      }
+    },
+    "press_frances_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French press (dumbbells)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press francés con mancuernas"
+          }
+        }
+      }
+    },
+    "press_frances_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guided overhead extension on machine; stable and controlled path."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión por encima de la cabeza en máquina; recorrido estable y controlado."
+          }
+        }
+      }
+    },
+    "press_frances_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French press (machine)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press francés en máquina"
+          }
+        }
+      }
+    },
     "press_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2530,319 +3210,38 @@
     "Transcurrido: %lld min" : {
 
     },
-
-    "extension_triceps_cuerda_polea_alta_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cable rope triceps pushdown" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión tríceps cuerda (polea alta)" } }
-      }
-    },
-    "extension_triceps_cuerda_polea_alta_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "High-pulley rope extension; constant tension on triceps." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión en polea alta con cuerda; tensión constante en tríceps." } }
-      }
-    },
-
-    "extension_triceps_barra_polea_alta_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cable bar triceps pushdown" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión tríceps barra (polea alta)" } }
-      }
-    },
-    "extension_triceps_barra_polea_alta_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pushdown using straight or EZ bar attachment; stable path." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión con barra recta o EZ en polea; trayectoria estable." } }
-      }
-    },
-
-    "triceps_cuerda_tras_nuca_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead rope triceps extension" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tríceps cuerda tras nuca" } }
-      }
-    },
     "triceps_cuerda_tras_nuca_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead cable extension with rope; long head emphasis." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión por encima de la cabeza con cuerda; énfasis en cabeza larga." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overhead cable extension with rope; long head emphasis."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión por encima de la cabeza con cuerda; énfasis en cabeza larga."
+          }
+        }
       }
     },
-
-    "fondos_triceps_paralelas_name" : {
+    "triceps_cuerda_tras_nuca_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps dips (parallel bars)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos tríceps en paralelas" } }
-      }
-    },
-    "fondos_triceps_paralelas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bodyweight dip focusing on triceps with upright torso." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondo con peso corporal en paralelas; torso erguido para enfatizar tríceps." } }
-      }
-    },
-
-    "fondos_triceps_maquina_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps dips (machine)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos tríceps en máquina" } }
-      }
-    },
-    "fondos_triceps_maquina_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Assisted or plate-loaded dip with guided path." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondo asistido o con placas en máquina; recorrido guiado." } }
-      }
-    },
-
-    "fondos_triceps_banco_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bench triceps dips" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos tríceps en banco" } }
-      }
-    },
-    "fondos_triceps_banco_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Feet-elevated or floor bench dips; short range, strong lockout." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondo en banco con pies en el suelo o elevados; corto recorrido y fuerte bloqueo." } }
-      }
-    },
-
-    "curl_simultaneo_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dumbbell curl (simultaneous)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl con mancuernas simultáneo" } }
-      }
-    },
-    "curl_simultaneo_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bilateral dumbbell curl; stable stance and even loading." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl bilateral con mancuernas; postura estable y carga uniforme." } }
-      }
-    },
-
-    "curl_martillo_alterno_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hammer curl (alternating)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl martillo alterno con mancuernas" } }
-      }
-    },
-    "curl_martillo_alterno_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Neutral-grip curl alternating arms; brachialis emphasis." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl con agarre neutro alternando brazos; énfasis en braquial." } }
-      }
-    },
-
-    "curl_martillo_simultaneo_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hammer curl (simultaneous)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl martillo simultáneo con mancuernas" } }
-      }
-    },
-    "curl_martillo_simultaneo_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Neutral-grip curl with both arms; steady torso and wrists." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl con agarre neutro con ambos brazos; tronco y muñecas estables." } }
-      }
-    },
-
-    "curl_martillo_polea_baja_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hammer curl (low cable)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl martillo en polea baja" } }
-      }
-    },
-    "curl_martillo_polea_baja_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Low-pulley neutral-grip curl; constant tension through range." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl en polea baja con agarre neutro; tensión constante en el recorrido." } }
-      }
-    },
-
-    "curl_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell curl" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl con barra" } }
-      }
-    },
-    "curl_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Classic bilateral curl with barbell; heavy loading potential." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl bilateral clásico con barra; gran potencial de carga." } }
-      }
-    },
-
-    "curl_inclinado_alterno_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline dumbbell curl (alternating)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl inclinado alterno con mancuernas" } }
-      }
-    },
-    "curl_inclinado_alterno_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Alternating curls on an incline bench; long range, biceps stretch." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl alterno en banco inclinado; gran recorrido y estiramiento del bíceps." } }
-      }
-    },
-
-    "curl_inclinado_simultaneo_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline dumbbell curl (simultaneous)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl inclinado simultáneo con mancuernas" } }
-      }
-    },
-    "curl_inclinado_simultaneo_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Simultaneous curls on an incline bench; stable shoulder position." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl simultáneo en banco inclinado; hombros estables y controlados." } }
-      }
-    },
-
-    "curl_arana_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Spider curl (barbell)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl araña con barra" } }
-      }
-    },
-    "curl_arana_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Face-down curl on incline bench; peak contraction focus." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl boca abajo en banco inclinado; foco en contracción pico." } }
-      }
-    },
-
-    "curl_arana_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Spider curl (dumbbells)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl araña con mancuernas" } }
-      }
-    },
-    "curl_arana_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Prone curl using dumbbells on incline bench; strict form." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl prono con mancuernas en banco inclinado; técnica estricta." } }
-      }
-    },
-
-    "curl_concentrado_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Concentration curl" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl concentrado" } }
-      }
-    },
-    "curl_concentrado_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seated unilateral curl with elbow braced on inner thigh." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl unilateral sentado apoyando el codo en el muslo interno." } }
-      }
-    },
-
-    "curl_banco_predicador_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preacher curl (dumbbells)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl banco predicador con mancuernas" } }
-      }
-    },
-    "curl_banco_predicador_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Inclined preacher bench with dumbbells; strict elbow position." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl en banco predicador con mancuernas; posición estricta del codo." } }
-      }
-    },
-
-    "curl_banco_predicador_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preacher curl (barbell)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl banco predicador con barra" } }
-      }
-    },
-    "curl_banco_predicador_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preacher bench curl using barbell or EZ; strict arc." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl en banco predicador con barra o EZ; arco de movimiento estricto." } }
-      }
-    },
-
-    "press_frances_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (barbell)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés con barra" } }
-      }
-    },
-    "press_frances_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with barbell; targets long head." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps por encima de la cabeza con barra; foco en la cabeza larga." } }
-      }
-    },
-
-    "press_frances_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (dumbbells)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés con mancuernas" } }
-      }
-    },
-    "press_frances_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with dumbbells; greater range of motion." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps por encima de la cabeza con mancuernas; mayor rango de movimiento." } }
-      }
-    },
-
-    "press_frances_maquina_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (machine)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés en máquina" } }
-      }
-    },
-    "press_frances_maquina_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Guided overhead extension on machine; stable and controlled path." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión por encima de la cabeza en máquina; recorrido estable y controlado." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overhead rope triceps extension"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tríceps cuerda tras nuca"
+          }
+        }
       }
     }
   },

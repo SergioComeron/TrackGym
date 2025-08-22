@@ -16,23 +16,14 @@ struct ProgresoView: View {
     @State private var selectedSlug: String? = nil
     @State private var resumenEntrenoHoy: String? = nil
     @State private var cargandoResumenEntrenoHoy = false
+    @State private var lastResumenEntrenoID: UUID? = nil
+    
+    private let resumenEntrenoKey = "ResumenEntrenoHoy"
+    private let resumenEntrenoIDKey = "LastResumenEntrenoID"
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-
-                HStack(spacing: 16) {
-                    resumenBox(title: "Entrenos", value: "\(entrenamientosTerminados.count)", color: .blue)
-                    resumenBox(title: "Total", value: formatDuration(seconds: totalDuracion), color: .green)
-                    resumenBox(title: "Media", value: formatDuration(seconds: mediaDuracion), color: .orange)
-                }
-                .padding(.top, 8)
-
-                #if canImport(Charts)
-                if entrenamientosTerminados.count > 1 {
-                    ChartSection(entrenamientos: entrenamientosTerminados)
-                }
-                #endif
 
                 if cargandoResumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
@@ -46,6 +37,19 @@ struct ProgresoView: View {
                             .padding(.vertical, 8)
                     }
                 }
+
+                HStack(spacing: 16) {
+                    resumenBox(title: "Entrenos", value: "\(entrenamientosTerminados.count)", color: .blue)
+                    resumenBox(title: "Total", value: formatDuration(seconds: totalDuracion), color: .green)
+                    resumenBox(title: "Media", value: formatDuration(seconds: mediaDuracion), color: .orange)
+                }
+                .padding(.top, 8)
+
+                #if canImport(Charts)
+                if entrenamientosTerminados.count > 1 {
+                    ChartSection(entrenamientos: entrenamientosTerminados)
+                }
+                #endif
 
                 GroupBox(label: Label("Progreso por ejercicio", systemImage: "figure.strengthtraining.traditional")) {
                     if slugsEjerciciosRealizados.isEmpty {
@@ -97,6 +101,11 @@ struct ProgresoView: View {
             if selectedSlug == nil, let primero = ejercicioMasFrecuenteSlug ?? slugsEjerciciosRealizados.first {
                 selectedSlug = primero
             }
+            if let storedID = UserDefaults.standard.string(forKey: resumenEntrenoIDKey),
+               let uuid = UUID(uuidString: storedID) {
+                lastResumenEntrenoID = uuid
+            }
+            resumenEntrenoHoy = UserDefaults.standard.string(forKey: resumenEntrenoKey)
             generarResumenEntrenoHoy()
         }
     }
@@ -199,11 +208,16 @@ struct ProgresoView: View {
 
     private func generarResumenEntrenoHoy() {
         cargandoResumenEntrenoHoy = true
-        resumenEntrenoHoy = nil
         guard let entreno = entrenamientosTerminados.first else {
             cargandoResumenEntrenoHoy = false
             return
         }
+        let currentID = entreno.id
+        if currentID == lastResumenEntrenoID, resumenEntrenoHoy != nil {
+            cargandoResumenEntrenoHoy = false
+            return
+        }
+        resumenEntrenoHoy = nil
         let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
         let ejerciciosStr = entreno.ejercicios.map { ejercicio in
             let setsText = ejercicio.sets.map { "\($0.reps)x\(String(format: "%.1f", $0.weight))kg" }.joined(separator: ", ")
@@ -220,7 +234,12 @@ struct ProgresoView: View {
         Task {
             let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
             if let respuesta = try? await session.respond(to: prompt) {
-                await MainActor.run { resumenEntrenoHoy = respuesta.content }
+                await MainActor.run {
+                    resumenEntrenoHoy = respuesta.content
+                    lastResumenEntrenoID = currentID
+                    UserDefaults.standard.setValue(currentID.uuidString, forKey: resumenEntrenoIDKey)
+                    UserDefaults.standard.setValue(respuesta.content, forKey: resumenEntrenoKey)
+                }
             }
             await MainActor.run { cargandoResumenEntrenoHoy = false }
         }
