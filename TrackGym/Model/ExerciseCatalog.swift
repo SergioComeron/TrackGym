@@ -103,6 +103,32 @@ let abdomenExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "ab_wheel", group: .abdomen)
 ]
 
+// Tríceps
+let tricepsExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "extension_triceps_cuerda_polea_alta", group: .triceps),
+    ExerciseSeed(slug: "extension_triceps_barra_polea_alta", group: .triceps),
+    ExerciseSeed(slug: "triceps_cuerda_tras_nuca", group: .triceps),
+    ExerciseSeed(slug: "fondos_triceps_paralelas", group: .triceps),
+    ExerciseSeed(slug: "fondos_triceps_maquina", group: .triceps),
+    ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps)
+]
+
+// Bíceps
+let bicepsExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "curl_simultaneo_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_martillo_alterno_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_martillo_simultaneo_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_martillo_polea_baja", group: .biceps),
+    ExerciseSeed(slug: "curl_barra", group: .biceps),
+    ExerciseSeed(slug: "curl_inclinado_alterno_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_inclinado_simultaneo_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_arana_barra", group: .biceps),
+    ExerciseSeed(slug: "curl_arana_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_concentrado", group: .biceps),
+    ExerciseSeed(slug: "curl_banco_predicador_mancuernas", group: .biceps),
+    ExerciseSeed(slug: "curl_banco_predicador_barra", group: .biceps)
+]
+
 // Si ya tienes defaultExercises:
 let defaultExercises = backExercises
     + hombroExercises
@@ -110,4 +136,6 @@ let defaultExercises = backExercises
     + aductorExercises
     + abductorExercises
     + gluteoExercises
-    + abdomenExercises // + (cuando quieras, añades otros grupos)
+    + abdomenExercises
+    + tricepsExercises
+    + bicepsExercises
