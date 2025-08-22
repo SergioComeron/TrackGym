@@ -110,7 +110,10 @@ let tricepsExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "triceps_cuerda_tras_nuca", group: .triceps),
     ExerciseSeed(slug: "fondos_triceps_paralelas", group: .triceps),
     ExerciseSeed(slug: "fondos_triceps_maquina", group: .triceps),
-    ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps)
+    ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps),
+    ExerciseSeed(slug: "press_frances_barra", group: .triceps),
+    ExerciseSeed(slug: "press_frances_mancuernas", group: .triceps),
+    ExerciseSeed(slug: "press_frances_maquina", group: .triceps)
 ]
 
 // Bíceps

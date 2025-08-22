@@ -2799,6 +2799,51 @@
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Preacher bench curl using barbell or EZ; strict arc." } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Curl en banco predicador con barra o EZ; arco de movimiento estricto." } }
       }
+    },
+
+    "press_frances_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (barbell)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés con barra" } }
+      }
+    },
+    "press_frances_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with barbell; targets long head." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps por encima de la cabeza con barra; foco en la cabeza larga." } }
+      }
+    },
+
+    "press_frances_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (dumbbells)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés con mancuernas" } }
+      }
+    },
+    "press_frances_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with dumbbells; greater range of motion." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps por encima de la cabeza con mancuernas; mayor rango de movimiento." } }
+      }
+    },
+
+    "press_frances_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "French press (machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press francés en máquina" } }
+      }
+    },
+    "press_frances_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Guided overhead extension on machine; stable and controlled path." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión por encima de la cabeza en máquina; recorrido estable y controlado." } }
+      }
     }
   },
   "version" : "1.1"
