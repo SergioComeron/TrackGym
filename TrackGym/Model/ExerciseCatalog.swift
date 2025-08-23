@@ -7,9 +7,15 @@
 
 import Foundation
 
+enum ExerciseType: String, Codable, Hashable {
+    case reps
+    case duration
+}
+
 struct ExerciseSeed: Hashable {
     let slug: String
     let group: GrupoMuscular
+    let type: ExerciseType
 
     var name: String { NSLocalizedString("\(slug)_name", comment: "") }
     var desc: String { NSLocalizedString("\(slug)_desc", comment: "") }
@@ -17,140 +23,149 @@ struct ExerciseSeed: Hashable {
 
 // Catálogo inicial: ESPALDA
 let backExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "dominadas_pronas", group: .espalda),
-    ExerciseSeed(slug: "dominadas_supinas", group: .espalda),
-    ExerciseSeed(slug: "pull_ups_neutras", group: .espalda),
-    ExerciseSeed(slug: "jalon_agarre_abierto", group: .espalda),
-    ExerciseSeed(slug: "jalon_maquina", group: .espalda),
-    ExerciseSeed(slug: "jalon_agarre_cerrado", group: .espalda),
-    ExerciseSeed(slug: "jalon_agarre_abierto_neutro", group: .espalda),
-    ExerciseSeed(slug: "remo_barra", group: .espalda),
-    ExerciseSeed(slug: "remo_en_punta", group: .espalda),
-    ExerciseSeed(slug: "remo_mancuerna", group: .espalda),
-    ExerciseSeed(slug: "remo_polea_baja", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_agarre_cerrado", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_barra_ancha", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_prono_a_neutro", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_barra_ancha_inclinado_adelante", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_barra_agarre_neutro", group: .espalda),
-    ExerciseSeed(slug: "remo_gironda_una_mano", group: .espalda),
-    ExerciseSeed(slug: "lumbar_banco", group: .espalda),
-    ExerciseSeed(slug: "pull_over_polea", group: .espalda),
+    ExerciseSeed(slug: "dominadas_pronas", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "dominadas_supinas", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "pull_ups_neutras", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "jalon_agarre_abierto", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "jalon_maquina", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "jalon_agarre_cerrado", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "jalon_agarre_abierto_neutro", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_barra", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_en_punta", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_mancuerna", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_polea_baja", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_agarre_cerrado", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_barra_ancha", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_prono_a_neutro", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_barra_ancha_inclinado_adelante", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_barra_agarre_neutro", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "remo_gironda_una_mano", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "lumbar_banco", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "pull_over_polea", group: .espalda, type: .reps),
 ]
 
 // Hombro
 let hombroExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "press_militar_barra", group: .hombro),
-    ExerciseSeed(slug: "press_militar_mancuernas", group: .hombro),
-    ExerciseSeed(slug: "press_militar_multipower", group: .hombro),
-    ExerciseSeed(slug: "press_arnold", group: .hombro),
-    ExerciseSeed(slug: "press_maquina", group: .hombro), // 🔹 nuevo
-    ExerciseSeed(slug: "elevaciones_laterales_mancuernas", group: .hombro),
-    ExerciseSeed(slug: "elevaciones_laterales_maquina", group: .hombro),
-    ExerciseSeed(slug: "elevaciones_laterales_polea", group: .hombro),
-    ExerciseSeed(slug: "elevaciones_frontales_mancuernas", group: .hombro),
-    ExerciseSeed(slug: "elevaciones_frontales_barra", group: .hombro),
-    ExerciseSeed(slug: "elevaciones_frontales_disco", group: .hombro), // 🔹 nuevo
-    ExerciseSeed(slug: "pajaro_mancuernas", group: .hombro),
-    ExerciseSeed(slug: "pajaro_maquina", group: .hombro),
-    ExerciseSeed(slug: "remo_menton_barra", group: .hombro),
-    ExerciseSeed(slug: "remo_menton_mancuernas", group: .hombro),
-    ExerciseSeed(slug: "encogimientos_mancuernas", group: .hombro), // 🔹 nuevo
-    ExerciseSeed(slug: "encogimientos_barra", group: .hombro)       // 🔹 opcional: otra variante
-
+    ExerciseSeed(slug: "press_militar_barra", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "press_militar_mancuernas", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "press_militar_multipower", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "press_arnold", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "press_maquina", group: .hombro, type: .reps), // 🔹 nuevo
+    ExerciseSeed(slug: "elevaciones_laterales_mancuernas", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "elevaciones_laterales_maquina", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "elevaciones_laterales_polea", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "elevaciones_frontales_mancuernas", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "elevaciones_frontales_barra", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "elevaciones_frontales_disco", group: .hombro, type: .reps), // 🔹 nuevo
+    ExerciseSeed(slug: "pajaro_mancuernas", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "pajaro_maquina", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "remo_menton_barra", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "remo_menton_mancuernas", group: .hombro, type: .reps),
+    ExerciseSeed(slug: "encogimientos_mancuernas", group: .hombro, type: .reps), // 🔹 nuevo
+    ExerciseSeed(slug: "encogimientos_barra", group: .hombro, type: .reps)       // 🔹 opcional: otra variante
 ]
 
 // Pecho
 let pechoExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "press_inclinado_mancuernas", group: .pecho),
-    ExerciseSeed(slug: "press_inclinado_multipower", group: .pecho),
-    ExerciseSeed(slug: "press_inclinado_barra", group: .pecho),
-    ExerciseSeed(slug: "press_plano_mancuernas", group: .pecho),
-    ExerciseSeed(slug: "press_plano_barra", group: .pecho),
-    ExerciseSeed(slug: "press_plano_multipower", group: .pecho),
-    ExerciseSeed(slug: "press_plano_maquina", group: .pecho),
-    ExerciseSeed(slug: "press_inclinado_maquina", group: .pecho),
-    ExerciseSeed(slug: "aperturas_banco_plano", group: .pecho),
-    ExerciseSeed(slug: "aperturas_banco_inclinado", group: .pecho),
-    ExerciseSeed(slug: "aperturas_peck_deck", group: .pecho),
-    ExerciseSeed(slug: "contractora_maquina", group: .pecho),
-    ExerciseSeed(slug: "cruces_polea_alta", group: .pecho),
-    ExerciseSeed(slug: "cruces_polea_media", group: .pecho),
-    ExerciseSeed(slug: "cruces_polea_baja", group: .pecho),
-    ExerciseSeed(slug: "fondos_paralelas_pecho", group: .pecho),
-    ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho)
+    ExerciseSeed(slug: "press_inclinado_mancuernas", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_inclinado_multipower", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_inclinado_barra", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_plano_mancuernas", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_plano_barra", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_plano_multipower", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_plano_maquina", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "press_inclinado_maquina", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "aperturas_banco_plano", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "aperturas_banco_inclinado", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "aperturas_peck_deck", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "contractora_maquina", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "cruces_polea_alta", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "cruces_polea_media", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "cruces_polea_baja", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "fondos_paralelas_pecho", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho, type: .reps)
 ]
 
 // Femoral
 let femoralExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "curl_femoral_sentado", group: .femoral),
-    ExerciseSeed(slug: "curl_femoral_tumbado", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto_rumano", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto_rumano_mancuernas", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto_piernas_rigidas", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto_sumo", group: .femoral),
-    ExerciseSeed(slug: "peso_muerto_sumo_mancuernas", group: .femoral)
+    ExerciseSeed(slug: "curl_femoral_sentado", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "curl_femoral_tumbado", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_rumano", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_rumano_mancuernas", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_piernas_rigidas", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_sumo", group: .femoral, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_sumo_mancuernas", group: .femoral, type: .reps)
 ]
 
 // Aductor
 let aductorExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "aductor_maquina", group: .aductor)
+    ExerciseSeed(slug: "aductor_maquina", group: .aductor, type: .reps)
 ]
 
 // Abductor
 let abductorExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "abductor_maquina", group: .abductor)
+    ExerciseSeed(slug: "abductor_maquina", group: .abductor, type: .reps)
 ]
 
 // Glúteo
 let gluteoExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "hip_thrust_maquina", group: .gluteo),
-    ExerciseSeed(slug: "hip_thrust_barra", group: .gluteo),
-    ExerciseSeed(slug: "patada_atras_maquina", group: .gluteo),
-    ExerciseSeed(slug: "peso_muerto_sumohalterofilia", group: .gluteo),
-    ExerciseSeed(slug: "puente_gluteo", group: .gluteo),
-    ExerciseSeed(slug: "glute_kickback_polea", group: .gluteo)
+    ExerciseSeed(slug: "hip_thrust_maquina", group: .gluteo, type: .reps),
+    ExerciseSeed(slug: "hip_thrust_barra", group: .gluteo, type: .reps),
+    ExerciseSeed(slug: "patada_atras_maquina", group: .gluteo, type: .reps),
+    ExerciseSeed(slug: "peso_muerto_sumohalterofilia", group: .gluteo, type: .reps),
+    ExerciseSeed(slug: "puente_gluteo", group: .gluteo, type: .reps),
+    ExerciseSeed(slug: "glute_kickback_polea", group: .gluteo, type: .reps)
 ]
 
 // Abdomen
 let abdomenExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "plancha", group: .abdomen),
-    ExerciseSeed(slug: "elevacion_piernas_tumbado", group: .abdomen),
-    ExerciseSeed(slug: "giros_rusos_disco", group: .abdomen),
-    ExerciseSeed(slug: "crunch_abdominal", group: .abdomen),
-    ExerciseSeed(slug: "crunch_maquina", group: .abdomen),
-    ExerciseSeed(slug: "crunch_inverso", group: .abdomen),
-    ExerciseSeed(slug: "ab_wheel", group: .abdomen)
+    ExerciseSeed(slug: "plancha", group: .abdomen, type: .duration),
+    ExerciseSeed(slug: "elevacion_piernas_tumbado", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "giros_rusos_disco", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "crunch_abdominal", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "crunch_maquina", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "crunch_inverso", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "ab_wheel", group: .abdomen, type: .reps)
 ]
 
 // Tríceps
 let tricepsExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "extension_triceps_cuerda_polea_alta", group: .triceps),
-    ExerciseSeed(slug: "extension_triceps_barra_polea_alta", group: .triceps),
-    ExerciseSeed(slug: "triceps_cuerda_tras_nuca", group: .triceps),
-    ExerciseSeed(slug: "fondos_triceps_paralelas", group: .triceps),
-    ExerciseSeed(slug: "fondos_triceps_maquina", group: .triceps),
-    ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps),
-    ExerciseSeed(slug: "press_frances_barra", group: .triceps),
-    ExerciseSeed(slug: "press_frances_mancuernas", group: .triceps),
-    ExerciseSeed(slug: "press_frances_maquina", group: .triceps)
+    ExerciseSeed(slug: "extension_triceps_cuerda_polea_alta", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "extension_triceps_barra_polea_alta", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "triceps_cuerda_tras_nuca", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "fondos_triceps_paralelas", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "fondos_triceps_maquina", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "press_frances_barra", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "press_frances_mancuernas", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "press_frances_maquina", group: .triceps, type: .reps)
 ]
 
 // Bíceps
 let bicepsExercises: [ExerciseSeed] = [
-    ExerciseSeed(slug: "curl_simultaneo_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_martillo_alterno_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_martillo_simultaneo_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_martillo_polea_baja", group: .biceps),
-    ExerciseSeed(slug: "curl_barra", group: .biceps),
-    ExerciseSeed(slug: "curl_inclinado_alterno_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_inclinado_simultaneo_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_arana_barra", group: .biceps),
-    ExerciseSeed(slug: "curl_arana_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_concentrado", group: .biceps),
-    ExerciseSeed(slug: "curl_banco_predicador_mancuernas", group: .biceps),
-    ExerciseSeed(slug: "curl_banco_predicador_barra", group: .biceps)
+    ExerciseSeed(slug: "curl_simultaneo_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_martillo_alterno_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_martillo_simultaneo_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_martillo_polea_baja", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_barra", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_inclinado_alterno_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_inclinado_simultaneo_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_arana_barra", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_arana_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_concentrado", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_banco_predicador_mancuernas", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_banco_predicador_barra", group: .biceps, type: .reps)
+]
+
+let gemeloExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "gemelo_sentado_soleo", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_prensa_horizontal", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_prensa_inclinada", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_multipower", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_una_pierna_peso", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_de_pie_maquina", group: .gemelo, type: .reps),
+    ExerciseSeed(slug: "gemelo_saltos", group: .gemelo, type: .reps)
 ]
 
 // Si ya tienes defaultExercises:
@@ -164,3 +179,5 @@ let defaultExercises = backExercises
     + abdomenExercises
     + tricepsExercises
     + bicepsExercises
+    + gemeloExercises
+

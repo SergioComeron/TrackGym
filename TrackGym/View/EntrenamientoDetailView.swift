@@ -332,15 +332,17 @@ private struct ExerciseSetsEditorView: View {
     @Bindable var performedExercise: PerformedExercise
     let isFinished: Bool
 
-    // Estados locales para reps y weight string (por índice)
+    // Estados locales para reps, weight y duration string (por índice)
     @State private var repsStrings: [String] = []
     @State private var weightStrings: [String] = []
+    @State private var durationStrings: [String] = []
 
     @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
     private var entrenamientos: [Entrenamiento]
 
     var body: some View {
         let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
+        let exerciseType = exerciseSeed?.type ?? .reps
         
         let setsHistoricos = entrenamientos.flatMap { $0.ejercicios }
             .filter { $0.slug == performedExercise.slug }
@@ -384,30 +386,44 @@ private struct ExerciseSetsEditorView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal)
-                        // Removed vertical paddings for compactness
                     } else {
                         VStack(alignment: .leading, spacing: 4) {
-                            if let maxPesoSet {
-                                Label("\(formatPeso(maxPesoSet.weight)) kg x \(maxPesoSet.reps) reps", systemImage: "flame.fill")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            if let maxRepsSet {
-                                Label("\(maxRepsSet.reps) reps x \(formatPeso(maxRepsSet.weight)) kg", systemImage: "rosette")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            if let lastSet {
-                                if let pe = lastSet.performedExercise,
+                            if exerciseType == .duration {
+                                let maxDurationSet = setsHistoricos.max(by: { $0.duration < $1.duration })
+                                if let maxDurationSet {
+                                    Label("⏱️ \(maxDurationSet.duration) seg @ \(formatPeso(maxDurationSet.weight)) kg — récord de duración", systemImage: "flame.fill")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                let lastDurationSet = setsHistoricos.max(by: { $0.createdAt < $1.createdAt })
+                                if let lastDurationSet,
+                                   let pe = lastDurationSet.performedExercise,
                                    let entrenamientoLast = entrenamientos.first(where: { $0.ejercicios.contains(pe) }),
                                    let startDate = entrenamientoLast.startDate {
-                                    Label("\(formatPeso(lastSet.weight)) kg x \(lastSet.reps) reps — última vez (\(formatDateShort(startDate)))", systemImage: "clock")
+                                    Label("\(lastDurationSet.duration) seg @ \(formatPeso(lastDurationSet.weight)) kg — última vez (\(formatDateShort(startDate)))", systemImage: "clock")
                                         .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            } else {
+                                if let maxPesoSet {
+                                    Label("\(formatPeso(maxPesoSet.weight)) kg x \(maxPesoSet.reps) reps", systemImage: "flame.fill")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                if let maxRepsSet {
+                                    Label("\(maxRepsSet.reps) reps x \(formatPeso(maxRepsSet.weight)) kg", systemImage: "rosette")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                if let lastSet {
+                                    if let pe = lastSet.performedExercise,
+                                       let entrenamientoLast = entrenamientos.first(where: { $0.ejercicios.contains(pe) }),
+                                       let startDate = entrenamientoLast.startDate {
+                                        Label("\(formatPeso(lastSet.weight)) kg x \(lastSet.reps) reps — última vez (\(formatDateShort(startDate)))", systemImage: "clock")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }
                             }
                         }
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal)
-                        // Removed vertical paddings for compactness
                     }
                     Divider()
                 }
@@ -418,67 +434,131 @@ private struct ExerciseSetsEditorView: View {
                     HStack {
                         Text("Serie \(index + 1):")
                         Spacer()
-                        TextField("Reps", text: Binding(
-                            get: {
-                                if index < repsStrings.count {
-                                    return repsStrings[index]
+                        if exerciseType == .duration {
+                            TextField("Duración (seg)", text: Binding(
+                                get: {
+                                    if index < durationStrings.count {
+                                        return durationStrings[index]
+                                    }
+                                    return ""
+                                },
+                                set: { newValue in
+                                    let filtered = newValue.filter { "0123456789".contains($0) }
+                                    let limited = String(filtered.prefix(4))
+                                    if index < durationStrings.count {
+                                        durationStrings[index] = limited
+                                    }
                                 }
-                                return ""
-                            },
-                            set: { newValue in
-                                // Filtrar solo dígitos, max 3 chars para reps
-                                let filtered = newValue.filter { "0123456789".contains($0) }
-                                let limited = String(filtered.prefix(3))
-                                if index < repsStrings.count {
-                                    repsStrings[index] = limited
+                            ))
+                            .disabled(!isEditable)
+                            .keyboardType(.numberPad)
+                            .frame(width: 70)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: durationStrings) {
+                                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                guard index < sortedSets.count else { return }
+                                if let intValue = Int(durationStrings[safe: index] ?? ""), intValue >= 0 {
+                                    sortedSets[index].duration = intValue
+                                    saveContext()
                                 }
                             }
-                        ))
-                        .disabled(!isEditable)
-                        .keyboardType(.numberPad)
-                        .frame(width: 50)
-                        .multilineTextAlignment(.trailing)
-                        .onChange(of: repsStrings) {
-                            let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
-                            guard index < sortedSets.count else { return }
-                            if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
-                                sortedSets[index].reps = intValue
-                                saveContext()
+                            Text("seg")
+
+                            TextField("Peso", text: Binding(
+                                get: {
+                                    if index < weightStrings.count {
+                                        return weightStrings[index]
+                                    }
+                                    return ""
+                                },
+                                set: { newValue in
+                                    // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
+                                    let filtered = newValue.filter { "0123456789.,".contains($0) }
+                                    let normalized = filtered.replacingOccurrences(of: ",", with: ".")
+                                    // Limitar a 6 caracteres max para evitar textos largos
+                                    let limited = String(normalized.prefix(6))
+                                    if index < weightStrings.count {
+                                        weightStrings[index] = limited
+                                    }
+                                }
+                            ))
+                            .disabled(!isEditable)
+                            .keyboardType(.decimalPad)
+                            .frame(width: 70)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: weightStrings) {
+                                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                guard index < sortedSets.count else { return }
+                                let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
+                                if let doubleValue = Double(valueString), doubleValue >= 0 {
+                                    sortedSets[index].weight = doubleValue
+                                    saveContext()
+                                }
                             }
+                            Text("kg")
+                        } else {
+                            TextField("Reps", text: Binding(
+                                get: {
+                                    if index < repsStrings.count {
+                                        return repsStrings[index]
+                                    }
+                                    return ""
+                                },
+                                set: { newValue in
+                                    // Filtrar solo dígitos, max 3 chars para reps
+                                    let filtered = newValue.filter { "0123456789".contains($0) }
+                                    let limited = String(filtered.prefix(3))
+                                    if index < repsStrings.count {
+                                        repsStrings[index] = limited
+                                    }
+                                }
+                            ))
+                            .disabled(!isEditable)
+                            .keyboardType(.numberPad)
+                            .frame(width: 50)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: repsStrings) {
+                                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                guard index < sortedSets.count else { return }
+                                if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
+                                    sortedSets[index].reps = intValue
+                                    saveContext()
+                                }
+                            }
+                            Text("reps")
+                            TextField("Peso", text: Binding(
+                                get: {
+                                    if index < weightStrings.count {
+                                        return weightStrings[index]
+                                    }
+                                    return ""
+                                },
+                                set: { newValue in
+                                    // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
+                                    let filtered = newValue.filter { "0123456789.,".contains($0) }
+                                    let normalized = filtered.replacingOccurrences(of: ",", with: ".")
+                                    // Limitar a 6 caracteres max para evitar textos largos
+                                    let limited = String(normalized.prefix(6))
+                                    if index < weightStrings.count {
+                                        weightStrings[index] = limited
+                                    }
+                                }
+                            ))
+                            .disabled(!isEditable)
+                            .keyboardType(.decimalPad)
+                            .frame(width: 70)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: weightStrings) {
+                                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                guard index < sortedSets.count else { return }
+                                let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
+                                if let doubleValue = Double(valueString), doubleValue >= 0 {
+                                    sortedSets[index].weight = doubleValue
+                                    saveContext()
+                                }
+                            }
+                            Text("kg")
                         }
-                        Text("reps")
-                        TextField("Peso", text: Binding(
-                            get: {
-                                if index < weightStrings.count {
-                                    return weightStrings[index]
-                                }
-                                return ""
-                            },
-                            set: { newValue in
-                                // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
-                                let filtered = newValue.filter { "0123456789.,".contains($0) }
-                                let normalized = filtered.replacingOccurrences(of: ",", with: ".")
-                                // Limitar a 6 caracteres max para evitar textos largos
-                                let limited = String(normalized.prefix(6))
-                                if index < weightStrings.count {
-                                    weightStrings[index] = limited
-                                }
-                            }
-                        ))
-                        .disabled(!isEditable)
-                        .keyboardType(.decimalPad)
-                        .frame(width: 70)
-                        .multilineTextAlignment(.trailing)
-                        .onChange(of: weightStrings) {
-                            let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
-                            guard index < sortedSets.count else { return }
-                            let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
-                            if let doubleValue = Double(valueString), doubleValue >= 0 {
-                                sortedSets[index].weight = doubleValue
-                                saveContext()
-                            }
-                        }
-                        Text("kg")
                     }
                     .contentShape(Rectangle())
                 }
@@ -512,12 +592,16 @@ private struct ExerciseSetsEditorView: View {
         let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
         let newRepsStrings = sortedSets.map { String($0.reps) }
         let newWeightStrings = sortedSets.map { String(format: "%.1f", $0.weight) }
+        let newDurationStrings = sortedSets.map { String($0.duration) }
         
         if newRepsStrings != repsStrings {
             repsStrings = newRepsStrings
         }
         if newWeightStrings != weightStrings {
             weightStrings = newWeightStrings
+        }
+        if newDurationStrings != durationStrings {
+            durationStrings = newDurationStrings
         }
     }
     
@@ -532,7 +616,17 @@ private struct ExerciseSetsEditorView: View {
 
     private func addSet() {
         let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
-        let newSet = ExerciseSet(reps: 10, weight: 50, order: newOrder, performedExercise: performedExercise, createdAt: Date())
+        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
+        let exerciseType = exerciseSeed?.type ?? .reps
+        
+        let newSet: ExerciseSet
+        if exerciseType == .duration {
+            newSet = ExerciseSet(reps: 0, weight: 0, order: newOrder, performedExercise: performedExercise, createdAt: Date())
+            newSet.duration = 60
+        } else {
+            newSet = ExerciseSet(reps: 15, weight: 50, order: newOrder, performedExercise: performedExercise, createdAt: Date())
+            newSet.duration = 0
+        }
         newSet.id = UUID()
         context.insert(newSet)
         performedExercise.sets.append(newSet)

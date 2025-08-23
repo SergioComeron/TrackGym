@@ -219,8 +219,21 @@ struct ProgresoView: View {
         }
         resumenEntrenoHoy = nil
         let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
-        let ejerciciosStr = entreno.ejercicios.map { ejercicio in
-            let setsText = ejercicio.sets.map { "\($0.reps)x\(String(format: "%.1f", $0.weight))kg" }.joined(separator: ", ")
+        let ejerciciosStr = entreno.ejercicios.map { ejercicio -> String in
+            let exerciseSeed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
+            let setsText = ejercicio.sets.map { set -> String in
+                if let seed = exerciseSeed {
+                    switch seed.type {
+                    case .duration:
+                        return "\(Int(set.reps))seg@\(String(format: "%.1f", set.weight))kg"
+                    case .reps:
+                        return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+                    }
+                } else {
+                    // Por defecto reps
+                    return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+                }
+            }.joined(separator: ", ")
             return "\(nombreEjercicioDesdeSlug(ejercicio.slug)): \(setsText)"
         }.joined(separator: "\n")
         let gruposTrabajados = Set(entreno.gruposMusculares)
@@ -290,23 +303,45 @@ private struct PesoChartView: View {
             .flatMap { $0.sets }
             .sorted(by: { $0.createdAt < $1.createdAt })
         
+        let exerciseSeed = defaultExercises.first(where: { $0.slug == slug })
+        
         VStack(alignment: .leading, spacing: 12) {
-            Text("Evolución peso: \(nombreEjercicioDesdeSlug(slug))")
-                .font(.headline)
-            if sets.isEmpty {
-                Text("No hay datos para este ejercicio.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                Chart(sets, id: \.createdAt) { set in
-                    PointMark(
-                        x: .value("Fecha", set.createdAt),
-                        y: .value("Peso", set.weight)
-                    )
-                    .foregroundStyle(Color.accentColor)
+            if let seed = exerciseSeed, seed.type == .duration {
+                Text("Evolución duración: \(nombreEjercicioDesdeSlug(slug))")
+                    .font(.headline)
+                if sets.isEmpty {
+                    Text("No hay datos para este ejercicio.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Chart(sets, id: \.createdAt) { set in
+                        PointMark(
+                            x: .value("Fecha", set.createdAt),
+                            y: .value("Duración", set.duration)
+                        )
+                        .foregroundStyle(Color.accentColor)
+                    }
+                    .chartYAxisLabel("segundos", position: .trailing, alignment: .center)
+                    .frame(height: 180)
                 }
-                .chartYAxisLabel("kg", position: .trailing, alignment: .center)
-                .frame(height: 180)
+            } else {
+                Text("Evolución peso: \(nombreEjercicioDesdeSlug(slug))")
+                    .font(.headline)
+                if sets.isEmpty {
+                    Text("No hay datos para este ejercicio.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Chart(sets, id: \.createdAt) { set in
+                        PointMark(
+                            x: .value("Fecha", set.createdAt),
+                            y: .value("Peso", set.weight)
+                        )
+                        .foregroundStyle(Color.accentColor)
+                    }
+                    .chartYAxisLabel("kg", position: .trailing, alignment: .center)
+                    .frame(height: 180)
+                }
             }
         }
         .padding(.top, 16)
