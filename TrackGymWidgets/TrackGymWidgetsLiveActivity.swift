@@ -18,12 +18,9 @@ private extension Date {
 struct TrackGymWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: WorkoutActivityAttributes.self) { context in
-            TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
+            TimelineView(.periodic(from: context.state.startedAt, by: 60)) { _ in
                 // Lock screen / banner (Live Activity) UI
                 let started = context.state.startedAt
-                let media = context.state.mediaDuracion
-                let elapsed = Date.now.timeIntervalSince(started)
-                let progress = min(elapsed / media, 1.0)
 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(alignment: .center, spacing: 12) {
@@ -47,10 +44,10 @@ struct TrackGymWidgetsLiveActivity: Widget {
                         }
                         Spacer(minLength: 0)
                     }
-                    ProgressView(value: progress)
+                    ProgressView(value: context.state.progress)
                         .progressViewStyle(.linear)
-                        .animation(.easeInOut(duration: 0.5), value: progress)
-                    Text("Tiempo actual: \(Int(elapsed / 60)) min / Media: \(Int(media / 60)) min")
+                        .animation(.easeInOut(duration: 0.5), value: context.state.progress)
+                    Text("Progreso: \(Int(context.state.progress * 100))%")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
@@ -84,14 +81,12 @@ struct TrackGymWidgetsLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
-                        let elapsed = timeline.date.timeIntervalSince(context.state.startedAt)
-                        
                         HStack(spacing: 8) {
                             Text(context.attributes.title)
                                 .font(.subheadline)
                                 .lineLimit(1)
                             Spacer(minLength: 0)
-                            Text("Transcurrido: \(Int(elapsed / 60)) min")
+                            Text("Progreso: \(Int(context.state.progress * 100))%")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                                 .monospacedDigit()
@@ -103,9 +98,8 @@ struct TrackGymWidgetsLiveActivity: Widget {
             } compactLeading: {
                 Image(systemName: "figure.strengthtraining.traditional")
             } compactTrailing: {
-                TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
-                    let elapsed = timeline.date.timeIntervalSince(context.state.startedAt)
-                    Text("\(Int(elapsed / 60))m")
+                TimelineView(.periodic(from: context.state.startedAt, by: 60)) { _ in
+                    Text("\(Int(context.state.progress * 100))%")
                         .monospacedDigit()
                         .font(.caption2)
                 }
@@ -131,7 +125,7 @@ extension WorkoutActivityAttributes.ContentState {
         WorkoutActivityAttributes.ContentState(
             startedAt: Date().addingTimeInterval(-1200), // hace 20 minutos
             endedAt: nil,
-            mediaDuracion: 1800.0 // media de 30 minutos
+            progress: 0.66
         )
     }
      
@@ -139,7 +133,7 @@ extension WorkoutActivityAttributes.ContentState {
         WorkoutActivityAttributes.ContentState(
             startedAt: Date().addingTimeInterval(-1700), // hace 28 minutos
             endedAt: nil,
-            mediaDuracion: 1800.0
+            progress: 0.9
         )
     }
 }

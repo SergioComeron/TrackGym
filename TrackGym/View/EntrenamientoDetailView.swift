@@ -105,18 +105,13 @@ struct EntrenamientoDetailView: View {
                     Button {
                         entrenamiento.startDate = Date()
                         try? context.save()
-                        // Calcula la media de entrenamientos finalizados:
-                        let entrenosFinalizados = entrenamientos.filter { $0.startDate != nil && $0.endDate != nil }
-                        let totalDuracion = entrenosFinalizados.reduce(0.0) { sum, e in
-                            sum + (e.endDate!.timeIntervalSince(e.startDate!))
-                        }
-                        let media: TimeInterval = entrenosFinalizados.isEmpty ? 1800 : totalDuracion / Double(entrenosFinalizados.count)
+                        
                         Task {
                             await LiveActivityManager.shared.start(
                                 title: "Entrenamiento",
                                 startedAt: entrenamiento.startDate ?? Date(),
                                 entrenamientoID: entrenamiento.id,
-                                mediaDuracion: media
+                                progress: entrenamiento.progresoEjercicios
                             )
                         }
                     } label: {
@@ -534,6 +529,7 @@ private struct ExerciseSetsEditorView: View {
         performedExercise.sets.append(newSet)
         saveContext()
         syncStringsWithModel()
+        actualizarProgresoLiveActivity()
     }
 
     private func deleteSets(at offsets: IndexSet) {
@@ -547,6 +543,7 @@ private struct ExerciseSetsEditorView: View {
         }
         saveContext()
         syncStringsWithModel()
+        actualizarProgresoLiveActivity()
     }
 
     private func saveContext() {
@@ -570,6 +567,17 @@ private struct ExerciseSetsEditorView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yy"
         return formatter.string(from: date)
+    }
+    
+    private func actualizarProgresoLiveActivity() {
+        guard let entrenamiento = performedExercise.entrenamiento else { return }
+        let progreso = entrenamiento.progresoEjercicios
+        Task {
+            await LiveActivityManager.shared.update(
+                startedAt: entrenamiento.startDate ?? Date(),
+                progress: progreso
+            )
+        }
     }
 }
 

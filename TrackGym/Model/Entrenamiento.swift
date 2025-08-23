@@ -49,3 +49,12 @@ extension GrupoMuscular {
         NSLocalizedString("group_\(rawValue)", comment: "")
     }
 }
+
+extension Entrenamiento {
+    /// Proporción de ejercicios con al menos una serie registrada (0.0 a 1.0)
+    var progresoEjercicios: Double {
+        guard !ejercicios.isEmpty else { return 0.0 }
+        let completados = ejercicios.filter { !$0.sets.isEmpty }.count
+        return Double(completados) / Double(ejercicios.count)
+    }
+}

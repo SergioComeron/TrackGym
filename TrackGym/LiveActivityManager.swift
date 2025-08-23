@@ -15,7 +15,7 @@ final class LiveActivityManager {
 
     private var currentActivity: Activity<WorkoutActivityAttributes>?
 
-    func start(title: String, startedAt: Date, entrenamientoID: UUID, mediaDuracion: TimeInterval) async {
+    func start(title: String, startedAt: Date, entrenamientoID: UUID, progress: Double) async {
         // Si ya hay una en marcha, la cerramos primero (opcional)
         if let act = currentActivity {
             await end(activity: act, dismissalPolicy: .immediate)
@@ -27,7 +27,7 @@ final class LiveActivityManager {
         }
 
         let attributes = WorkoutActivityAttributes(entrenamientoID: entrenamientoID, title: title)
-        let state = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, mediaDuracion: mediaDuracion)
+        let state = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, progress: progress)
         let stale = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         do {
             let activity = try Activity.request(
@@ -42,9 +42,9 @@ final class LiveActivityManager {
         }
     }
 
-    func update(startedAt: Date, mediaDuracion: TimeInterval) async {
+    func update(startedAt: Date, progress: Double) async {
         guard let activity = currentActivity else { return }
-        let newState = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, mediaDuracion: mediaDuracion)
+        let newState = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, progress: progress)
         let newStaleDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         
         await activity.update(ActivityContent(state: newState, staleDate: newStaleDate))
@@ -61,7 +61,7 @@ final class LiveActivityManager {
         let finalState = WorkoutActivityAttributes.ContentState(
             startedAt: activity.content.state.startedAt,
             endedAt: Date(),
-            mediaDuracion: activity.content.state.mediaDuracion
+            progress: activity.content.state.progress
         )
         let finalStaleDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         await activity.end(ActivityContent(state: finalState, staleDate: finalStaleDate),

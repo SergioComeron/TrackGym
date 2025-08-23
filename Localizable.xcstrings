@@ -34,6 +34,9 @@
         }
       }
     },
+    "%lld%%" : {
+
+    },
     "%lldm" : {
 
     },
@@ -2609,6 +2612,9 @@
     "Progreso por ejercicio" : {
 
     },
+    "Progreso: %lld%%" : {
+
+    },
     "puente_gluteo_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3182,16 +3188,6 @@
     "This is an example widget." : {
 
     },
-    "Tiempo actual: %lld min / Media: %lld min" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Tiempo actual: %1$lld min / Media: %2$lld min"
-          }
-        }
-      }
-    },
     "Time:" : {
 
     },
@@ -3205,9 +3201,6 @@
 
     },
     "Timer Name Configuration" : {
-
-    },
-    "Transcurrido: %lld min" : {
 
     },
     "triceps_cuerda_tras_nuca_desc" : {
