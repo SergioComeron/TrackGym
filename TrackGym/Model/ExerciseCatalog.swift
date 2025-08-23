@@ -60,6 +60,27 @@ let hombroExercises: [ExerciseSeed] = [
 
 ]
 
+// Pecho
+let pechoExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "press_inclinado_mancuernas", group: .pecho),
+    ExerciseSeed(slug: "press_inclinado_multipower", group: .pecho),
+    ExerciseSeed(slug: "press_inclinado_barra", group: .pecho),
+    ExerciseSeed(slug: "press_plano_mancuernas", group: .pecho),
+    ExerciseSeed(slug: "press_plano_barra", group: .pecho),
+    ExerciseSeed(slug: "press_plano_multipower", group: .pecho),
+    ExerciseSeed(slug: "press_plano_maquina", group: .pecho),
+    ExerciseSeed(slug: "press_inclinado_maquina", group: .pecho),
+    ExerciseSeed(slug: "aperturas_banco_plano", group: .pecho),
+    ExerciseSeed(slug: "aperturas_banco_inclinado", group: .pecho),
+    ExerciseSeed(slug: "aperturas_peck_deck", group: .pecho),
+    ExerciseSeed(slug: "contractora_maquina", group: .pecho),
+    ExerciseSeed(slug: "cruces_polea_alta", group: .pecho),
+    ExerciseSeed(slug: "cruces_polea_media", group: .pecho),
+    ExerciseSeed(slug: "cruces_polea_baja", group: .pecho),
+    ExerciseSeed(slug: "fondos_paralelas_pecho", group: .pecho),
+    ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho)
+]
+
 // Femoral
 let femoralExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "curl_femoral_sentado", group: .femoral),
@@ -135,6 +156,7 @@ let bicepsExercises: [ExerciseSeed] = [
 // Si ya tienes defaultExercises:
 let defaultExercises = backExercises
     + hombroExercises
+    + pechoExercises
     + femoralExercises
     + aductorExercises
     + abductorExercises

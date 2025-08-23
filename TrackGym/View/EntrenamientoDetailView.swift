@@ -221,6 +221,9 @@ struct EntrenamientoDetailView: View {
         context.insert(pe)
         entrenamiento.ejercicios.append(pe)
         
+        // RENUMERAR order tras añadir ejercicio (no se especificó sets aquí, pero se recomienda coherencia)
+        // (No sets renumerado aquí porque sets están en ExerciseSetsEditorView)
+        
         do {
             try context.save()
             print("✅ Ejercicio \(slug) añadido correctamente")
@@ -409,10 +412,11 @@ private struct ExerciseSetsEditorView: View {
                     Divider()
                 }
             ) {
-                let sortedSets = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+                // Mostrar sets ORDENADOS por 'order' ascendente para coherencia visual
+                let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
                 ForEach(Array(sortedSets.enumerated()), id: \.element.id) { index, set in
                     HStack {
-                        Text("Serie \(set.order + 1):")
+                        Text("Serie \(index + 1):")
                         Spacer()
                         TextField("Reps", text: Binding(
                             get: {
@@ -435,9 +439,10 @@ private struct ExerciseSetsEditorView: View {
                         .frame(width: 50)
                         .multilineTextAlignment(.trailing)
                         .onChange(of: repsStrings) {
-                            guard index < performedExercise.sets.count else { return }
+                            let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                            guard index < sortedSets.count else { return }
                             if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
-                                performedExercise.sets[index].reps = intValue
+                                sortedSets[index].reps = intValue
                                 saveContext()
                             }
                         }
@@ -450,19 +455,11 @@ private struct ExerciseSetsEditorView: View {
                                 return ""
                             },
                             set: { newValue in
-                                // Filtrar caracteres válidos para decimal: dígitos y un solo punto
-                                let filtered = newValue.filter { "0123456789.".contains($0) }
-                                var clean = ""
-                                var dotCount = 0
-                                for char in filtered {
-                                    if char == "." {
-                                        dotCount += 1
-                                        if dotCount > 1 { continue }
-                                    }
-                                    clean.append(char)
-                                }
+                                // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
+                                let filtered = newValue.filter { "0123456789.,".contains($0) }
+                                let normalized = filtered.replacingOccurrences(of: ",", with: ".")
                                 // Limitar a 6 caracteres max para evitar textos largos
-                                let limited = String(clean.prefix(6))
+                                let limited = String(normalized.prefix(6))
                                 if index < weightStrings.count {
                                     weightStrings[index] = limited
                                 }
@@ -473,9 +470,11 @@ private struct ExerciseSetsEditorView: View {
                         .frame(width: 70)
                         .multilineTextAlignment(.trailing)
                         .onChange(of: weightStrings) {
-                            guard index < performedExercise.sets.count else { return }
-                            if let doubleValue = Double(weightStrings[safe: index] ?? ""), doubleValue >= 0 {
-                                performedExercise.sets[index].weight = doubleValue
+                            let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                            guard index < sortedSets.count else { return }
+                            let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
+                            if let doubleValue = Double(valueString), doubleValue >= 0 {
+                                sortedSets[index].weight = doubleValue
                                 saveContext()
                             }
                         }
@@ -496,6 +495,7 @@ private struct ExerciseSetsEditorView: View {
             }
         }
         .onAppear {
+            ensureProperOrdering()
             syncStringsWithModel()
         }
         .onChange(of: performedExercise.sets) {
@@ -507,18 +507,27 @@ private struct ExerciseSetsEditorView: View {
     }
 
     // Sincroniza los arrays de String con los valores actuales del modelo
+    // Se usa el array ordenado por 'order' ascendente para reflejar correctamente Serie 1 arriba, Serie N abajo
     private func syncStringsWithModel() {
         let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
         let newRepsStrings = sortedSets.map { String($0.reps) }
         let newWeightStrings = sortedSets.map { String(format: "%.1f", $0.weight) }
         
-        // Actualizar solo si difiere para evitar redibujos innecesarios
         if newRepsStrings != repsStrings {
             repsStrings = newRepsStrings
         }
         if newWeightStrings != weightStrings {
             weightStrings = newWeightStrings
         }
+    }
+    
+    private func ensureProperOrdering() {
+        // Verificar que todos los sets tienen un order válido
+        let sortedSets = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        for (idx, set) in sortedSets.enumerated() {
+            set.order = idx
+        }
+        saveContext()
     }
 
     private func addSet() {
@@ -527,6 +536,13 @@ private struct ExerciseSetsEditorView: View {
         newSet.id = UUID()
         context.insert(newSet)
         performedExercise.sets.append(newSet)
+        
+        // RENUMERAR order tras añadir set para garantizar orden visual coherente por 'order'
+        let sorted = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        for (idx, set) in sorted.enumerated() {
+            set.order = idx
+        }
+        
         saveContext()
         syncStringsWithModel()
         actualizarProgresoLiveActivity()
@@ -540,6 +556,11 @@ private struct ExerciseSetsEditorView: View {
                 performedExercise.sets.remove(at: index)
                 context.delete(set)
             }
+        }
+        // Reenumerar los órdenes secuencialmente empezando desde 0 usando order
+        let sorted = performedExercise.sets.sorted(by: { $0.order < $1.order })
+        for (idx, set) in sorted.enumerated() {
+            set.order = idx
         }
         saveContext()
         syncStringsWithModel()
@@ -587,3 +608,4 @@ private extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
+

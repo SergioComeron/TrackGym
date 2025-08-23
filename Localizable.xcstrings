@@ -3236,6 +3236,260 @@
           }
         }
       }
+    },
+    "press_inclinado_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline bench press (dumbbells)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco inclinado con mancuernas" } }
+      }
+    },
+    "press_inclinado_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dumbbell incline press; emphasizes upper chest with larger range of motion." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press inclinado con mancuernas; enfatiza la porción superior del pecho con mayor recorrido." } }
+      }
+    },
+
+    "press_inclinado_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline bench press (Smith machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco inclinado en multipower" } }
+      }
+    },
+    "press_inclinado_multipower_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smith-machine incline press; stable guided path for upper chest loading." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press inclinado en multipower; recorrido guiado y estable para cargar el pecho superior." } }
+      }
+    },
+
+    "press_inclinado_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline bench press (barbell)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco inclinado con barra" } }
+      }
+    },
+    "press_inclinado_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell incline press; compound lift hitting clavicular fibers of the chest." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press inclinado con barra; básico para trabajar las fibras claviculares del pectoral." } }
+      }
+    },
+
+    "press_plano_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Flat bench press (dumbbells)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco plano con mancuernas" } }
+      }
+    },
+    "press_plano_mancuernas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dumbbell flat press; neutral shoulder path and deep stretch at the bottom." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press plano con mancuernas; recorrido cómodo de hombro y buen estiramiento abajo." } }
+      }
+    },
+
+    "press_plano_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Flat bench press (barbell)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco plano con barra" } }
+      }
+    },
+    "press_plano_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell flat bench press; classic horizontal press emphasizing mid-chest." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press de banca plano con barra; clásico de empuje horizontal con énfasis en el pecho medio." } }
+      }
+    },
+
+    "press_plano_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Flat bench press (Smith machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press en banco plano en multipower" } }
+      }
+    },
+    "press_plano_multipower_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smith-machine flat bench press; guided bar path for consistent loading." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press plano en multipower; trayectoria guiada para una carga consistente." } }
+      }
+    },
+
+    "press_plano_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Chest press (machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press pecho en máquina" } }
+      }
+    },
+    "press_plano_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Horizontal machine chest press; stable setup, easy progression." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press horizontal en máquina; montaje estable y progresión sencilla." } }
+      }
+    },
+
+    "press_inclinado_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline chest press (machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press inclinado en máquina" } }
+      }
+    },
+    "press_inclinado_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline machine press; targets upper chest with a guided pattern." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Press inclinado en máquina; trabaja el pecho superior con recorrido guiado." } }
+      }
+    },
+
+    "aperturas_banco_plano_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dumbbell flyes (flat bench)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aperturas con mancuernas (banco plano)" } }
+      }
+    },
+    "aperturas_banco_plano_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Flat-bench dumbbell fly; deep stretch and chest isolation." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aperturas con mancuernas en banco plano; gran estiramiento y aislamiento de pectoral." } }
+      }
+    },
+
+    "aperturas_banco_inclinado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dumbbell flyes (incline bench)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aperturas con mancuernas (banco inclinado)" } }
+      }
+    },
+    "aperturas_banco_inclinado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline dumbbell fly; shifts focus to upper chest fibers." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aperturas en banco inclinado; desplaza el foco a las fibras superiores del pecho." } }
+      }
+    },
+
+    "aperturas_peck_deck_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pec deck fly" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aperturas en peck deck" } }
+      }
+    },
+    "aperturas_peck_deck_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Machine pec fly; guided arc for consistent chest isolation." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contractora/peck deck; arco guiado para aislamiento constante del pecho." } }
+      }
+    },
+
+    "contractora_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Machine chest fly" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contractora en máquina" } }
+      }
+    },
+    "contractora_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seated machine fly; converging handles emphasize inner chest." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Apertura/contractora en máquina; agarres convergentes que enfatizan pecho interno." } }
+      }
+    },
+
+    "cruces_polea_alta_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cable crossovers (high pulley)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruces en polea alta" } }
+      }
+    },
+    "cruces_polea_alta_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "From-high-to-low cable cross; emphasizes lower chest line." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruce de arriba hacia abajo en poleas; enfatiza la línea inferior del pecho." } }
+      }
+    },
+
+    "cruces_polea_media_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cable crossovers (mid pulley)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruces en polea media" } }
+      }
+    },
+    "cruces_polea_media_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Mid-level cable cross; constant tension along a horizontal path." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruce a nivel medio; tensión constante en recorrido horizontal." } }
+      }
+    },
+
+    "cruces_polea_baja_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cable crossovers (low pulley)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruces en polea baja" } }
+      }
+    },
+    "cruces_polea_baja_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "From-low-to-high cable cross; emphasizes upper chest line." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cruce de abajo hacia arriba en poleas; enfatiza la línea superior del pecho." } }
+      }
+    },
+
+    "fondos_paralelas_pecho_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dips (chest focus)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos en paralelas (pecho)" } }
+      }
+    },
+    "fondos_paralelas_pecho_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Forward-leaning bodyweight dips to emphasize chest over triceps." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos con inclinación hacia delante para enfatizar pecho más que tríceps." } }
+      }
+    },
+
+    "fondos_maquina_pecho_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dips (machine, chest)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos en máquina (pecho)" } }
+      }
+    },
+    "fondos_maquina_pecho_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Assisted or plate-loaded dips on machine focusing chest with a guided path." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fondos asistidos o con placas en máquina, enfocando pecho con recorrido guiado." } }
+      }
     }
   },
   "version" : "1.1"
