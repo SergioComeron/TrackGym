@@ -125,6 +125,7 @@ let abdomenExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "plancha", group: .abdomen, type: .duration),
     ExerciseSeed(slug: "elevacion_piernas_tumbado", group: .abdomen, type: .reps),
     ExerciseSeed(slug: "giros_rusos_disco", group: .abdomen, type: .reps),
+    ExerciseSeed(slug: "inclinaciones_laterales_disco", group: .abdomen, type: .reps),
     ExerciseSeed(slug: "crunch_abdominal", group: .abdomen, type: .reps),
     ExerciseSeed(slug: "crunch_maquina", group: .abdomen, type: .reps),
     ExerciseSeed(slug: "crunch_inverso", group: .abdomen, type: .reps),

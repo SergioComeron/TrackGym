@@ -2047,6 +2047,40 @@
         }
       }
     },
+    "inclinaciones_laterales_disco_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standing side bends holding a plate; focuses on obliques with lateral flexion."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclinaciones laterales de pie con disco; trabajo de oblicuos mediante flexión lateral."
+          }
+        }
+      }
+    },
+    "inclinaciones_laterales_disco_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Side bends (plate)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclinaciones laterales con disco"
+          }
+        }
+      }
+    },
     "glute_kickback_polea_desc" : {
       "extractionState" : "manual",
       "localizations" : {
