@@ -78,12 +78,14 @@ let pechoExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "aperturas_banco_plano", group: .pecho, type: .reps),
     ExerciseSeed(slug: "aperturas_banco_inclinado", group: .pecho, type: .reps),
     ExerciseSeed(slug: "aperturas_peck_deck", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "aperturas_maquina_inclinado", group: .pecho, type: .reps), // inclined machine fly
     ExerciseSeed(slug: "contractora_maquina", group: .pecho, type: .reps),
     ExerciseSeed(slug: "cruces_polea_alta", group: .pecho, type: .reps),
     ExerciseSeed(slug: "cruces_polea_media", group: .pecho, type: .reps),
     ExerciseSeed(slug: "cruces_polea_baja", group: .pecho, type: .reps),
     ExerciseSeed(slug: "fondos_paralelas_pecho", group: .pecho, type: .reps),
-    ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho, type: .reps)
+    ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho, type: .reps),
+    ExerciseSeed(slug: "cruces_maquina_pecho", group: .pecho, type: .reps) // machine high-to-low fly
 ]
 
 // Femoral
@@ -180,4 +182,3 @@ let defaultExercises = backExercises
     + tricepsExercises
     + bicepsExercises
     + gemeloExercises
-

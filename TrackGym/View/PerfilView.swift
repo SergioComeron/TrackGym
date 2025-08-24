@@ -8,6 +8,9 @@ import SwiftUI
 import SwiftData
 
 struct PerfilView: View {
+    @Environment(\.modelContext) private var context
+    @Query private var perfiles: [Perfil]
+    
     @State private var edad: Int = 18
     @State private var peso: Double = 70
     @State private var altura: Double = 170
@@ -20,8 +23,9 @@ struct PerfilView: View {
     @State private var grasaCorporal: Double? = nil
     @State private var nivelActividad: String = "Moderada"
     @State private var restricciones: String = ""
-    @Environment(\.modelContext) private var context
     @State private var mostrandoAlerta = false
+
+    private var perfilActual: Perfil? { perfiles.first }
 
     let sexos = ["Masculino", "Femenino", "Otro"]
     let objetivos = ["Ganar músculo", "Perder peso", "Mantener forma"]
@@ -105,21 +109,7 @@ struct PerfilView: View {
                     TextField("Restricciones alimenticias, lesiones, etc.", text: $restricciones)
                 }
                 Button("Guardar perfil") {
-                    let perfil = Perfil(
-                        edad: edad,
-                        peso: peso,
-                        altura: altura,
-                        sexo: sexo,
-                        objetivo: objetivo,
-                        pecho: pecho,
-                        cintura: cintura,
-                        cadera: cadera,
-                        biceps: biceps,
-                        grasaCorporal: grasaCorporal,
-                        nivelActividad: nivelActividad,
-                        restricciones: restricciones.isEmpty ? nil : restricciones
-                    )
-                    context.insert(perfil)
+                    guardarPerfil()
                     mostrandoAlerta = true
                 }
             }
@@ -127,6 +117,73 @@ struct PerfilView: View {
             .alert("Perfil guardado", isPresented: $mostrandoAlerta) {
                 Button("OK", role: .cancel) {}
             }
+            .onAppear {
+                cargarDatosPerfil()
+            }
+            .onChange(of: perfiles) { // Reacciona cuando cambian los datos en SwiftData
+                cargarDatosPerfil()
+            }
+        }
+    }
+    
+    // MARK: - Funciones privadas
+    
+    private func cargarDatosPerfil() {
+        guard let perfil = perfilActual else { return }
+        
+        edad = perfil.edad
+        peso = perfil.peso
+        altura = perfil.altura
+        sexo = perfil.sexo
+        objetivo = perfil.objetivo
+        pecho = perfil.pecho
+        cintura = perfil.cintura
+        cadera = perfil.cadera
+        biceps = perfil.biceps
+        grasaCorporal = perfil.grasaCorporal
+        nivelActividad = perfil.nivelActividad
+        restricciones = perfil.restricciones ?? ""
+    }
+    
+    private func guardarPerfil() {
+        if let perfil = perfilActual {
+            // Actualizar perfil existente
+            perfil.edad = edad
+            perfil.peso = peso
+            perfil.altura = altura
+            perfil.sexo = sexo
+            perfil.objetivo = objetivo
+            perfil.pecho = pecho
+            perfil.cintura = cintura
+            perfil.cadera = cadera
+            perfil.biceps = biceps
+            perfil.grasaCorporal = grasaCorporal
+            perfil.nivelActividad = nivelActividad
+            perfil.restricciones = restricciones.isEmpty ? nil : restricciones
+        } else {
+            // Crear nuevo perfil
+            let perfil = Perfil(
+                edad: edad,
+                peso: peso,
+                altura: altura,
+                sexo: sexo,
+                objetivo: objetivo,
+                pecho: pecho,
+                cintura: cintura,
+                cadera: cadera,
+                biceps: biceps,
+                grasaCorporal: grasaCorporal,
+                nivelActividad: nivelActividad,
+                restricciones: restricciones.isEmpty ? nil : restricciones
+            )
+            context.insert(perfil)
+        }
+        
+        // Guardar cambios
+        do {
+            try context.save()
+        } catch {
+            print("Error al guardar el perfil: \(error)")
         }
     }
 }

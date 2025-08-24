@@ -13,13 +13,20 @@ struct ProgresoView: View {
     @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
     private var entrenamientos: [Entrenamiento]
     
+    @Query private var perfiles: [Perfil]
+    
     @State private var selectedSlug: String? = nil
     @State private var resumenEntrenoHoy: String? = nil
     @State private var cargandoResumenEntrenoHoy = false
     @State private var lastResumenEntrenoID: UUID? = nil
     
+    @State private var resumenSemana: String? = nil
+    @State private var cargandoResumenSemana = false
+    
     private let resumenEntrenoKey = "ResumenEntrenoHoy"
     private let resumenEntrenoIDKey = "LastResumenEntrenoID"
+    private let resumenSemanaKey = "ResumenSemanaAI"
+    private let resumenSemanaDateKey = "FechaResumenSemanaAI"
 
     var body: some View {
         ScrollView {
@@ -32,6 +39,19 @@ struct ProgresoView: View {
                     }
                 } else if let resumen = resumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
+                        Text(resumen)
+                            .font(.callout)
+                            .padding(.vertical, 8)
+                    }
+                }
+
+                if cargandoResumenSemana {
+                    GroupBox(label: Label("Resumen de tu semana (AI)", systemImage: "calendar")) {
+                        ProgressView()
+                            .padding(.vertical, 8)
+                    }
+                } else if let resumen = resumenSemana {
+                    GroupBox(label: Label("Resumen de tu semana (AI)", systemImage: "calendar")) {
                         Text(resumen)
                             .font(.callout)
                             .padding(.vertical, 8)
@@ -107,6 +127,44 @@ struct ProgresoView: View {
             }
             resumenEntrenoHoy = UserDefaults.standard.string(forKey: resumenEntrenoKey)
             generarResumenEntrenoHoy()
+
+            // NO llamar directamente a generarResumenSemana()
+            checkAndGenerateResumenSemana()
+        }
+    }
+
+    private func checkAndGenerateResumenSemana() {
+        cargandoResumenSemana = true
+
+        // Detectar si hay un entreno terminado hoy
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let todayString = dateFormatter.string(from: today)
+
+        // Ver entrenos con endDate == hoy (comparar solo fecha)
+        let entrenosTerminadosHoy = entrenamientosTerminados.filter {
+            guard let end = $0.endDate else { return false }
+            return dateFormatter.string(from: end) == todayString
+        }
+
+        if entrenosTerminadosHoy.isEmpty {
+            // No hay entreno terminado hoy, mostrar mensaje y no generar resumen
+            resumenSemana = "El resumen semanal se generará al terminar un entrenamiento hoy."
+            cargandoResumenSemana = false
+            return
+        }
+
+        // Hay entreno terminado hoy, comprobar si resumen para hoy ya existe
+        if let storedDateString = UserDefaults.standard.string(forKey: resumenSemanaDateKey),
+           storedDateString == todayString,
+           let storedResumen = UserDefaults.standard.string(forKey: resumenSemanaKey) {
+            // Ya existe resumen para hoy, cargarlo
+            resumenSemana = storedResumen
+            cargandoResumenSemana = false
+        } else {
+            // No existe resumen para hoy, generarlo y guardar
+            generarResumenSemana()
         }
     }
 
@@ -218,6 +276,17 @@ struct ProgresoView: View {
             return
         }
         resumenEntrenoHoy = nil
+        
+        let perfil = perfiles.first
+        var perfilStr = ""
+        if let perfil = perfil {
+            var restriccionesStr = ""
+            if let restricciones = perfil.restricciones, !restricciones.isEmpty {
+                restriccionesStr = ", Restricciones: \(restricciones)"
+            }
+            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo: \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
+        }
+        
         let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
         let ejerciciosStr = entreno.ejercicios.map { ejercicio -> String in
             let exerciseSeed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
@@ -242,7 +311,7 @@ struct ProgresoView: View {
             .joined(separator: ", ")
         
 
-        let prompt = "Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres y si no es necesario dime por qué he hecho bien este entrenamiento. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
+        let prompt = "\(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres.\nDime en que esta flojo este entrenamiento y cuales son los puntos débiles asi como los puntos fuertes. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
         print(prompt)
         Task {
             let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
@@ -255,6 +324,126 @@ struct ProgresoView: View {
                 }
             }
             await MainActor.run { cargandoResumenEntrenoHoy = false }
+        }
+    }
+    
+    private func generarResumenSemana() {
+        cargandoResumenSemana = true
+        
+        // Calcular fecha lunes semana actual (comienzo semana)
+        let today = Date()
+        guard let monday = Calendar.current.dateInterval(of: .weekOfYear, for: today)?.start else {
+            resumenSemana = "No se pudo calcular el inicio de la semana."
+            cargandoResumenSemana = false
+            return
+        }
+        
+        // Filtrar entrenamientos de la semana (startDate entre lunes y hoy)
+        let entrenosSemana = entrenamientosTerminados.filter {
+            guard let start = $0.startDate else { return false }
+            return start >= monday && start <= today
+        }
+        
+        if entrenosSemana.isEmpty {
+            resumenSemana = "No has realizado entrenamientos esta semana."
+            cargandoResumenSemana = false
+            return
+        }
+        
+        let perfil = perfiles.first
+        var perfilStr = ""
+        if let perfil = perfil {
+            var restriccionesStr = ""
+            if let restricciones = perfil.restricciones, !restricciones.isEmpty {
+                restriccionesStr = ", Restricciones: \(restricciones)"
+            }
+            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo: \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
+        }
+        
+        // Agrupar y listar grupos trabajados en la semana
+        let gruposSet = Set(entrenosSemana.flatMap { $0.gruposMusculares })
+        let grupos = gruposSet.map { $0.localizedName }.joined(separator: ", ")
+        
+        // Ejercicios realizados en la semana con sets y reps/pesos resumidos
+        let ejerciciosSemana = entrenosSemana.flatMap { $0.ejercicios }
+        let ejerciciosPorSlug = Dictionary(grouping: ejerciciosSemana, by: { $0.slug })
+        
+        // Crear listado de entrenamientos con detalle para IA
+        let diaFormatter = DateFormatter()
+        diaFormatter.locale = Locale(identifier: "es_ES")
+        diaFormatter.dateFormat = "EEEE"
+        let fechaFormatter = DateFormatter()
+        fechaFormatter.dateFormat = "dd/MM"
+        
+        let entrenosOrdenados = entrenosSemana.sorted { ($0.startDate ?? Date()) < ($1.startDate ?? Date()) }
+        
+        let sesionesDetalleStr = entrenosOrdenados.map { entreno -> String in
+            let diaSemana = entreno.startDate.map { diaFormatter.string(from: $0).capitalized } ?? "Día desconocido"
+            let fechaCorta = entreno.startDate.map { fechaFormatter.string(from: $0) } ?? "??/??"
+            let gruposTrabajados = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
+            let ejerciciosNames = entreno.ejercicios.map { nombreEjercicioDesdeSlug($0.slug) }.joined(separator: ", ")
+            return "- \(diaSemana) (\(fechaCorta)): Grupos trabajados: \(gruposTrabajados). Ejercicios: \(ejerciciosNames)"
+        }.joined(separator: "\n")
+        
+        let ejerciciosStr = ejerciciosPorSlug.map { slug, ejercicios -> String in
+            let exerciseSeed = defaultExercises.first(where: { $0.slug == slug })
+            // sumar total sets, reps y peso medio aproximado
+            let allSets = ejercicios.flatMap { $0.sets }
+            let totalSets = allSets.count
+            let totalReps = allSets.reduce(0) { $0 + $1.reps }
+            let avgWeight = allSets.isEmpty ? 0 : allSets.reduce(0.0) { $0 + Double($1.weight) } / Double(allSets.count)
+            
+            var setsText = ""
+            if let seed = exerciseSeed {
+                switch seed.type {
+                case .duration:
+                    setsText = "\(totalReps) seg, peso medio: \(String(format: "%.1f", avgWeight)) kg"
+                case .reps:
+                    setsText = "\(totalSets) sets, \(totalReps) reps, peso medio: \(String(format: "%.1f", avgWeight)) kg"
+                }
+            } else {
+                setsText = "\(totalSets) sets, \(totalReps) reps, peso medio: \(String(format: "%.1f", avgWeight)) kg"
+            }
+            return "\(nombreEjercicioDesdeSlug(slug)): \(setsText)"
+        }.sorted().joined(separator: "\n")
+        
+        let totalSesiones = entrenosSemana.count
+        
+        let prompt = """
+        Entrenamientos de la semana:
+        \(sesionesDetalleStr)
+
+        \(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumentar masa muscular o perder grasa. Analiza este resumen semanal de entrenamientos realizados entre el lunes y hoy:
+        - Total de sesiones: \(totalSesiones)
+        - Grupos musculares trabajados: \(grupos)
+        - Ejercicios realizados y resumen de sets/reps/peso:
+        \(ejerciciosStr)
+        Valora el equilibrio del entrenamiento semanal, indica si falta algún grupo muscular importante o si hay sobrecarga en otros.
+        Proporciona consejos para mejorar el resto de la semana, incluyendo ejercicios recomendados o ajustes en repeticiones/pesos.
+        Sé claro, directo y concreto en español. Limita tu respuesta a dos párrafos.
+        """
+        print(prompt)
+        
+        Task {
+            let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
+            if let respuesta = try? await session.respond(to: prompt) {
+                await MainActor.run {
+                    resumenSemana = respuesta.content
+                    // Guardar resumen y fecha en UserDefaults
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    let todayString = dateFormatter.string(from: Date())
+                    UserDefaults.standard.setValue(respuesta.content, forKey: resumenSemanaKey)
+                    UserDefaults.standard.setValue(todayString, forKey: resumenSemanaDateKey)
+                }
+            } else {
+                await MainActor.run {
+                    resumenSemana = "No se pudo generar el resumen semanal."
+                }
+            }
+            await MainActor.run {
+                cargandoResumenSemana = false
+            }
         }
     }
 }

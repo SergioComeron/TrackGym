@@ -1605,6 +1605,74 @@
         }
       }
     },
+    "cruces_maquina_pecho_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine high-to-low fly; guided motion emphasizing lower chest."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cruces en máquina de arriba hacia abajo; movimiento guiado con énfasis en la parte inferior del pecho."
+          }
+        }
+      }
+    },
+    "cruces_maquina_pecho_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine high-to-low fly"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cruces máquina de pecho"
+          }
+        }
+      }
+    },
+    "aperturas_maquina_inclinado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline machine fly; guided path emphasizing upper chest fibers."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperturas en máquina inclinada; trayectoria guiada con énfasis en la parte superior del pecho."
+          }
+        }
+      }
+    },
+    "aperturas_maquina_inclinado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline machine fly"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperturas máquina inclinado"
+          }
+        }
+      }
+    },
     "fondos_triceps_banco_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3986,6 +4054,9 @@
 
     },
     "Resumen" : {
+
+    },
+    "Resumen de tu semana (AI)" : {
 
     },
     "Resumen de tu último entrenamiento (AI)" : {

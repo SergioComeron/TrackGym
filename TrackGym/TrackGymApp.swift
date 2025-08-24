@@ -49,7 +49,7 @@ struct TrackGymApp: App {
                     }
                 }
         }
-        .modelContainer(for: [Entrenamiento.self])
+        .modelContainer(for: [Entrenamiento.self, PerformedExercise.self, ExerciseSet.self, Perfil.self])
     }
 }
 
