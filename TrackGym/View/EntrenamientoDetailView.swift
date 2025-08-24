@@ -45,26 +45,44 @@ struct EntrenamientoDetailView: View {
                 }
             } else {
                 Section {
-                    if isGroupSectionExpanded {
-                        ForEach(GrupoMuscular.allCases, id: \.self) { grupo in
-                            Toggle(grupo.localizedName, isOn: binding(for: grupo))
-                        }
-                    }
-                } header: {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
                             isGroupSectionExpanded.toggle()
                         }
                     } label: {
                         HStack {
-                            Text("Grupos trabajados")
+                            Text("Grupos musculares")
                             Spacer()
                             Image(systemName: isGroupSectionExpanded ? "chevron.down" : "chevron.right")
                                 .foregroundStyle(.secondary)
-                                .font(.caption)
+                                .animation(.easeInOut(duration: 0.2), value: isGroupSectionExpanded)
                         }
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(isGroupSectionExpanded ? "Ocultar grupos musculares" : "Mostrar grupos musculares")
+
+                    if !isGroupSectionExpanded && !entrenamiento.gruposMusculares.isEmpty {
+                        Text(entrenamiento.gruposMusculares.map { $0.localizedName }.joined(separator: " · "))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 2)
+                    }
+                    
+                    if !isGroupSectionExpanded && entrenamiento.gruposMusculares.isEmpty {
+                        Text("Despliega para añadir")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 2)
+                    }
+
+                    if isGroupSectionExpanded {
+                        ForEach(GrupoMuscular.allCases, id: \.self) { grupo in
+                            Toggle(grupo.localizedName, isOn: binding(for: grupo))
+                        }
+                    }
+                } header: {
+                    EmptyView()
                 }
             }
 
@@ -89,6 +107,7 @@ struct EntrenamientoDetailView: View {
                         }
                     }
                     .onDelete(perform: removePerformedExercises)
+                    .onMove(perform: movePerformedExercises)
                 }
 
                 if !isFinished {
@@ -140,10 +159,8 @@ struct EntrenamientoDetailView: View {
         .navigationTitle("Detalle")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("OK") {
-                    cleanupDuplicates()
-                    try? context.save()
-                    dismiss()
+                if !isFinished {
+                    EditButton()
                 }
             }
         }
@@ -159,15 +176,29 @@ struct EntrenamientoDetailView: View {
             ExerciseSetsEditorView(performedExercise: exercise, isFinished: entrenamiento.endDate != nil)
         }
         .onAppear {
-            // Limpieza al cargar la vista (útil después de sincronización)
-            cleanupDuplicates()
+            print("🔍 OnAppear - Estado INICIAL:")
+            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
+            }
+            
+            // COMENTAR TEMPORALMENTE la migración para aislar el problema
+             migrateLegacyExerciseOrderIfNeeded()
+            
+            print("🔍 OnAppear - Estado FINAL:")
+            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
+            }
         }
     }
     
     // MARK: - Computed property para ejercicios únicos
     private var uniqueEjercicios: [PerformedExercise] {
-        cleanupDuplicatesInMemory()
-        return entrenamiento.ejercicios
+        let sorted = entrenamiento.ejercicios.sorted(by: { $0.order < $1.order })
+        print("🔍 uniqueEjercicios - Ejercicios ordenados:")
+        for (i, ejercicio) in sorted.enumerated() {
+            print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
+        }
+        return sorted
     }
     
     // MARK: - Helpers de UI para grupos
@@ -214,9 +245,8 @@ struct EntrenamientoDetailView: View {
         
         // Crear con ID único para CloudKit
         let pe = PerformedExercise(slug: slug, entrenamiento: entrenamiento)
-        
-        // Asegurar que el ejercicio tenga un identificador único
         pe.id = UUID()
+        pe.order = (entrenamiento.ejercicios.map { $0.order }.max() ?? -1) + 1
         
         context.insert(pe)
         entrenamiento.ejercicios.append(pe)
@@ -247,6 +277,61 @@ struct EntrenamientoDetailView: View {
             try context.save()
         } catch {
             print("❌ Error al eliminar ejercicios: \(error)")
+            context.rollback()
+        }
+        
+        // Reenumerar los órdenes después de borrar para mantener el orden limpio tras eliminar
+        let ejerciciosOrdenados = entrenamiento.ejercicios.sorted { $0.order < $1.order }
+        for (idx, ejercicio) in ejerciciosOrdenados.enumerated() {
+            ejercicio.order = idx
+        }
+        entrenamiento.ejercicios = ejerciciosOrdenados
+        try? context.save()
+    }
+    
+    private func movePerformedExercises(from source: IndexSet, to destination: Int) {
+        print("🔧 Iniciando movimiento agresivo...")
+        
+        var ejerciciosOrdenados = entrenamiento.ejercicios.sorted { $0.order < $1.order }
+        ejerciciosOrdenados.move(fromOffsets: source, toOffset: destination)
+        
+        // Actualizar los values de 'order'
+        for (idx, ejercicio) in ejerciciosOrdenados.enumerated() {
+            ejercicio.order = idx
+            print("🔧 Actualizando \(ejercicio.slug) order = \(idx)")
+        }
+        
+        // 🔑 VERSIÓN AGRESIVA: Vaciar completamente y reconstruir
+        let ejerciciosReordenados = ejerciciosOrdenados
+        print("🔧 Vaciando array...")
+        entrenamiento.ejercicios.removeAll()
+        
+        // Primer guardado (array vacío)
+        do {
+            try context.save()
+            print("✅ Array vaciado y guardado")
+        } catch {
+            print("❌ Error al vaciar: \(error)")
+            context.rollback()
+            return
+        }
+        
+        // Reconstruir con el orden correcto
+        print("🔧 Reconstruyendo array en orden correcto...")
+        entrenamiento.ejercicios = ejerciciosReordenados
+        
+        // Segundo guardado (array reordenado)
+        do {
+            try context.save()
+            print("✅ Array reconstruido y guardado")
+            
+            // Verificación final
+            print("🔍 Verificación post-reconstrucción:")
+            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
+            }
+        } catch {
+            print("❌ Error al guardar reconstrucción: \(error)")
             context.rollback()
         }
     }
@@ -292,6 +377,42 @@ struct EntrenamientoDetailView: View {
         
         if uniqueExercises.count != entrenamiento.ejercicios.count {
             entrenamiento.ejercicios = Array(uniqueExercises.values)
+        }
+    }
+    
+    /// Migra ejercicios antiguos asignándoles un 'order' secuencial según la fecha de creación si el campo no está bien definido.
+    private func migrateLegacyExerciseOrderIfNeeded() {
+        let ejercicios = entrenamiento.ejercicios
+        
+        // Solo migrar si realmente hay un problema
+        let hasInvalidOrder = ejercicios.isEmpty ||
+                             Set(ejercicios.map { $0.order }).count != ejercicios.count ||
+                             ejercicios.allSatisfy { $0.order == 0 }
+        
+        guard hasInvalidOrder else {
+            print("✅ Orden ya es válido, no se necesita migración")
+            return
+        }
+        
+        print("🔧 Migrando orden legacy...")
+        
+        // Ordenar por fecha de creación y asignar order
+        let sorted = ejercicios.sorted { $0.createdAt < $1.createdAt }
+        for (idx, ejercicio) in sorted.enumerated() {
+            ejercicio.order = idx
+        }
+        
+        // Usar el mismo método agresivo para persistir
+        entrenamiento.ejercicios.removeAll()
+        
+        do {
+            try context.save()
+            entrenamiento.ejercicios = sorted
+            try context.save()
+            print("✅ Migración completada")
+        } catch {
+            print("❌ Error en migración: \(error)")
+            context.rollback()
         }
     }
 }

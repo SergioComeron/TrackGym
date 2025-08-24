@@ -251,6 +251,40 @@
         }
       }
     },
+    "aperturas_maquina_inclinado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline machine fly; guided path emphasizing upper chest fibers."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperturas en máquina inclinada; trayectoria guiada con énfasis en la parte superior del pecho."
+          }
+        }
+      }
+    },
+    "aperturas_maquina_inclinado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline machine fly"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperturas máquina inclinado"
+          }
+        }
+      }
+    },
     "aperturas_peck_deck_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -345,6 +379,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contractora en máquina"
+          }
+        }
+      }
+    },
+    "cruces_maquina_pecho_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine high-to-low fly; guided motion emphasizing lower chest."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cruces en máquina de arriba hacia abajo; movimiento guiado con énfasis en la parte inferior del pecho."
+          }
+        }
+      }
+    },
+    "cruces_maquina_pecho_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine high-to-low fly"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cruces máquina de pecho"
           }
         }
       }
@@ -1032,6 +1100,9 @@
     "Datos básicos" : {
 
     },
+    "Despliega para añadir" : {
+
+    },
     "Detalle" : {
 
     },
@@ -1605,74 +1676,6 @@
         }
       }
     },
-    "cruces_maquina_pecho_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Machine high-to-low fly; guided motion emphasizing lower chest."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cruces en máquina de arriba hacia abajo; movimiento guiado con énfasis en la parte inferior del pecho."
-          }
-        }
-      }
-    },
-    "cruces_maquina_pecho_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Machine high-to-low fly"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cruces máquina de pecho"
-          }
-        }
-      }
-    },
-    "aperturas_maquina_inclinado_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Incline machine fly; guided path emphasizing upper chest fibers."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aperturas en máquina inclinada; trayectoria guiada con énfasis en la parte superior del pecho."
-          }
-        }
-      }
-    },
-    "aperturas_maquina_inclinado_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Incline machine fly"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aperturas máquina inclinado"
-          }
-        }
-      }
-    },
     "fondos_triceps_banco_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2047,40 +2050,6 @@
         }
       }
     },
-    "inclinaciones_laterales_disco_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Standing side bends holding a plate; focuses on obliques with lateral flexion."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inclinaciones laterales de pie con disco; trabajo de oblicuos mediante flexión lateral."
-          }
-        }
-      }
-    },
-    "inclinaciones_laterales_disco_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Side bends (plate)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inclinaciones laterales con disco"
-          }
-        }
-      }
-    },
     "glute_kickback_polea_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2322,7 +2291,7 @@
         }
       }
     },
-    "Grupos trabajados" : {
+    "Grupos musculares" : {
 
     },
     "Guardar" : {
@@ -2395,6 +2364,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hip thrust en máquina"
+          }
+        }
+      }
+    },
+    "inclinaciones_laterales_disco_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standing side bends holding a plate; focuses on obliques with lateral flexion."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclinaciones laterales de pie con disco; trabajo de oblicuos mediante flexión lateral."
+          }
+        }
+      }
+    },
+    "inclinaciones_laterales_disco_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Side bends (plate)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclinaciones laterales con disco"
           }
         }
       }
@@ -2587,6 +2590,9 @@
     "minutos" : {
 
     },
+    "Mostrar grupos musculares" : {
+
+    },
     "Nivel de actividad" : {
 
     },
@@ -2600,6 +2606,9 @@
 
     },
     "Objetivo" : {
+
+    },
+    "Ocultar grupos musculares" : {
 
     },
     "Off" : {

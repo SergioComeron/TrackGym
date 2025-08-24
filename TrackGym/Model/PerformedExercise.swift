@@ -14,6 +14,7 @@ final class PerformedExercise {
     var id: UUID = UUID()
     var slug: String = ""            // p.ej. "remo_barra" (se asigna en init)
     var createdAt: Date = Date()
+    var order: Int = 0
     @Relationship(inverse: \Entrenamiento.ejercicios)
     var entrenamiento: Entrenamiento?
 
@@ -25,5 +26,3 @@ final class PerformedExercise {
         self.entrenamiento = entrenamiento
     }
 }
-
-
