@@ -100,6 +100,22 @@ let femoralExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "peso_muerto_sumo_mancuernas", group: .femoral, type: .reps)
 ]
 
+// Cuádriceps
+let cuadricepsExercises: [ExerciseSeed] = [
+    ExerciseSeed(slug: "prensa_inclinada", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "prensa_horizontal", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_hack", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_multipower", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "extension_cuadriceps", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_sissy", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_bulgara_multipower", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_bulgara_mancuerna", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_libre_barra", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "sentadilla_frontal_barra", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "zancadas_mancuernas", group: .cuadriceps, type: .reps),
+    ExerciseSeed(slug: "zancadas_barra", group: .cuadriceps, type: .reps)
+]
+
 // Aductor
 let aductorExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "aductor_maquina", group: .aductor, type: .reps)
@@ -176,6 +192,7 @@ let defaultExercises = backExercises
     + hombroExercises
     + pechoExercises
     + femoralExercises
+    + cuadricepsExercises
     + aductorExercises
     + abductorExercises
     + gluteoExercises

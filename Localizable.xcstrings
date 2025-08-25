@@ -4198,6 +4198,90 @@
           }
         }
       }
+    },
+    "prensa_inclinada_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline leg press" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa inclinada" } }
+      }
+    },
+    "prensa_horizontal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Horizontal leg press" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa horizontal" } }
+      }
+    },
+    "sentadilla_hack_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hack squat" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla hack" } }
+      }
+    },
+    "sentadilla_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smith machine squat" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla en multipower" } }
+      }
+    },
+    "extension_cuadriceps_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leg extension" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de cuádriceps" } }
+      }
+    },
+    "sentadilla_sissy_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sissy squat" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla sissy" } }
+      }
+    },
+    "sentadilla_bulgara_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat (Smith machine)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla búlgara en multipower" } }
+      }
+    },
+    "sentadilla_bulgara_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat (dumbbells)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla búlgara con mancuernas" } }
+      }
+    },
+    "sentadilla_libre_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell back squat" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla libre con barra" } }
+      }
+    },
+    "sentadilla_frontal_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell front squat" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla frontal con barra" } }
+      }
+    },
+    "zancadas_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lunges (dumbbells)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con mancuernas" } }
+      }
+    },
+    "zancadas_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lunges (barbell)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con barra" } }
+      }
     }
   },
   "version" : "1.1"
