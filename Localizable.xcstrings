@@ -4,58 +4,18 @@
     "%" : {
 
     },
-    "%@ kg x %lld reps" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ kg x %2$lld reps"
-          }
-        }
-      }
-    },
-    "%@ kg x %lld reps — última vez (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ kg x %2$lld reps — última vez (%3$@)"
-          }
-        }
-      }
-    },
-    "%lld reps x %@ kg" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld reps x %2$@ kg"
-          }
-        }
-      }
-    },
-    "%lld seg @ %@ kg — última vez (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld seg @ %2$@ kg — última vez (%3$@)"
-          }
-        }
-      }
-    },
     "%lld%%" : {
 
     },
     "%lldm" : {
 
     },
-    "⏱️ %lld seg @ %@ kg — récord de duración" : {
+    "%lldx%@ kg" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "⏱️ %1$lld seg @ %2$@ kg — récord de duración"
+            "value" : "%1$lldx%2$@ kg"
           }
         }
       }
@@ -169,6 +129,9 @@
 
     },
     "Altura (cm)" : {
+
+    },
+    "Añade series para ver tu progreso de peso aquí." : {
 
     },
     "Añade un ejercicio en un entrenamiento para ver tus gráficos y marcas aquí." : {
@@ -1528,6 +1491,40 @@
     "Evolución peso: %@" : {
 
     },
+    "extension_cuadriceps_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isolated knee extension targeting quadriceps; adjust pad to ankle height."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión aislada de rodilla para cuádriceps; ajusta la almohadilla a la altura del tobillo."
+          }
+        }
+      }
+    },
+    "extension_cuadriceps_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg extension"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión de cuádriceps"
+          }
+        }
+      }
+    },
     "extension_triceps_barra_polea_alta_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2740,6 +2737,15 @@
     "Peso (kg)" : {
 
     },
+    "Peso máximo" : {
+
+    },
+    "Peso mínimo" : {
+
+    },
+    "Peso registrado" : {
+
+    },
     "peso_muerto_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3011,6 +3017,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plancha"
+          }
+        }
+      }
+    },
+    "prensa_horizontal_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horizontal/seated leg press; guided path and low back-friendly setup."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prensa horizontal/sentado; trayectoria guiada y montaje amigable con la zona lumbar."
+          }
+        }
+      }
+    },
+    "prensa_horizontal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horizontal leg press"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prensa horizontal"
+          }
+        }
+      }
+    },
+    "prensa_inclinada_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45° sled leg press; heavy loading with stable back support."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prensa en máquina a 45°; gran carga con apoyo estable de la espalda."
+          }
+        }
+      }
+    },
+    "prensa_inclinada_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incline leg press"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prensa inclinada"
           }
         }
       }
@@ -3562,6 +3636,9 @@
     "Progreso" : {
 
     },
+    "Progreso de peso en esta sesión" : {
+
+    },
     "Progreso por ejercicio" : {
 
     },
@@ -3672,6 +3749,16 @@
     },
     "Pulsa + para añadir tu primer entreno." : {
 
+    },
+    "Récord histórico: %lldx%@ kg" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Récord histórico: %1$lldx%2$@ kg"
+          }
+        }
+      }
     },
     "remo_barra_desc" : {
       "extractionState" : "manual",
@@ -4114,6 +4201,247 @@
     "segundos" : {
 
     },
+    "sentadilla_bulgara_mancuerna_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bulgarian split squat holding dumbbells; unilateral quad emphasis and balance demand."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Búlgara con mancuernas; énfasis unilateral en cuádriceps con mayor demanda de equilibrio."
+          }
+        }
+      }
+    },
+    "sentadilla_bulgara_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bulgarian split squat (dumbbells)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla búlgara con mancuernas"
+          }
+        }
+      }
+    },
+    "sentadilla_bulgara_multipower_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bulgarian split squat on Smith machine; unilateral quad/glute focus with added stability."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Búlgara en multipower; trabajo unilateral de cuádriceps/glúteo con mayor estabilidad."
+          }
+        }
+      }
+    },
+    "sentadilla_bulgara_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bulgarian split squat (Smith machine)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla búlgara en multipower"
+          }
+        }
+      }
+    },
+    "sentadilla_frontal_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell front squat; front-loaded, more upright torso, quad-emphasis."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla frontal con barra; carga anterior, torso más erguido y mayor énfasis en cuádriceps."
+          }
+        }
+      }
+    },
+    "sentadilla_frontal_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell front squat"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla frontal con barra"
+          }
+        }
+      }
+    },
+    "sentadilla_hack_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hack squat machine; upright torso, quad-dominant pattern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla hack en máquina; torso más vertical, patrón dominante de cuádriceps."
+          }
+        }
+      }
+    },
+    "sentadilla_hack_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hack squat"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla hack"
+          }
+        }
+      }
+    },
+    "sentadilla_libre_barra_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell back squat; full-body compound emphasizing quads and glutes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla libre con barra; básico global con énfasis en cuádriceps y glúteos."
+          }
+        }
+      }
+    },
+    "sentadilla_libre_barra_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell back squat"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla libre con barra"
+          }
+        }
+      }
+    },
+    "sentadilla_multipower_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smith-machine squat; guided bar path for consistent depth and loading."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla en multipower; barra guiada para profundidad y carga consistentes."
+          }
+        }
+      }
+    },
+    "sentadilla_multipower_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smith machine squat"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla en multipower"
+          }
+        }
+      }
+    },
+    "sentadilla_sissy_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sissy squat; knee-forward, quad-isolation variation—use support and control ROM."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla sissy; variación con rodillas adelantadas para aislar cuádriceps—usa apoyo y controla el ROM."
+          }
+        }
+      }
+    },
+    "sentadilla_sissy_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sissy squat"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentadilla sissy"
+          }
+        }
+      }
+    },
+    "Serie" : {
+
+    },
     "Serie %lld:" : {
 
     },
@@ -4199,172 +4527,75 @@
         }
       }
     },
-    "prensa_inclinada_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Incline leg press" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa inclinada" } }
-      }
+    "Última sesión previa el %@:" : {
+
     },
-    "prensa_inclinada_desc" : {
+    "zancadas_barra_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "45° sled leg press; heavy loading with stable back support." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa en máquina a 45°; gran carga con apoyo estable de la espalda." } }
-      }
-    },
-    "prensa_horizontal_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Horizontal leg press" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa horizontal" } }
-      }
-    },
-    "prensa_horizontal_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Horizontal/seated leg press; guided path and low back-friendly setup." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prensa horizontal/sentado; trayectoria guiada y montaje amigable con la zona lumbar." } }
-      }
-    },
-    "sentadilla_hack_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hack squat" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla hack" } }
-      }
-    },
-    "sentadilla_hack_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hack squat machine; upright torso, quad-dominant pattern." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla hack en máquina; torso más vertical, patrón dominante de cuádriceps." } }
-      }
-    },
-    "sentadilla_multipower_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smith machine squat" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla en multipower" } }
-      }
-    },
-    "sentadilla_multipower_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Smith-machine squat; guided bar path for consistent depth and loading." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla en multipower; barra guiada para profundidad y carga consistentes." } }
-      }
-    },
-    "extension_cuadriceps_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leg extension" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de cuádriceps" } }
-      }
-    },
-    "extension_cuadriceps_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Isolated knee extension targeting quadriceps; adjust pad to ankle height." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión aislada de rodilla para cuádriceps; ajusta la almohadilla a la altura del tobillo." } }
-      }
-    },
-    "sentadilla_sissy_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sissy squat" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla sissy" } }
-      }
-    },
-    "sentadilla_sissy_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sissy squat; knee-forward, quad-isolation variation—use support and control ROM." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla sissy; variación con rodillas adelantadas para aislar cuádriceps—usa apoyo y controla el ROM." } }
-      }
-    },
-    "sentadilla_bulgara_multipower_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat (Smith machine)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla búlgara en multipower" } }
-      }
-    },
-    "sentadilla_bulgara_multipower_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat on Smith machine; unilateral quad/glute focus with added stability." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Búlgara en multipower; trabajo unilateral de cuádriceps/glúteo con mayor estabilidad." } }
-      }
-    },
-    "sentadilla_bulgara_mancuerna_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat (dumbbells)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla búlgara con mancuernas" } }
-      }
-    },
-    "sentadilla_bulgara_mancuerna_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bulgarian split squat holding dumbbells; unilateral quad emphasis and balance demand." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Búlgara con mancuernas; énfasis unilateral en cuádriceps con mayor demanda de equilibrio." } }
-      }
-    },
-    "sentadilla_libre_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell back squat" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla libre con barra" } }
-      }
-    },
-    "sentadilla_libre_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell back squat; full-body compound emphasizing quads and glutes." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla libre con barra; básico global con énfasis en cuádriceps y glúteos." } }
-      }
-    },
-    "sentadilla_frontal_barra_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell front squat" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla frontal con barra" } }
-      }
-    },
-    "sentadilla_frontal_barra_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell front squat; front-loaded, more upright torso, quad-emphasis." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sentadilla frontal con barra; carga anterior, torso más erguido y mayor énfasis en cuádriceps." } }
-      }
-    },
-    "zancadas_mancuernas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lunges (dumbbells)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con mancuernas" } }
-      }
-    },
-    "zancadas_mancuernas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Walking or in-place lunges with dumbbells; long stride to hit quads and glutes." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con mancuernas caminando o en el sitio; zancada larga para cuádriceps y glúteos." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell lunges walking or stationary; greater core/trunk demand."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zancadas con barra caminando o estáticas; mayor demanda del core y tronco."
+          }
+        }
       }
     },
     "zancadas_barra_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lunges (barbell)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con barra" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunges (barbell)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zancadas con barra"
+          }
+        }
       }
     },
-    "zancadas_barra_desc" : {
+    "zancadas_mancuernas_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Barbell lunges walking or stationary; greater core/trunk demand." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zancadas con barra caminando o estáticas; mayor demanda del core y tronco." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walking or in-place lunges with dumbbells; long stride to hit quads and glutes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zancadas con mancuernas caminando o en el sitio; zancada larga para cuádriceps y glúteos."
+          }
+        }
+      }
+    },
+    "zancadas_mancuernas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunges (dumbbells)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zancadas con mancuernas"
+          }
+        }
       }
     }
   },

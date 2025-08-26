@@ -7,6 +7,9 @@
 
 import SwiftUI
 import SwiftData
+#if canImport(Charts)
+import Charts
+#endif
 
 struct EntrenamientoDetailView: View {
     @Environment(\.modelContext) private var context
@@ -462,28 +465,23 @@ private struct ExerciseSetsEditorView: View {
     private var entrenamientos: [Entrenamiento]
 
     var body: some View {
+        
         let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
         let exerciseType = exerciseSeed?.type ?? .reps
         
         let setsHistoricos = entrenamientos.flatMap { $0.ejercicios }
             .filter { $0.slug == performedExercise.slug }
             .flatMap { $0.sets }
-
-        let maxPesoSet = setsHistoricos.max(by: { $0.weight < $1.weight })
-        let maxRepsSet = setsHistoricos.max(by: { $0.reps < $1.reps })
-        let lastSet = setsHistoricos.max(by: { first, second in
-            guard
-                let pe1 = first.performedExercise,
-                let pe2 = second.performedExercise,
-                let entrenamiento1 = entrenamientos.first(where: { $0.ejercicios.contains(pe1) }),
-                let entrenamiento2 = entrenamientos.first(where: { $0.ejercicios.contains(pe2) }),
-                let date1 = entrenamiento1.startDate,
-                let date2 = entrenamiento2.startDate
-            else {
-                return false
-            }
-            return date1 < date2
-        })
+        
+        // Nueva declaración simplificada fuera del VStack header
+        let setMax = setsHistoricos.max(by: { $0.weight < $1.weight })
+        let peMax = setMax?.performedExercise
+        let entrenoMax = peMax.flatMap { pe in entrenamientos.first(where: { $0.ejercicios.contains(pe) }) }
+        let fechaMax = entrenoMax?.startDate
+        let entrenamientosAnteriores = entrenamientos.filter { $0.ejercicios.contains(where: { $0.slug == performedExercise.slug }) && $0 != performedExercise.entrenamiento }.sorted { ($0.startDate ?? .distantPast) > ($1.startDate ?? .distantPast) }
+        let anterior = entrenamientosAnteriores.first
+        let fechaAnt = anterior?.startDate
+        let anteriorSets: [ExerciseSet] = anterior?.ejercicios.filter { $0.slug == performedExercise.slug }.flatMap { $0.sets.sorted { $0.order < $1.order } } ?? []
 
         // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
         let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
@@ -500,47 +498,22 @@ private struct ExerciseSetsEditorView: View {
                             .foregroundStyle(.secondary)
                             .padding(.bottom, 2)
                     }
+                    if let setMax, let fechaMax {
+                        Label("Récord histórico: \(setMax.reps)x\(formatPeso(setMax.weight)) kg", systemImage: "flame.fill")
+                            .font(.subheadline)
+                        Text(formatDateShort(fechaMax))
+                            .italic().font(.caption)
+                    }
+                    if let fechaAnt, !anteriorSets.isEmpty {
+                        Text("Última sesión previa el \(formatDateShort(fechaAnt)):").font(.subheadline)
+                        ForEach(anteriorSets, id: \.id) { set in
+                            Text("\(set.reps)x\(formatPeso(set.weight)) kg")
+                                .font(.caption)
+                        }
+                    }
                     if setsHistoricos.isEmpty {
                         HStack {
                             Label("Nunca has registrado este ejercicio", systemImage: "exclamationmark.triangle.fill")
-                        }
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal)
-                    } else {
-                        VStack(alignment: .leading, spacing: 4) {
-                            if exerciseType == .duration {
-                                let maxDurationSet = setsHistoricos.max(by: { $0.duration < $1.duration })
-                                if let maxDurationSet {
-                                    Label("⏱️ \(maxDurationSet.duration) seg @ \(formatPeso(maxDurationSet.weight)) kg — récord de duración", systemImage: "flame.fill")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                let lastDurationSet = setsHistoricos.max(by: { $0.createdAt < $1.createdAt })
-                                if let lastDurationSet,
-                                   let pe = lastDurationSet.performedExercise,
-                                   let entrenamientoLast = entrenamientos.first(where: { $0.ejercicios.contains(pe) }),
-                                   let startDate = entrenamientoLast.startDate {
-                                    Label("\(lastDurationSet.duration) seg @ \(formatPeso(lastDurationSet.weight)) kg — última vez (\(formatDateShort(startDate)))", systemImage: "clock")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            } else {
-                                if let maxPesoSet {
-                                    Label("\(formatPeso(maxPesoSet.weight)) kg x \(maxPesoSet.reps) reps", systemImage: "flame.fill")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                if let maxRepsSet {
-                                    Label("\(maxRepsSet.reps) reps x \(formatPeso(maxRepsSet.weight)) kg", systemImage: "rosette")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                if let lastSet {
-                                    if let pe = lastSet.performedExercise,
-                                       let entrenamientoLast = entrenamientos.first(where: { $0.ejercicios.contains(pe) }),
-                                       let startDate = entrenamientoLast.startDate {
-                                        Label("\(formatPeso(lastSet.weight)) kg x \(lastSet.reps) reps — última vez (\(formatDateShort(startDate)))", systemImage: "clock")
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                    }
-                                }
-                            }
                         }
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -593,10 +566,8 @@ private struct ExerciseSetsEditorView: View {
                                     return ""
                                 },
                                 set: { newValue in
-                                    // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
                                     let filtered = newValue.filter { "0123456789.,".contains($0) }
                                     let normalized = filtered.replacingOccurrences(of: ",", with: ".")
-                                    // Limitar a 6 caracteres max para evitar textos largos
                                     let limited = String(normalized.prefix(6))
                                     if index < weightStrings.count {
                                         weightStrings[index] = limited
@@ -626,7 +597,6 @@ private struct ExerciseSetsEditorView: View {
                                     return ""
                                 },
                                 set: { newValue in
-                                    // Filtrar solo dígitos, max 3 chars para reps
                                     let filtered = newValue.filter { "0123456789".contains($0) }
                                     let limited = String(filtered.prefix(3))
                                     if index < repsStrings.count {
@@ -655,10 +625,8 @@ private struct ExerciseSetsEditorView: View {
                                     return ""
                                 },
                                 set: { newValue in
-                                    // Filtrar caracteres válidos para decimal: dígitos, punto y coma (coma)
                                     let filtered = newValue.filter { "0123456789.,".contains($0) }
                                     let normalized = filtered.replacingOccurrences(of: ",", with: ".")
-                                    // Limitar a 6 caracteres max para evitar textos largos
                                     let limited = String(normalized.prefix(6))
                                     if index < weightStrings.count {
                                         weightStrings[index] = limited
@@ -685,6 +653,45 @@ private struct ExerciseSetsEditorView: View {
                 }
                 .onDelete(perform: deleteSets)
             }
+#if canImport(Charts)
+            Section {
+                let currentSets = performedExercise.sets.sorted { $0.order < $1.order }
+                let historicalMax = setsHistoricos.max(by: { $0.weight < $1.weight })?.weight ?? 0
+                let historicalMin = setsHistoricos.min(by: { $0.weight < $1.weight })?.weight ?? 0
+                if !currentSets.isEmpty {
+                    Chart {
+                        if historicalMax > 0 {
+                            RuleMark(y: .value("Peso máximo", historicalMax))
+                                .foregroundStyle(.green)
+                                .lineStyle(StrokeStyle(lineWidth: 1, dash: [2,2]))
+                        }
+                        if historicalMin > 0 && historicalMin != historicalMax {
+                            RuleMark(y: .value("Peso mínimo", historicalMin))
+                                .foregroundStyle(.orange)
+                                .lineStyle(StrokeStyle(lineWidth: 1, dash: [2,2]))
+                        }
+                        ForEach(Array(currentSets.enumerated()), id: \.element.id) { idx, set in
+                            PointMark(
+                                x: .value("Serie", idx),
+                                y: .value("Peso registrado", set.weight)
+                            )
+                            .symbolSize(70)
+                            .foregroundStyle(Color.accentColor)
+                        }
+                    }
+                    .frame(height: 180)
+                    .chartYAxisLabel("kg", position: .trailing, alignment: .center)
+                    .padding(.vertical, 8)
+                } else {
+                    Text("Añade series para ver tu progreso de peso aquí.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            } header: {
+                Text("Progreso de peso en esta sesión")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+#endif
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -823,4 +830,3 @@ private extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
-
