@@ -48,6 +48,11 @@ struct EntrenamientoListView: View {
                                                 .lineLimit(1)
                                         }
                                         Spacer()
+                                        if tieneRecordEnAlgunaSerie(e) {
+                                            Image(systemName: "flame.fill")
+                                                .foregroundStyle(.orange)
+                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        }
                                     }
                                     .padding(.vertical, 4)
                                 }
@@ -82,6 +87,11 @@ struct EntrenamientoListView: View {
                                                 .lineLimit(1)
                                         }
                                         Spacer()
+                                        if tieneRecordEnAlgunaSerie(e) {
+                                            Image(systemName: "flame.fill")
+                                                .foregroundStyle(.orange)
+                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        }
                                     }
                                     .padding(.vertical, 4)
                                 }
@@ -112,6 +122,11 @@ struct EntrenamientoListView: View {
                                                 .lineLimit(1)
                                         }
                                         Spacer()
+                                        if tieneRecordEnAlgunaSerie(e) {
+                                            Image(systemName: "flame.fill")
+                                                .foregroundStyle(.orange)
+                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        }
                                     }
                                     .padding(.vertical, 4)
                                 }
@@ -213,6 +228,22 @@ struct EntrenamientoListView: View {
         return raw.replacingOccurrences(of: "_", with: " ")
                   .replacingOccurrences(of: "-", with: " ")
                   .capitalized
+    }
+
+    private func tieneRecordEnAlgunaSerie(_ entrenamiento: Entrenamiento) -> Bool {
+        // Para cada ejercicio realizado en este entrenamiento
+        for ejercicio in entrenamiento.ejercicios {
+            // Buscar todos los sets de ese slug en todos los entrenamientos
+            let allSets = entrenamientos.flatMap { $0.ejercicios }
+                .filter { $0.slug == ejercicio.slug }
+                .flatMap { $0.sets }
+            let maxPeso = allSets.map { $0.weight }.max() ?? 0
+            // ¿Algún set de este ejercicio iguala el máximo?
+            if ejercicio.sets.contains(where: { abs($0.weight - maxPeso) < 0.0001 && maxPeso > 0 }) {
+                return true
+            }
+        }
+        return false
     }
 }
 

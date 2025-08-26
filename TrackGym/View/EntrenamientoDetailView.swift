@@ -99,14 +99,7 @@ struct EntrenamientoDetailView: View {
                         Button {
                             selectedExercise = pe
                         } label: {
-                            if let seed = defaultExercises.first(where: { $0.slug == pe.slug }) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(seed.name).font(.headline)
-                                    Text(seed.desc).font(.caption).foregroundStyle(.secondary)
-                                }
-                            } else {
-                                Text(pe.slug) // Fallback si no existe en el catálogo
-                            }
+                            ExerciseRowView(pe: pe, entrenamientos: entrenamientos)
                         }
                     }
                     .onDelete(perform: removePerformedExercises)
@@ -418,6 +411,7 @@ struct EntrenamientoDetailView: View {
             context.rollback()
         }
     }
+    
 }
 
 // MARK: - ExercisePickerView
@@ -830,3 +824,56 @@ private extension Array {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+// MARK: - ExerciseRowView auxiliar y helper estático
+
+private struct ExerciseRowView: View {
+    let pe: PerformedExercise
+    let entrenamientos: [Entrenamiento]
+    
+    var body: some View {
+        let resumen = resumenSetsStatic(for: pe)
+        let allSets = entrenamientos.flatMap { $0.ejercicios }.filter { $0.slug == pe.slug }.flatMap { $0.sets }
+        let historicMax = allSets.map { $0.weight }.max() ?? 0
+        let hasHistoricMax = pe.sets.contains(where: { abs($0.weight - historicMax) < 0.0001 && historicMax > 0 })
+        
+        if let seed = defaultExercises.first(where: { $0.slug == pe.slug }) {
+            VStack(alignment: .leading, spacing: 2) {
+                HStack {
+                    Text(seed.name).font(.headline)
+                    if hasHistoricMax {
+                        Image(systemName: "flame.fill")
+                            .foregroundStyle(.orange)
+                    }
+                }
+                Text(seed.desc).font(.caption).foregroundStyle(.secondary)
+                if !resumen.isEmpty {
+                    Text(resumen)
+                        .font(.caption2)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(pe.slug)
+                if !resumen.isEmpty {
+                    Text(resumen)
+                        .font(.caption2)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+        }
+    }
+}
+
+// Static helper para uso en struct auxiliar
+private func resumenSetsStatic(for ejercicio: PerformedExercise) -> String {
+    let sets = ejercicio.sets.sorted { $0.order < $1.order }
+    guard !sets.isEmpty else { return "" }
+    return sets.map { set in
+        let reps = set.reps
+        let peso = set.weight.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", set.weight) : String(format: "%.1f", set.weight)
+        return "\(reps)x\(peso)kg"
+    }.joined(separator: ", ")
+}
+
