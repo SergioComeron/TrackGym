@@ -1,9 +1,9 @@
 import SwiftUI
 import SwiftData
 
-private let foodBySlug: [String: FoodSeed] = {
-    Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
-}()
+//private let foodBySlug: [String: FoodSeed] = {
+//    Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
+//}()
 
 struct MealDetailView: View {
     @Environment(\.modelContext) private var context

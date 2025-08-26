@@ -1,9 +1,10 @@
 import SwiftUI
 import SwiftData
+import HealthKit
 
-private let foodBySlug: [String: FoodSeed] = {
-    Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
-}()
+//private let foodBySlug: [String: FoodSeed] = {
+//    Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
+//}()
 
 struct AlimentacionView: View {
     @Environment(\.modelContext) private var context
@@ -95,6 +96,14 @@ struct AlimentacionView: View {
                                 }
                                 .padding(.vertical, 4)
                             }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    closeMealAndExportDelta(meal)
+                                } label: {
+                                    Label("Cerrar", systemImage: "checkmark.seal.fill")
+                                }
+                                .tint(.green)
+                            }
                         }
                         .onDelete { offsets in
                             deleteMeals(for: day, at: offsets)
@@ -176,12 +185,31 @@ struct AlimentacionView: View {
                                 context.insert(entry)
                                 meal.entries.append(entry)
                                 try? context.save()
+                                
+                                // Exportar toda la comida actualizada
+                                exportMealToHealthKit(meal)
+                                
                                 resetFoodLogFields()
                                 showingAddFoodLogFor = nil
                             }
                             .disabled(selectedFood == nil || grams <= 0)
-                        }
+                        }   
                     }
+                }
+            }
+        }
+        .onAppear {
+            HealthKitManager.shared.requestAuthorization { success, error in
+                if success {
+                    HealthKitManager.shared.enableBackgroundDeliveryForNutrition(frequency: .immediate) { ok, err in
+                        if !ok { print("Enable BG delivery failed: \(err?.localizedDescription ?? "?")") }
+                    }
+                    HealthKitManager.shared.startNutritionObservers { identifier in
+                        // Aquí podrías actualizar estado/anchored queries
+                        print("[HK] Update delivered for: \(identifier.rawValue)")
+                    }
+                } else {
+                    print("HealthKit auth failed: \(error?.localizedDescription ?? "?")")
                 }
             }
         }
@@ -210,6 +238,58 @@ struct AlimentacionView: View {
         selectedFood = nil
         grams = 100
         notes = ""
+    }
+
+    private func closeMealAndExportDelta(_ meal: Meal) {
+        // Entradas no exportadas aún
+        let pending = meal.entries.filter { $0.exportedToHealthKitAt == nil }
+        guard !pending.isEmpty else { return }
+
+        // Sumar macros del delta
+        let p = pending.reduce(0) { $0 + $1.protein }
+        let c = pending.reduce(0) { $0 + $1.carbs }
+        let f = pending.reduce(0) { $0 + $1.fat }
+        let kcal = pending.reduce(0.0) { partial, e in
+            let kcalPer100 = foodBySlug[e.slug]?.kcal
+                ?? (e.protein * 4 + e.carbs * 4 + e.fat * 9) // fallback si no estuviera en catálogo
+            return partial + kcalPer100 * (e.grams / 100.0)
+        }
+
+        let nameBase = meal.type.rawValue.capitalized
+        let name = (pending.count == meal.entries.count) ? nameBase : "\(nameBase) (añadido)"
+
+        HealthKitManager.shared.saveMealAsFoodCorrelation(
+            date: meal.date,
+            name: name,
+            protein: p,
+            carbs: c,
+            fat: f,
+            kcal: kcal
+        ) { success, error in
+            if success {
+                let now = Date()
+                for e in pending { e.exportedToHealthKitAt = now }
+                try? context.save()
+            } else {
+                print("HK delta export failed: \(error?.localizedDescription ?? "?")")
+            }
+        }
+    }
+
+    private func exportMealToHealthKit(_ meal: Meal) {
+        let name = meal.type.rawValue.capitalized
+        HealthKitManager.shared.saveMealAsFoodCorrelation(
+            date: meal.date,
+            name: name,
+            protein: meal.totalProtein,
+            carbs: meal.totalCarbs,
+            fat: meal.totalFat,
+            kcal: meal.totalKcal
+        ) { success, error in
+            if !success {
+                print("HK export failed: \(error?.localizedDescription ?? "?")")
+            }
+        }
     }
 
     private func deleteMeals(for day: Date, at offsets: IndexSet) {

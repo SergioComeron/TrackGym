@@ -3133,6 +3133,90 @@
     "Notas" : {
 
     },
+    "granada_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fruit with edible seeds, high in antioxidants." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fruta con semillas comestibles, rica en antioxidantes." } }
+      }
+    },
+    "granada_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pomegranate" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Granada" } }
+      }
+    },
+    "manzana_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Classic fruit, source of fiber and vitamins." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fruta clásica, fuente de fibra y vitaminas." } }
+      }
+    },
+    "manzana_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Apple" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Manzana" } }
+      }
+    },
+    "melon_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sweet melon, low in calories, rich in water." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Melón dulce, bajo en calorías y rico en agua." } }
+      }
+    },
+    "melon_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Melon" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Melón" } }
+      }
+    },
+    "naranja_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Citrus fruit rich in vitamin C." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fruta cítrica rica en vitamina C." } }
+      }
+    },
+    "naranja_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Orange" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Naranja" } }
+      }
+    },
+    "platano_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sweet tropical fruit, rich in carbs and potassium." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fruta tropical dulce, rica en carbohidratos y potasio." } }
+      }
+    },
+    "platano_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Banana" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Plátano" } }
+      }
+    },
+    "sandia_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Refreshing summer fruit, very hydrating." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fruta veraniega refrescante, muy hidratante." } }
+      }
+    },
+    "sandia_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Watermelon" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sandía" } }
+      }
+    },
     "nueces_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4458,6 +4542,62 @@
             "value" : "Proteína whey"
           }
         }
+      }
+    },
+    "amilopectina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Waxy maize starch supplement; fast-digesting carb source." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Suplemento de almidón de maíz ceroso; fuente de carbohidrato de rápida digestión." } }
+      }
+    },
+    "amilopectina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Amylopectin" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Amilopectina" } }
+      }
+    },
+    "clusterdextrina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Highly branched cyclic dextrin; carb supplement for sustained energy." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dextrina cíclica altamente ramificada; suplemento de carbohidratos para energía sostenida." } }
+      }
+    },
+    "clusterdextrina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cluster dextrin" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Clusterdextrina" } }
+      }
+    },
+    "creatina_monohidrato_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Creatine monohydrate; enhances strength and ATP regeneration." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Creatina monohidrato; mejora la fuerza y la regeneración de ATP." } }
+      }
+    },
+    "creatina_monohidrato_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Creatine monohydrate" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Creatina monohidrato" } }
+      }
+    },
+    "map_aminoacidos_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Master amino acid pattern (MAP); essential amino acid supplement." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patrón maestro de aminoácidos (MAP); suplemento de aminoácidos esenciales." } }
+      }
+    },
+    "map_aminoacidos_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "MAP amino acids" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aminoácidos MAP" } }
       }
     },
     "puente_gluteo_desc" : {

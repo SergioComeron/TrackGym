@@ -10,7 +10,7 @@ import Foundation
 
 // Tipo de comida (controlado y localizable)
 enum MealType: String, Codable, CaseIterable {
-    case desayuno, mediaManana, comida, merienda, cena, postentreno, otro
+    case desayuno, mediaManana, comida, merienda, cena, postentreno, preentreno, intraentreno, otro
 }
 
 @Model
@@ -37,7 +37,7 @@ final class Meal {
 }
 
 // Declaración global justo antes de FoodLog
-private let foodBySlug: [String: FoodSeed] = {
+internal let foodBySlug: [String: FoodSeed] = {
     Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
 }()
 
@@ -49,6 +49,9 @@ final class FoodLog {
     var slug: String               // slug del alimento en el catálogo fijo
     var grams: Double              // cantidad en gramos
     var notes: String?
+
+    // Marca cuándo se exportó esta entrada a HealthKit (nil = aún no exportada)
+    var exportedToHealthKitAt: Date?
 
     // Relación con su Meal (opcional, permite añadir suelto y agrupar después)
     var meal: Meal?
@@ -69,7 +72,8 @@ final class FoodLog {
     var protein: Double { (food?.protein ?? 0) * factor }
     var carbs: Double   { (food?.carbs ?? 0) * factor }
     var fat: Double     { (food?.fat ?? 0) * factor }
-    var kcal: Double { ((food?.protein ?? 0) * 4 + (food?.carbs ?? 0) * 4 + (food?.fat ?? 0) * 9) * factor }
+    var kcal: Double { (food?.kcal ?? 0) * factor }
+
 
     // Removed fiber, sugars, sodiumMg as per instructions
     // var fiber: Double   { (food?.fiber ?? 0) * factor }
