@@ -15,7 +15,7 @@ enum AppRoute: Hashable {
 
 @Observable
 final class Router {
-    enum Tab: Hashable { case entrenos, progreso, dieta, perfil }
+    enum Tab: Hashable { case entrenos, progreso, alimentacion, perfil }
     var selectedTab: Tab = .entrenos
     var entrenosPath: [AppRoute] = []
     var pendingEntrenamientoID: UUID?
@@ -49,7 +49,7 @@ struct TrackGymApp: App {
                     }
                 }
         }
-        .modelContainer(for: [Entrenamiento.self, PerformedExercise.self, ExerciseSet.self, Perfil.self])
+        .modelContainer(for: [Entrenamiento.self, PerformedExercise.self, ExerciseSet.self, Perfil.self, FoodLog.self])
     }
 }
 

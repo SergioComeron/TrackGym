@@ -49,9 +49,9 @@ struct MainMenu: View {
             .tabItem { Label("Progreso", systemImage: "chart.bar.fill") }
             .tag(Router.Tab.progreso)
 
-            DietaView()
-                .tabItem { Label("Dieta", systemImage: "fork.knife") }
-                .tag(Router.Tab.dieta)
+            AlimentacionView()
+                .tabItem { Label("Alimentación", systemImage: "fork.knife") }
+                .tag(Router.Tab.alimentacion)
 
             NavigationStack {
                 PerfilView()

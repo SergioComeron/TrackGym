@@ -7,6 +7,9 @@
     "%lld%%" : {
 
     },
+    "%lldg" : {
+
+    },
     "%lldm" : {
 
     },
@@ -19,6 +22,28 @@
           }
         }
       }
+    },
+    "🍗 %lldg  🍚 %lldg  🧈 %lldg  🔥 %lld kcal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "🍗 %1$lldg  🍚 %2$lldg  🧈 %3$lldg  🔥 %4$lld kcal"
+          }
+        }
+      }
+    },
+    "🍗 %lldg P" : {
+
+    },
+    "🍚 %lldg C" : {
+
+    },
+    "🔥 %lld kcal" : {
+
+    },
+    "🧈 %lldg G" : {
+
     },
     "A an example control that runs a timer." : {
 
@@ -91,6 +116,40 @@
         }
       }
     },
+    "aceite_oliva_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Virgin olive oil, healthy fat source."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceite de oliva virgen, grasa saludable."
+          }
+        }
+      }
+    },
+    "aceite_oliva_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olive oil"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceite de oliva"
+          }
+        }
+      }
+    },
     "aductor_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -125,6 +184,83 @@
         }
       }
     },
+    "aguacate_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh avocado, fruit rich in healthy fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguacate fresco, fruta rica en grasas saludables."
+          }
+        }
+      }
+    },
+    "aguacate_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avocado"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguacate"
+          }
+        }
+      }
+    },
+    "Alimentación" : {
+
+    },
+    "Alimento" : {
+
+    },
+    "Alimentos en la comida" : {
+
+    },
+    "almendras_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw almonds, source of protein and healthy fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almendras crudas, fuente de proteína y grasas saludables."
+          }
+        }
+      }
+    },
+    "almendras_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almonds"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almendras"
+          }
+        }
+      }
+    },
     "Altura" : {
 
     },
@@ -135,6 +271,12 @@
 
     },
     "Añade un ejercicio en un entrenamiento para ver tus gráficos y marcas aquí." : {
+
+    },
+    "Añadir alimento" : {
+
+    },
+    "Añadir comida" : {
 
     },
     "Añadir ejercicio" : {
@@ -282,8 +424,107 @@
         }
       }
     },
-    "Aquí irá tu dieta" : {
-
+    "arroz_blanco_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw white rice, staple carbohydrate source."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arroz blanco en crudo, fuente principal de carbohidratos."
+          }
+        }
+      }
+    },
+    "arroz_blanco_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw white rice"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arroz blanco crudo"
+          }
+        }
+      }
+    },
+    "arroz_integral_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw brown rice, more fiber and minerals than white rice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arroz integral en crudo, más fibra y minerales que el blanco."
+          }
+        }
+      }
+    },
+    "arroz_integral_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw brown rice"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arroz integral crudo"
+          }
+        }
+      }
+    },
+    "atun_fresco_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw fresh tuna, high protein and low fat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún fresco en crudo, rico en proteína y bajo en grasa."
+          }
+        }
+      }
+    },
+    "atun_fresco_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw fresh tuna"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún fresco crudo"
+          }
+        }
+      }
     },
     "Aún no has añadido ejercicios" : {
 
@@ -294,7 +535,78 @@
     "Aún no tienes entrenos finalizados" : {
 
     },
+    "avena_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw oats, source of carbohydrates and fiber."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copos de avena en crudo, fuente de carbohidratos y fibra."
+          }
+        }
+      }
+    },
+    "avena_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw oats"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avena cruda"
+          }
+        }
+      }
+    },
+    "batata_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw sweet potato, carb source with more fiber and sweetness."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batata o boniato en crudo, carbohidrato con más fibra y dulzor."
+          }
+        }
+      }
+    },
+    "batata_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw sweet potato"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batata cruda"
+          }
+        }
+      }
+    },
     "Bíceps" : {
+
+    },
+    "C: %lld" : {
 
     },
     "Cadera" : {
@@ -306,6 +618,9 @@
     "Cancelar" : {
 
     },
+    "Cantidad (g)" : {
+
+    },
     "Cargando…" : {
 
     },
@@ -314,6 +629,40 @@
     },
     "Cintura" : {
 
+    },
+    "clara_huevo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw egg white, almost pure protein with no fat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clara de huevo cruda, casi solo proteína sin grasa."
+          }
+        }
+      }
+    },
+    "clara_huevo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egg white"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clara de huevo"
+          }
+        }
+      }
     },
     "Configuration" : {
 
@@ -1075,9 +1424,6 @@
     "Detalle" : {
 
     },
-    "Dieta" : {
-
-    },
     "dominadas_pronas_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1611,6 +1957,9 @@
     "Fecha" : {
 
     },
+    "Fecha y hora" : {
+
+    },
     "Fecha y hora actual al guardar" : {
 
     },
@@ -1783,6 +2132,12 @@
           }
         }
       }
+    },
+    "g" : {
+
+    },
+    "G: %lld" : {
+
     },
     "gemelo_de_pie_maquina_desc" : {
       "extractionState" : "manual",
@@ -2306,6 +2661,74 @@
     "Guardar perfil" : {
 
     },
+    "harina_arroz_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fine rice flour, used in shakes and recipes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harina fina de arroz, usada en batidos y recetas."
+          }
+        }
+      }
+    },
+    "harina_arroz_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice flour"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harina de arroz"
+          }
+        }
+      }
+    },
+    "harina_avena_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ground oat flour, ideal for pancakes and shakes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harina de avena molida, ideal para tortitas y batidos."
+          }
+        }
+      }
+    },
+    "harina_avena_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oat flour"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harina de avena"
+          }
+        }
+      }
+    },
     "hip_thrust_barra_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2370,6 +2793,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hip thrust en máquina"
+          }
+        }
+      }
+    },
+    "huevo_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw whole egg, complete protein and fat source."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huevo entero crudo, fuente completa de proteína y grasa."
+          }
+        }
+      }
+    },
+    "huevo_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw egg"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huevo crudo"
           }
         }
       }
@@ -2587,11 +3044,79 @@
         }
       }
     },
+    "mantequilla_cacahuete_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peanut butter, rich in fats and protein."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crema de cacahuete, rica en grasas y proteína."
+          }
+        }
+      }
+    },
+    "mantequilla_cacahuete_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peanut butter"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantequilla de cacahuete"
+          }
+        }
+      }
+    },
     "Medidas corporales (cm)" : {
 
     },
     "Mejores marcas: %@" : {
 
+    },
+    "merluza_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw hake fillet, low-fat white fish."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filete de merluza cruda, pescado blanco bajo en grasa."
+          }
+        }
+      }
+    },
+    "merluza_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw hake"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merluza cruda"
+          }
+        }
+      }
     },
     "minutos" : {
 
@@ -2603,6 +3128,46 @@
 
     },
     "No hay datos para este ejercicio." : {
+
+    },
+    "Notas" : {
+
+    },
+    "nueces_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walnuts, nut rich in omega-3 and healthy fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueces, fruto seco rico en omega-3 y grasas saludables."
+          }
+        }
+      }
+    },
+    "nueces_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walnuts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueces"
+          }
+        }
+      }
+    },
+    "Nueva comida" : {
 
     },
     "Nuevo entrenamiento" : {
@@ -2624,6 +3189,9 @@
 
     },
     "On" : {
+
+    },
+    "P: %lld" : {
 
     },
     "pajaro_mancuernas_desc" : {
@@ -2694,6 +3262,74 @@
         }
       }
     },
+    "pan_blanco_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traditional white bread, high in carbohydrates."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan blanco tradicional, alto en carbohidratos."
+          }
+        }
+      }
+    },
+    "pan_blanco_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "White bread"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan blanco"
+          }
+        }
+      }
+    },
+    "pasta_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw pasta, high in carbohydrates."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta en crudo, rica en carbohidratos."
+          }
+        }
+      }
+    },
+    "pasta_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw pasta"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta cruda"
+          }
+        }
+      }
+    },
     "patada_atras_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2724,6 +3360,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patada atrás en máquina"
+          }
+        }
+      }
+    },
+    "patata_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw potato, starchy tuber rich in carbs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patata en crudo, tubérculo rico en carbohidratos."
+          }
+        }
+      }
+    },
+    "patata_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw potato"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patata cruda"
+          }
+        }
+      }
+    },
+    "pavo_pechuga_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw turkey breast, very low in fat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechuga de pavo en crudo, muy baja en grasa."
+          }
+        }
+      }
+    },
+    "pavo_pechuga_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw turkey breast"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechuga de pavo cruda"
           }
         }
       }
@@ -3026,6 +3730,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plancha"
+          }
+        }
+      }
+    },
+    "pollo_pechuga_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw chicken breast, lean protein source."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechuga de pollo en crudo, fuente magra de proteína."
+          }
+        }
+      }
+    },
+    "pollo_pechuga_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw chicken breast"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechuga de pollo cruda"
           }
         }
       }
@@ -3654,6 +4392,74 @@
     "Progreso: %lld%%" : {
 
     },
+    "proteina_iso_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isolated whey protein, purer and lower in carbs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteína aislada de suero, más pura y con menos carbohidratos."
+          }
+        }
+      }
+    },
+    "proteina_iso_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ISO protein"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteína ISO"
+          }
+        }
+      }
+    },
+    "proteina_whey_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whey protein supplement."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suplemento de proteína de suero de leche."
+          }
+        }
+      }
+    },
+    "proteina_whey_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whey protein"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteína whey"
+          }
+        }
+      }
+    },
     "puente_gluteo_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3758,6 +4564,40 @@
     },
     "Pulsa + para añadir tu primer entreno." : {
 
+    },
+    "queso_fresco_batido_0_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fat-free cottage cheese, high in protein."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queso fresco batido desnatado, rico en proteína."
+          }
+        }
+      }
+    },
+    "queso_fresco_batido_0_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0% fat cottage cheese"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queso fresco batido 0%"
+          }
+        }
+      }
     },
     "Récord histórico: %lldx%@ kg" : {
       "localizations" : {
@@ -4204,6 +5044,40 @@
     "Resumen de tu último entrenamiento (AI)" : {
 
     },
+    "salmon_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw salmon, oily fish rich in healthy fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salmón en crudo, pescado azul rico en grasas saludables."
+          }
+        }
+      }
+    },
+    "salmon_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw salmon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salmón crudo"
+          }
+        }
+      }
+    },
     "Se registrará" : {
 
     },
@@ -4460,6 +5334,9 @@
     "Sexo" : {
 
     },
+    "Sin alimentos registrados." : {
+
+    },
     "Sin entrenamientos" : {
 
     },
@@ -4487,6 +5364,40 @@
     "Terminar entrenamiento" : {
 
     },
+    "ternera_magra_5_cruda_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw beef with 5% fat content."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carne de ternera cruda con un 5% de grasa."
+          }
+        }
+      }
+    },
+    "ternera_magra_5_cruda_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw lean beef 5%"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ternera magra 5% cruda"
+          }
+        }
+      }
+    },
     "This is an example widget." : {
 
     },
@@ -4503,6 +5414,46 @@
 
     },
     "Timer Name Configuration" : {
+
+    },
+    "Tipo" : {
+
+    },
+    "tostas_centeno_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rye toasts, crunchy whole-grain option rich in fiber and carbs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tostas de centeno, opción integral crujiente rica en fibra y carbohidratos."
+          }
+        }
+      }
+    },
+    "tostas_centeno_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rye toasts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tostas de centeno"
+          }
+        }
+      }
+    },
+    "Totales de la comida" : {
 
     },
     "triceps_cuerda_tras_nuca_desc" : {
@@ -4541,6 +5492,40 @@
     },
     "Última sesión previa el %@:" : {
 
+    },
+    "yogur_griego_0_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fat-free Greek yogurt, creamy and high in protein."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yogur griego sin grasa, cremoso y rico en proteína."
+          }
+        }
+      }
+    },
+    "yogur_griego_0_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0% Greek yogurt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yogur griego 0%"
+          }
+        }
+      }
     },
     "zancadas_barra_desc" : {
       "extractionState" : "manual",

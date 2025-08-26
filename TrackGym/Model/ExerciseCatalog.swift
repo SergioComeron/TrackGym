@@ -200,3 +200,4 @@ let defaultExercises = backExercises
     + tricepsExercises
     + bicepsExercises
     + gemeloExercises
+
