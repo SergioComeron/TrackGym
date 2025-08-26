@@ -173,29 +173,29 @@ struct EntrenamientoDetailView: View {
         .navigationDestination(item: $selectedExercise) { exercise in
             ExerciseSetsEditorView(performedExercise: exercise, isFinished: entrenamiento.endDate != nil)
         }
-        .onAppear {
-            print("🔍 OnAppear - Estado INICIAL:")
-            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
-                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
-            }
-            
-            // COMENTAR TEMPORALMENTE la migración para aislar el problema
-             migrateLegacyExerciseOrderIfNeeded()
-            
-            print("🔍 OnAppear - Estado FINAL:")
-            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
-                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
-            }
-        }
+//        .onAppear {
+//            print("🔍 OnAppear - Estado INICIAL:")
+//            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+//                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
+//            }
+//            
+//            // COMENTAR TEMPORALMENTE la migración para aislar el problema
+//             migrateLegacyExerciseOrderIfNeeded()
+//            
+//            print("🔍 OnAppear - Estado FINAL:")
+//            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+//                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
+//            }
+//        }
     }
     
     // MARK: - Computed property para ejercicios únicos
     private var uniqueEjercicios: [PerformedExercise] {
         let sorted = entrenamiento.ejercicios.sorted(by: { $0.order < $1.order })
-        print("🔍 uniqueEjercicios - Ejercicios ordenados:")
-        for (i, ejercicio) in sorted.enumerated() {
-            print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
-        }
+//        print("🔍 uniqueEjercicios - Ejercicios ordenados:")
+//        for (i, ejercicio) in sorted.enumerated() {
+//            print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
+//        }
         return sorted
     }
     
@@ -288,7 +288,7 @@ struct EntrenamientoDetailView: View {
     }
     
     private func movePerformedExercises(from source: IndexSet, to destination: Int) {
-        print("🔧 Iniciando movimiento agresivo...")
+//        print("🔧 Iniciando movimiento agresivo...")
         
         var ejerciciosOrdenados = entrenamiento.ejercicios.sorted { $0.order < $1.order }
         ejerciciosOrdenados.move(fromOffsets: source, toOffset: destination)
@@ -296,12 +296,12 @@ struct EntrenamientoDetailView: View {
         // Actualizar los values de 'order'
         for (idx, ejercicio) in ejerciciosOrdenados.enumerated() {
             ejercicio.order = idx
-            print("🔧 Actualizando \(ejercicio.slug) order = \(idx)")
+//            print("🔧 Actualizando \(ejercicio.slug) order = \(idx)")
         }
         
         // 🔑 VERSIÓN AGRESIVA: Vaciar completamente y reconstruir
         let ejerciciosReordenados = ejerciciosOrdenados
-        print("🔧 Vaciando array...")
+//        print("🔧 Vaciando array...")
         entrenamiento.ejercicios.removeAll()
         
         // Primer guardado (array vacío)
@@ -315,19 +315,19 @@ struct EntrenamientoDetailView: View {
         }
         
         // Reconstruir con el orden correcto
-        print("🔧 Reconstruyendo array en orden correcto...")
+//        print("🔧 Reconstruyendo array en orden correcto...")
         entrenamiento.ejercicios = ejerciciosReordenados
         
         // Segundo guardado (array reordenado)
         do {
             try context.save()
-            print("✅ Array reconstruido y guardado")
+//            print("✅ Array reconstruido y guardado")
             
             // Verificación final
-            print("🔍 Verificación post-reconstrucción:")
-            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
-                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
-            }
+//            print("🔍 Verificación post-reconstrucción:")
+//            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
+//                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
+//            }
         } catch {
             print("❌ Error al guardar reconstrucción: \(error)")
             context.rollback()
@@ -392,7 +392,7 @@ struct EntrenamientoDetailView: View {
             return
         }
         
-        print("🔧 Migrando orden legacy...")
+//        print("🔧 Migrando orden legacy...")
         
         // Ordenar por fecha de creación y asignar order
         let sorted = ejercicios.sorted { $0.createdAt < $1.createdAt }
