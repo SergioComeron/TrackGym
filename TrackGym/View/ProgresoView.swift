@@ -311,7 +311,21 @@ struct ProgresoView: View {
             .joined(separator: ", ")
         
 
-        let prompt = "\(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres.\nDime en que esta flojo este entrenamiento y cuales son los puntos débiles asi como los puntos fuertes. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
+//        let prompt = "\(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres.\nDime en que esta flojo este entrenamiento y cuales son los puntos débiles asi como los puntos fuertes. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
+        
+        let prompt = """
+            \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza este entrenamiento que he registrado hoy:
+            - Grupos musculares trabajados: \(grupos)
+            - Ejercicios realizados:
+            \(ejerciciosStr)
+
+            Quiero que me digas:
+            1. Si los ejercicios que hice cubren bien todos los músculos trabajados.
+            2. Si tendría que haber añadido algún otro ejercicio de esta lista para que el entrenamiento fuera más completo: \(ejerciciosDisponibles). Explica por qué lo sugieres.
+            3. Si las series, repeticiones y pesos que usé están bien para un objetivo de hipertrofia o si debería hacer algún ajuste.
+
+            Responde en español, de forma clara, directa y en un máximo de dos párrafos.
+            """
         print(prompt)
         Task {
             let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
@@ -410,18 +424,18 @@ struct ProgresoView: View {
         let totalSesiones = entrenosSemana.count
         
         let prompt = """
-        Entrenamientos de la semana:
-        \(sesionesDetalleStr)
+\(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza este resumen semanal de entrenamientos (desde el lunes hasta hoy):
 
-        \(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumentar masa muscular o perder grasa. Analiza este resumen semanal de entrenamientos realizados entre el lunes y hoy:
-        - Total de sesiones: \(totalSesiones)
-        - Grupos musculares trabajados: \(grupos)
-        - Ejercicios realizados y resumen de sets/reps/peso:
-        \(ejerciciosStr)
-        Valora el equilibrio del entrenamiento semanal, indica si falta algún grupo muscular importante o si hay sobrecarga en otros.
-        Proporciona consejos para mejorar el resto de la semana, incluyendo ejercicios recomendados o ajustes en repeticiones/pesos.
-        Sé claro, directo y concreto en español. Limita tu respuesta a dos párrafos.
-        """
+Entrenamientos de la semana:
+\(sesionesDetalleStr)
+
+- Total de sesiones: \(totalSesiones)
+- Grupos musculares trabajados: \(grupos)
+- Ejercicios realizados y resumen de sets/reps/peso:
+\(ejerciciosStr)
+
+Valora el equilibrio del entrenamiento semanal, indica si falta algún grupo muscular importante o si hay sobrecarga en otros. Proporciona consejos para mejorar el resto de la semana, incluyendo ejercicios recomendados o ajustes en repeticiones/pesos. Sé claro, directo y concreto en español. Limita tu respuesta a dos párrafos.
+"""
         print(prompt)
         
         Task {
