@@ -39,86 +39,90 @@ struct AlimentacionView: View {
                     ) {
                         ForEach(groupedMealsByDay[day] ?? []) { meal in
                             VStack(alignment: .leading, spacing: 8) {
-                                // Header de la comida
-                                HStack {
-                                    Text(meal.type.rawValue.capitalized)
-                                        .font(.headline)
-                                    Spacer()
-                                    Text(timeFormatted(meal.date))
+                                NavigationLink(destination: MealDetailView(meal: meal)) {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        // Header de la comida
+                                        HStack {
+                                            Text(meal.type.rawValue.capitalized)
+                                                .font(.headline)
+                                            Spacer()
+                                            Text(timeFormatted(meal.date))
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                            // Debug: mostrar si hay entradas sin exportar
+                                            let unexported = meal.entries.filter { $0.exportedToHealthKitAt == nil }.count
+                                            if unexported > 0 {
+                                                Text("⚠️\(unexported)")
+                                                    .font(.caption2)
+                                                    .foregroundStyle(.red)
+                                            }
+                                        }
+                                        
+                                        // Totales de macros
+                                        HStack(spacing: 12) {
+                                            Text("🍗 \(Int(meal.totalProtein))g P")
+                                            Text("🍚 \(Int(meal.totalCarbs))g C")
+                                            Text("🧈 \(Int(meal.totalFat))g G")
+                                            Text("🔥 \(Int(meal.totalKcal)) kcal")
+                                        }
                                         .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                    // Debug: mostrar si hay entradas sin exportar
-                                    let unexported = meal.entries.filter { $0.exportedToHealthKitAt == nil }.count
-                                    if unexported > 0 {
-                                        Text("⚠️\(unexported)")
-                                            .font(.caption2)
-                                            .foregroundStyle(.red)
-                                    }
-                                }
-                                
-                                // Botón para añadir alimentos - FUERA del NavigationLink
-                                Button {
-                                    print("🍎 Add food button pressed for meal: \(meal.type.rawValue)")
-                                    selectedMeal = meal
-                                    showingAddFoodLogFor = meal
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "plus.circle.fill")
-                                        Text("Añadir alimento")
-                                    }
-                                    .font(.subheadline)
-                                    .foregroundStyle(.blue)
-                                }
-                                .buttonStyle(.borderless)
-                                
-                                // Totales de macros
-                                HStack(spacing: 12) {
-                                    Text("🍗 \(Int(meal.totalProtein))g P")
-                                    Text("🍚 \(Int(meal.totalCarbs))g C")
-                                    Text("🧈 \(Int(meal.totalFat))g G")
-                                    Text("🔥 \(Int(meal.totalKcal)) kcal")
-                                }
-                                .font(.caption)
-                                
-                                // Lista de alimentos existentes
-                                if !meal.entries.isEmpty {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        ForEach(meal.entries) { entry in
-                                            HStack {
-                                                Text(foodName(for: entry.slug))
-                                                Spacer(minLength: 8)
-                                                Text("\(Int(entry.grams))g")
-                                                    .foregroundStyle(.secondary)
-                                                if entry.protein > 0 {
-                                                    Text("P: \(Int(entry.protein))")
-                                                        .font(.caption2)
-                                                        .foregroundStyle(.blue)
+                                        
+                                        // Lista de alimentos existentes
+                                        if !meal.entries.isEmpty {
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                ForEach(meal.entries) { entry in
+                                                    HStack {
+                                                        Text(foodName(for: entry.slug))
+                                                        Spacer(minLength: 8)
+                                                        Text("\(Int(entry.grams))g")
+                                                            .foregroundStyle(.secondary)
+                                                        if entry.protein > 0 {
+                                                            Text("P: \(Int(entry.protein))")
+                                                                .font(.caption2)
+                                                                .foregroundStyle(.blue)
+                                                        }
+                                                        if entry.carbs > 0 {
+                                                            Text("C: \(Int(entry.carbs))")
+                                                                .font(.caption2)
+                                                                .foregroundStyle(.orange)
+                                                        }
+                                                        if entry.fat > 0 {
+                                                            Text("G: \(Int(entry.fat))")
+                                                                .font(.caption2)
+                                                                .foregroundStyle(.pink)
+                                                        }
+                                                    }
+                                                    .font(.caption)
                                                 }
-                                                if entry.carbs > 0 {
-                                                    Text("C: \(Int(entry.carbs))")
-                                                        .font(.caption2)
-                                                        .foregroundStyle(.orange)
-                                                }
-                                                if entry.fat > 0 {
-                                                    Text("G: \(Int(entry.fat))")
-                                                        .font(.caption2)
-                                                        .foregroundStyle(.pink)
+                                                .onDelete { offsets in
+                                                    deleteEntries(for: meal, at: offsets)
                                                 }
                                             }
-                                            .font(.caption)
+                                            .padding(.leading, 4)
+                                        } else {
+                                            Text("Sin alimentos registrados.")
+                                                .font(.caption2)
+                                                .foregroundStyle(.secondary)
                                         }
-                                        .onDelete { offsets in
-                                            deleteEntries(for: meal, at: offsets)
+                                        
+                                        // Botón para añadir alimentos - AL FINAL dentro del VStack y dentro del NavigationLink
+                                        Button {
+                                            print("🍎 Add food button pressed for meal: \(meal.type.rawValue)")
+                                            selectedMeal = meal
+                                            showingAddFoodLogFor = meal
+                                        } label: {
+                                            HStack {
+                                                Image(systemName: "plus.circle.fill")
+                                                Text("Añadir alimento")
+                                            }
+                                            .font(.subheadline)
+                                            .foregroundStyle(.blue)
                                         }
+                                        .buttonStyle(.borderless)
                                     }
-                                    .padding(.leading, 4)
-                                } else {
-                                    Text("Sin alimentos registrados.")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
+                                    .padding(.vertical, 4)
                                 }
                             }
-                            .padding(.vertical, 4)
                         }
                         .onDelete { offsets in
                             deleteMeals(for: day, at: offsets)
@@ -292,7 +296,7 @@ struct AlimentacionView: View {
 
     // MARK: - HealthKit Export Methods
     
-    /// ✅ Exporta directamente usando la función que ya sabemos que funciona
+    /// ✅ Exporta directamente usando la nueva firma con metadata (SyncIdentifier/Version)
     private func exportEntryDirectly(_ entry: FoodLog, food: FoodSeed) {
         // Calcular macros
         let multiplier = entry.grams / 100.0
@@ -300,41 +304,54 @@ struct AlimentacionView: View {
         let carbs = food.carbs * multiplier
         let fat = food.fat * multiplier
         let kcal = food.kcal * multiplier
-        
-        let foodName = "\(food.name) (\(Int(entry.grams))g)"
-        
+
+        // Nombre visible en Salud + clave única técnica
+        let foodName = "\(food.name) (\(Int(entry.grams))-\(entry.date.timeIntervalSince1970)g)"
+        let syncId = entry.entryUUID.uuidString
+
+        print(">>>Se crea: \(foodName)")
         print("🚀 DIRECT EXPORT: \(foodName)")
         print("📊 Values: P:\(protein)g C:\(carbs)g F:\(fat)g K:\(kcal)kcal")
-        
-        // Usar la función que YA sabemos que funciona con el gesto
+
+        // Metadata recomendado por Apple para identificar/borrar
+        let metadata: [String: Any] = [
+            HKMetadataKeyFoodType: foodName,
+            HKMetadataKeySyncIdentifier: syncId,
+            HKMetadataKeySyncVersion: 1
+        ]
+
+        // Guardar correlación .food + 4 samples con el MISMO metadata
         HealthKitManager.shared.saveMealAsFoodCorrelation(
             date: entry.date,
             name: foodName,
             protein: protein,
             carbs: carbs,
             fat: fat,
-            kcal: kcal
-        ) { success, error in
-            print("🔄 HealthKit callback received: success=\(success)")
-            if let error = error {
-                print("❌ HealthKit error: \(error.localizedDescription)")
-            }
-            
-            DispatchQueue.main.async {
-                if success {
-                    print("✅ DIRECT EXPORT SUCCESS!")
-                    entry.exportedToHealthKitAt = Date()
-                    do {
-                        try context.save()
-                        print("✅ Timestamp saved")
-                    } catch {
-                        print("❌ Error saving timestamp: \(error)")
+            kcal: kcal,
+            metadata: metadata,
+            completion: { success, uuid, error in
+                print("🔄 HealthKit callback received: success=\(success)")
+                if let error = error {
+                    print("❌ HealthKit error: \(error.localizedDescription)")
+                }
+
+                DispatchQueue.main.async {
+                    if success {
+                        print("✅ DIRECT EXPORT SUCCESS!")
+                        entry.exportedToHealthKitAt = Date()
+                        entry.healthKitUUID = uuid
+                        do {
+                            try context.save()
+                            print("✅ Timestamp saved")
+                        } catch {
+                            print("❌ Error saving timestamp: \(error)")
+                        }
+                    } else {
+                        print("❌ DIRECT EXPORT FAILED: \(error?.localizedDescription ?? "Unknown")")
                     }
-                } else {
-                    print("❌ DIRECT EXPORT FAILED: \(error?.localizedDescription ?? "Unknown")")
                 }
             }
-        }
+        )
     }
     
     /// ✅ Versión async mantenida solo como backup si es necesaria
@@ -410,13 +427,15 @@ struct AlimentacionView: View {
             carbs: meal.totalCarbs,
             fat: meal.totalFat,
             kcal: meal.totalKcal
-        ) { success, error in
+        ) { success, uuid, error in
             DispatchQueue.main.async {
                 if success {
                     print("✅ Successfully exported complete meal to HealthKit")
                     let now = Date()
                     for entry in meal.entries {
                         entry.exportedToHealthKitAt = now
+                        // Asegúrate de que FoodLog tiene la propiedad healthKitUUID: UUID?
+                        entry.healthKitUUID = uuid
                     }
                     try? context.save()
                 } else {
