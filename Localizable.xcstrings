@@ -48,6 +48,9 @@
     "🧈 %lldg G" : {
 
     },
+    "0" : {
+
+    },
     "A an example control that runs a timer." : {
 
     },
@@ -224,7 +227,7 @@
     "Alimentación" : {
 
     },
-    "Alimento" : {
+    "Alimento seleccionado" : {
 
     },
     "Alimentos en la comida" : {
@@ -303,6 +306,9 @@
           }
         }
       }
+    },
+    "Añade alguna nota..." : {
+
     },
     "Añade series para ver tu progreso de peso aquí." : {
 
@@ -643,6 +649,12 @@
     "Bíceps" : {
 
     },
+    "Buscar alimentos..." : {
+
+    },
+    "Buscar y seleccionar alimento" : {
+
+    },
     "C: %lld" : {
 
     },
@@ -652,10 +664,13 @@
     "Calculando sugerencia de peso..." : {
 
     },
+    "Cambiar" : {
+
+    },
     "Cancelar" : {
 
     },
-    "Cantidad (g)" : {
+    "Cantidad" : {
 
     },
     "Cargando…" : {
@@ -2550,6 +2565,9 @@
         }
       }
     },
+    "Gramos" : {
+
+    },
     "granada_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3004,6 +3022,9 @@
         }
       }
     },
+    "Información nutricional" : {
+
+    },
     "Inicio" : {
 
     },
@@ -3147,6 +3168,9 @@
       }
     },
     "kg" : {
+
+    },
+    "Limpiar" : {
 
     },
     "lumbar_banco_desc" : {
@@ -3405,7 +3429,7 @@
     "No hay datos para este ejercicio." : {
 
     },
-    "Notas" : {
+    "Notas (opcional)" : {
 
     },
     "nueces_desc" : {
@@ -5428,6 +5452,9 @@
 
     },
     "segundos" : {
+
+    },
+    "Seleccionar alimento" : {
 
     },
     "sentadilla_bulgara_mancuerna_desc" : {

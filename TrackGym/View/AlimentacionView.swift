@@ -16,6 +16,21 @@ struct AlimentacionView: View {
     @State private var grams: Double = 100
     @State private var notes: String = ""
     @State private var selectedMeal: Meal? = nil
+    
+    @State private var showingFoodList = false
+    @State private var searchText = ""
+    
+    // COMPUTED PROPERTY PARA FILTRAR ALIMENTOS
+    var filteredFoods: [FoodSeed] {
+        if searchText.isEmpty {
+            return defaultFoods
+        }
+        return defaultFoods.filter { food in
+            food.name.localizedCaseInsensitiveContains(searchText) ||
+            food.desc.localizedCaseInsensitiveContains(searchText) ||
+            food.category.rawValue.localizedCaseInsensitiveContains(searchText)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -177,26 +192,91 @@ struct AlimentacionView: View {
             }
             .sheet(item: $showingAddFoodLogFor) { meal in
                 NavigationStack {
-                    Form {
-                        Picker("Alimento", selection: Binding(get: {
-                            selectedFood ?? defaultFoods.first
-                        }, set: { newValue in
-                            selectedFood = newValue
-                        })) {
-                            ForEach(defaultFoods, id: \.slug) { food in
-                                Text(food.name).tag(food as FoodSeed?)
+                    VStack(spacing: 0) {
+                        Form {
+                            // Sección de alimento seleccionado
+                            if let selectedFood = selectedFood {
+                                Section("Alimento seleccionado") {
+                                    HStack {
+                                        // Icono del alimento
+                                        Image(systemName: foodIcon(for: selectedFood.category))
+                                            .foregroundColor(iconColor(for: selectedFood.category))
+                                            .font(.title2)
+                                            .frame(width: 30)
+                                        
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(selectedFood.name)
+                                                .font(.headline)
+                                            Text(selectedFood.desc)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                                .lineLimit(2)
+                                            
+                                            Text(selectedFood.category.rawValue)
+                                                .font(.caption2)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 2)
+                                                .background(iconColor(for: selectedFood.category).opacity(0.2))
+                                                .foregroundColor(iconColor(for: selectedFood.category))
+                                                .cornerRadius(4)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        Button("Cambiar") {
+                                            showingFoodList = true
+                                        }
+                                        .font(.caption)
+                                        .foregroundColor(.blue)
+                                    }
+                                    .contentShape(Rectangle())
+                                }
+                            } else {
+                                Section("Seleccionar alimento") {
+                                    Button(action: { showingFoodList = true }) {
+                                        HStack {
+                                            Image(systemName: "magnifyingglass")
+                                                .foregroundColor(.blue)
+                                            Text("Buscar y seleccionar alimento")
+                                                .foregroundColor(.blue)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Cantidad
+                            Section("Cantidad") {
+                                HStack {
+                                    Text("Gramos")
+                                    Spacer()
+                                    TextField("0", value: $grams, formatter: NumberFormatter())
+                                        .keyboardType(.decimalPad)
+                                        .frame(width: 80)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .multilineTextAlignment(.center)
+                                }
+                            }
+                            
+                            // Información nutricional calculada
+                            if let selectedFood = selectedFood, grams > 0 {
+                                Section("Información nutricional") {
+                                    NutritionalInfoGrid(food: selectedFood, grams: grams)
+                                }
+                            }
+                            
+                            // Notas
+                            Section("Notas (opcional)") {
+                                TextField("Añade alguna nota...", text: $notes, axis: .vertical)
+                                    .lineLimit(2...4)
                             }
                         }
-                        HStack {
-                            Text("Cantidad (g)")
-                            Spacer()
-                            TextField("g", value: $grams, formatter: NumberFormatter())
-                                .keyboardType(.decimalPad)
-                                .frame(width: 80)
-                        }
-                        TextField("Notas", text: $notes)
                     }
                     .navigationTitle("Añadir alimento")
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancelar") {
@@ -214,12 +294,11 @@ struct AlimentacionView: View {
                                 print("💾 STARTING SAVE PROCESS")
                                 print("📝 Food: \(food.name), Grams: \(grams)")
                                 
-                                // Crear la entrada
+                                // Tu código de guardado existente...
                                 let entry = FoodLog(date: Date(), slug: food.slug, grams: grams, notes: notes, meal: meal)
                                 context.insert(entry)
                                 meal.entries.append(entry)
                                 
-                                // Guardar en CoreData
                                 do {
                                     try context.save()
                                     print("✅ CoreData save successful")
@@ -228,12 +307,10 @@ struct AlimentacionView: View {
                                     return
                                 }
                                 
-                                // EXPORTAR INMEDIATAMENTE - ANTES de cerrar el sheet
                                 print("🎯 About to call exportEntryDirectly")
                                 exportEntryDirectly(entry, food: food)
                                 print("🎯 exportEntryDirectly called")
                                 
-                                // Pequeño delay para que termine la exportación antes de cerrar
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     resetFoodLogFields()
                                     showingAddFoodLogFor = nil
@@ -242,6 +319,13 @@ struct AlimentacionView: View {
                             }
                             .disabled(selectedFood == nil || grams <= 0)
                         }
+                    }
+                    .sheet(isPresented: $showingFoodList) {
+                        FoodSelectionView(
+                            foods: filteredFoods,
+                            selectedFood: $selectedFood,
+                            searchText: $searchText
+                        )
                     }
                 }
             }
@@ -292,6 +376,49 @@ struct AlimentacionView: View {
         selectedFood = nil
         grams = 100
         notes = ""
+    }
+    
+    // FUNCIONES HELPER PARA ICONOS Y COLORES
+    func foodIcon(for category: FoodCategory) -> String {
+        switch category {
+        case .protein:
+            return "fish.fill"
+        case .carb:
+            return "leaf.fill"
+        case .fat:
+            return "drop.triangle.fill"
+        case .vegetable:
+            return "carrot.fill"
+        case .fruit:
+            return "apple.logo"
+        case .dairy:
+            return "drop.fill"
+        case .beverage:
+            return "cup.and.saucer.fill"
+        case .misc:
+            return "fork.knife"
+        }
+    }
+
+    func iconColor(for category: FoodCategory) -> Color {
+        switch category {
+        case .protein:
+            return .brown
+        case .carb:
+            return .orange
+        case .fat:
+            return .yellow
+        case .vegetable:
+            return .green
+        case .fruit:
+            return .red
+        case .dairy:
+            return .blue
+        case .beverage:
+            return .cyan
+        case .misc:
+            return .primary
+        }
     }
 
     // MARK: - HealthKit Export Methods
@@ -465,6 +592,336 @@ struct AlimentacionView: View {
         try? context.save()
     }
 }
+
+struct FoodSelectionView: View {
+    let foods: [FoodSeed]
+    @Binding var selectedFood: FoodSeed?
+    @Binding var searchText: String
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Barra de búsqueda
+                SearchBar(text: $searchText)
+                    .padding()
+                
+                List {
+                    // Agrupados por categoría
+                    ForEach(groupedFoods.keys.sorted { $0.rawValue < $1.rawValue }, id: \.self) { category in
+                        Section(category.rawValue) {
+                            ForEach(groupedFoods[category] ?? [], id: \.slug) { food in
+                                FoodRowView(
+                                    food: food,
+                                    isSelected: selectedFood?.slug == food.slug
+                                ) {
+                                    selectedFood = food
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }
+                }
+                .listStyle(InsetGroupedListStyle())
+            }
+            .navigationTitle("Seleccionar alimento")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") {
+                        dismiss()
+                    }
+                }
+                
+                // Botón para limpiar selección si hay una
+                if selectedFood != nil {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button("Limpiar") {
+                            selectedFood = nil
+                            dismiss()
+                        }
+                        .foregroundColor(.red)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var groupedFoods: [FoodCategory: [FoodSeed]] {
+        Dictionary(grouping: foods) { $0.category }
+    }
+}
+
+// ROW DE ALIMENTO MEJORADA
+struct FoodRowView: View {
+    let food: FoodSeed
+    let isSelected: Bool
+    let onTap: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Icono de categoría
+            Image(systemName: foodIcon(for: food.category))
+                .foregroundColor(iconColor(for: food.category))
+                .font(.title2)
+                .frame(width: 35, height: 35)
+                .background(iconColor(for: food.category).opacity(0.1))
+                .cornerRadius(8)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(food.name)
+                    .font(.headline)
+                    .lineLimit(1)
+                
+                Text(food.desc)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+                
+                // Información nutricional compacta
+                HStack(spacing: 16) {
+                    NutrientBadge(
+                        value: Int(food.kcal),
+                        unit: "kcal",
+                        color: .orange,
+                        icon: "flame.fill"
+                    )
+                    
+                    NutrientBadge(
+                        value: food.protein,
+                        unit: "P",
+                        color: .blue,
+                        icon: "p.circle.fill"
+                    )
+                    
+                    NutrientBadge(
+                        value: food.carbs,
+                        unit: "C",
+                        color: .green,
+                        icon: "c.circle.fill"
+                    )
+                    
+                    NutrientBadge(
+                        value: food.fat,
+                        unit: "G",
+                        color: .yellow,
+                        icon: "f.circle.fill"
+                    )
+                    
+                    Spacer()
+                }
+                .padding(.top, 2)
+            }
+            
+            Spacer()
+            
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.green)
+                    .font(.title2)
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onTap)
+        .padding(.vertical, 4)
+    }
+    
+    // FUNCIONES HELPER GLOBALES (disponibles para todos los componentes)
+    func foodIcon(for category: FoodCategory) -> String {
+        switch category {
+        case .protein:
+            return "fish.fill"
+        case .carb:
+            return "leaf.fill"
+        case .fat:
+            return "drop.triangle.fill"
+        case .vegetable:
+            return "carrot.fill"
+        case .fruit:
+            return "apple.logo"
+        case .dairy:
+            return "drop.fill"
+        case .beverage:
+            return "cup.and.saucer.fill"
+        case .misc:
+            return "fork.knife"
+        }
+    }
+
+    func iconColor(for category: FoodCategory) -> Color {
+        switch category {
+        case .protein:
+            return .brown
+        case .carb:
+            return .orange
+        case .fat:
+            return .yellow
+        case .vegetable:
+            return .green
+        case .fruit:
+            return .red
+        case .dairy:
+            return .blue
+        case .beverage:
+            return .cyan
+        case .misc:
+            return .primary
+        }
+    }
+}
+
+// COMPONENTE PARA BADGES DE NUTRIENTES
+struct NutrientBadge: View {
+    let value: Double
+    let unit: String
+    let color: Color
+    let icon: String
+    
+    init(value: Double, unit: String, color: Color, icon: String) {
+        self.value = value
+        self.unit = unit
+        self.color = color
+        self.icon = icon
+    }
+    
+    init(value: Int, unit: String, color: Color, icon: String) {
+        self.value = Double(value)
+        self.unit = unit
+        self.color = color
+        self.icon = icon
+    }
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            Image(systemName: icon)
+                .font(.caption2)
+            Text(formattedValue)
+                .font(.caption2)
+                .fontWeight(.medium)
+        }
+        .foregroundColor(color)
+    }
+    
+    private var formattedValue: String {
+        if unit == "kcal" {
+            return "\(Int(value))"
+        } else {
+            return String(format: "%.1f", value)
+        }
+    }
+    
+    
+    
+}
+
+// GRID DE INFORMACIÓN NUTRICIONAL
+struct NutritionalInfoGrid: View {
+    let food: FoodSeed
+    let grams: Double
+    
+    var body: some View {
+        LazyVGrid(columns: [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ], spacing: 12) {
+            NutritionalInfoCard(
+                title: "Calorías",
+                value: String(format: "%.0f", food.kcal * grams / 100),
+                unit: "kcal",
+                color: .orange,
+                icon: "flame.fill"
+            )
+            
+            NutritionalInfoCard(
+                title: "Proteínas",
+                value: String(format: "%.1f", food.protein * grams / 100),
+                unit: "g",
+                color: .blue,
+                icon: "p.circle.fill"
+            )
+            
+            NutritionalInfoCard(
+                title: "Carbohidratos",
+                value: String(format: "%.1f", food.carbs * grams / 100),
+                unit: "g",
+                color: .green,
+                icon: "c.circle.fill"
+            )
+            
+            NutritionalInfoCard(
+                title: "Grasas",
+                value: String(format: "%.1f", food.fat * grams / 100),
+                unit: "g",
+                color: .yellow,
+                icon: "f.circle.fill"
+            )
+        }
+    }
+}
+
+// CARD DE INFORMACIÓN NUTRICIONAL
+struct NutritionalInfoCard: View {
+    let title: String
+    let value: String
+    let unit: String
+    let color: Color
+    let icon: String
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                Text(title)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
+            
+            HStack {
+                Text(value)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Text(unit)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
+        }
+        .padding(12)
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+    }
+}
+
+// BARRA DE BÚSQUEDA
+struct SearchBar: View {
+    @Binding var text: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+            
+            TextField("Buscar alimentos...", text: $text)
+                .textFieldStyle(PlainTextFieldStyle())
+            
+            if !text.isEmpty {
+                Button(action: { text = "" }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
+}
+
+
+
 
 #Preview {
     AlimentacionView()
