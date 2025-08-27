@@ -113,6 +113,11 @@ struct MealDetailView: View {
             }
         }
     }
+    
+    private let foodBySlug: [String: FoodSeed] = {
+        print("🔧 Creating foodBySlug dictionary with \(defaultFoods.count) foods")
+        return Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
+    }()
 
     private func foodName(for slug: String) -> String {
         foodBySlug[slug]?.name ?? slug

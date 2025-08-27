@@ -37,7 +37,7 @@ final class Meal {
 }
 
 // Declaración global justo antes de FoodLog
-internal let foodBySlug: [String: FoodSeed] = {
+private let foodBySlug: [String: FoodSeed] = {
     Dictionary(uniqueKeysWithValues: defaultFoods.map { ($0.slug, $0) })
 }()
 

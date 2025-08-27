@@ -1,4 +1,3 @@
-
 import Foundation
 import HealthKit
 
@@ -110,6 +109,127 @@ class HealthKitManager {
         nutritionObserverQueries.removeAll()
     }
 
+    // MARK: - Individual Food Entry Methods
+    
+    /// ✅ NEW: Saves a single food item as an individual entry in HealthKit
+    /// This is optimized for real-time logging of individual foods as they're added
+    func saveFoodEntry(
+        date: Date,
+        foodName: String,
+        grams: Double,
+        protein: Double,
+        carbs: Double,
+        fat: Double,
+        kcal: Double,
+        completion: @escaping (Bool, Error?) -> Void
+    ) {
+        print("🍎 [HealthKit] Saving individual food: \(foodName) (\(grams)g)")
+        print("📊 [HealthKit] Macros: P:\(protein)g C:\(carbs)g F:\(fat)g K:\(kcal)kcal")
+        
+        let proteinUnit = HKUnit.gram()
+        let carbsUnit = HKUnit.gram()
+        let fatUnit = HKUnit.gram()
+        let energyUnit = HKUnit.kilocalorie()
+
+        // Enhanced metadata for better tracking
+        let metadata: [String: Any] = [
+            HKMetadataKeyFoodType: foodName,
+            "TrackGym_FoodName": foodName,
+            "TrackGym_Grams": grams,
+            "TrackGym_EntryType": "IndividualFood"
+        ]
+
+        // Create samples with zero values filtered out (HealthKit doesn't like 0.0 samples)
+        var samples: [HKQuantitySample] = []
+        
+        if protein > 0 {
+            samples.append(HKQuantitySample(
+                type: proteinType,
+                quantity: HKQuantity(unit: proteinUnit, doubleValue: protein),
+                start: date,
+                end: date,
+                metadata: metadata
+            ))
+        }
+        
+        if carbs > 0 {
+            samples.append(HKQuantitySample(
+                type: carbsType,
+                quantity: HKQuantity(unit: carbsUnit, doubleValue: carbs),
+                start: date,
+                end: date,
+                metadata: metadata
+            ))
+        }
+        
+        if fat > 0 {
+            samples.append(HKQuantitySample(
+                type: fatType,
+                quantity: HKQuantity(unit: fatUnit, doubleValue: fat),
+                start: date,
+                end: date,
+                metadata: metadata
+            ))
+        }
+        
+        if kcal > 0 {
+            samples.append(HKQuantitySample(
+                type: energyType,
+                quantity: HKQuantity(unit: energyUnit, doubleValue: kcal),
+                start: date,
+                end: date,
+                metadata: metadata
+            ))
+        }
+
+        guard !samples.isEmpty else {
+            print("⚠️ [HealthKit] No non-zero values to save for \(foodName)")
+            completion(false, NSError(domain: "HealthKit", code: 2, userInfo: [NSLocalizedDescriptionKey: "No non-zero nutritional values to save"]))
+            return
+        }
+
+        // Try to create a food correlation first (shows as single item in Health app)
+        if let foodType = HKCorrelationType.correlationType(forIdentifier: .food) {
+            let correlation = HKCorrelation(
+                type: foodType,
+                start: date,
+                end: date,
+                objects: Set(samples),
+                metadata: metadata
+            )
+            
+            healthStore.save(correlation) { [weak self] success, error in
+                if success {
+                    print("✅ [HealthKit] Successfully saved food correlation: \(foodName)")
+                    completion(true, nil)
+                } else {
+                    print("⚠️ [HealthKit] Correlation failed, falling back to individual samples")
+                    // Fallback to individual samples
+                    self?.healthStore.save(samples) { fallbackSuccess, fallbackError in
+                        if fallbackSuccess {
+                            print("✅ [HealthKit] Successfully saved individual samples: \(foodName)")
+                        } else {
+                            print("❌ [HealthKit] Failed to save samples: \(fallbackError?.localizedDescription ?? "Unknown error")")
+                        }
+                        completion(fallbackSuccess, fallbackError)
+                    }
+                }
+            }
+        } else {
+            // Very old iOS versions without correlation support
+            healthStore.save(samples) { success, error in
+                if success {
+                    print("✅ [HealthKit] Successfully saved individual samples (legacy): \(foodName)")
+                } else {
+                    print("❌ [HealthKit] Failed to save samples (legacy): \(error?.localizedDescription ?? "Unknown error")")
+                }
+                completion(success, error)
+            }
+        }
+    }
+
+    // MARK: - Legacy Methods (kept for compatibility)
+    
     func saveMealMacros(date: Date, protein: Double, carbs: Double, fat: Double, kcal: Double, completion: ((Bool, Error?) -> Void)? = nil) {
         let proteinUnit = HKUnit.gram()
         let carbsUnit = HKUnit.gram()
