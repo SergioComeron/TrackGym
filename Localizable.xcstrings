@@ -3453,6 +3453,74 @@
         }
       }
     },
+    "aceitunas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olives"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitunas"
+          }
+        }
+      }
+    },
+    "aceitunas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Table olives, rich in monounsaturated fats and sodium."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitunas de mesa, ricas en grasas monoinsaturadas y sodio."
+          }
+        }
+      }
+    },
+    "coliflor_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cauliflower"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coliflor"
+          }
+        }
+      }
+    },
+    "coliflor_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low-calorie cruciferous vegetable, rich in fiber and micronutrients."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verdura crucífera baja en calorías y rica en fibra y micronutrientes."
+          }
+        }
+      }
+    },
     "Nivel de actividad" : {
 
     },
@@ -4890,6 +4958,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pull-over polea"
+          }
+        }
+      }
+    },
+    "face_pull_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face pull"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face pull"
+          }
+        }
+      }
+    },
+    "face_pull_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cable exercise pulling towards the face; strengthens rear delts and external rotators."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio en polea tirando hacia la cara; fortalece deltoides posteriores y rotadores externos."
+          }
+        }
+      }
+    },
+    "pull_over_banco_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dumbbell pull-over (bench)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull-over en banco con mancuerna"
+          }
+        }
+      }
+    },
+    "pull_over_banco_mancuerna_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performed lying on a bench with a dumbbell; works chest and lats through shoulder extension."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejecutado tumbado en banco con mancuerna; trabaja pecho y dorsales mediante extensión de hombro."
           }
         }
       }

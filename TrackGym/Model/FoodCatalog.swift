@@ -67,7 +67,8 @@ let fatFoods: [FoodSeed] = [
     FoodSeed(slug: "aguacate", category: .fat, protein: 2.0, carbs: 9.0, fat: 15.0, kcal: 177),
     FoodSeed(slug: "nueces", category: .fat, protein: 15.0, carbs: 14.0, fat: 65.0, kcal: 683),
     FoodSeed(slug: "almendras", category: .fat, protein: 21.0, carbs: 22.0, fat: 50.0, kcal: 642),
-    FoodSeed(slug: "mantequilla_cacahuete", category: .fat, protein: 25.0, carbs: 20.0, fat: 50.0, kcal: 705)
+    FoodSeed(slug: "mantequilla_cacahuete", category: .fat, protein: 25.0, carbs: 20.0, fat: 50.0, kcal: 705),
+    FoodSeed(slug: "aceitunas", category: .fat, protein: 1.0, carbs: 6.0, fat: 11.0, kcal: 115)
 ]
 
 let fruitFoods: [FoodSeed] = [
@@ -76,7 +77,8 @@ let fruitFoods: [FoodSeed] = [
     FoodSeed(slug: "melon", category: .fruit, protein: 0.8, carbs: 8.0, fat: 0.2, kcal: 34),
     FoodSeed(slug: "granada", category: .fruit, protein: 1.7, carbs: 19.0, fat: 1.2, kcal: 83),
     FoodSeed(slug: "manzana", category: .fruit, protein: 0.3, carbs: 14.0, fat: 0.2, kcal: 52),
-    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47)
+    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47),
+    FoodSeed(slug: "coliflor", category: .vegetable, protein: 1.9, carbs: 5.0, fat: 0.3, kcal: 25)
 ]
 
 let supplementFoods: [FoodSeed] = [

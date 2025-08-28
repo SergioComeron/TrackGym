@@ -42,6 +42,7 @@ let backExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "remo_gironda_una_mano", group: .espalda, type: .reps),
     ExerciseSeed(slug: "lumbar_banco", group: .espalda, type: .reps),
     ExerciseSeed(slug: "pull_over_polea", group: .espalda, type: .reps),
+    ExerciseSeed(slug: "pull_over_banco_mancuerna", group: .espalda, type: .reps),
 ]
 
 // Hombro
@@ -62,7 +63,8 @@ let hombroExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "remo_menton_barra", group: .hombro, type: .reps),
     ExerciseSeed(slug: "remo_menton_mancuernas", group: .hombro, type: .reps),
     ExerciseSeed(slug: "encogimientos_mancuernas", group: .hombro, type: .reps), // 🔹 nuevo
-    ExerciseSeed(slug: "encogimientos_barra", group: .hombro, type: .reps)       // 🔹 opcional: otra variante
+    ExerciseSeed(slug: "encogimientos_barra", group: .hombro, type: .reps),       // 🔹 opcional: otra variante
+    ExerciseSeed(slug: "face_pull", group: .hombro, type: .reps)
 ]
 
 // Pecho
@@ -85,7 +87,8 @@ let pechoExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "cruces_polea_baja", group: .pecho, type: .reps),
     ExerciseSeed(slug: "fondos_paralelas_pecho", group: .pecho, type: .reps),
     ExerciseSeed(slug: "fondos_maquina_pecho", group: .pecho, type: .reps),
-    ExerciseSeed(slug: "cruces_maquina_pecho", group: .pecho, type: .reps) // machine high-to-low fly
+    ExerciseSeed(slug: "cruces_maquina_pecho", group: .pecho, type: .reps), // machine high-to-low fly
+    ExerciseSeed(slug: "pull_over_banco_mancuerna", group: .pecho, type: .reps)
 ]
 
 // Femoral
@@ -200,4 +203,3 @@ let defaultExercises = backExercises
     + tricepsExercises
     + bicepsExercises
     + gemeloExercises
-
