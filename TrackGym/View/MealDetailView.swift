@@ -25,6 +25,12 @@ struct MealDetailView: View {
                             Spacer()
                             Text("\(Int(entry.grams))g")
                                 .foregroundStyle(.secondary)
+                            let kcal = entry.kcal > 0 ? entry.kcal : (foodBySlug[entry.slug]?.kcal ?? 0) * entry.grams / 100.0
+                            if Int(kcal) > 0 {
+                                Text("K: \(Int(kcal))")
+                                    .font(.caption2)
+                                    .foregroundStyle(.green)
+                            }
                             if entry.protein > 0 {
                                 Text("P: \(Int(entry.protein))")
                                     .font(.caption2)

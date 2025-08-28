@@ -4,6 +4,12 @@
     "%" : {
 
     },
+    "%lld" : {
+
+    },
+    "%lld kcal" : {
+
+    },
     "%lld%%" : {
 
     },
@@ -750,7 +756,16 @@
         }
       }
     },
+    "Comparación calorías" : {
+
+    },
+    "Conceder permisos de Salud" : {
+
+    },
     "Configuration" : {
+
+    },
+    "Consumidas" : {
 
     },
     "contractora_maquina_desc" : {
@@ -1538,6 +1553,9 @@
     "Datos básicos" : {
 
     },
+    "Déficit calórico: %lld kcal" : {
+
+    },
     "Despliega para añadir" : {
 
     },
@@ -2257,6 +2275,9 @@
 
     },
     "G: %lld" : {
+
+    },
+    "Gastadas" : {
 
     },
     "gemelo_de_pie_maquina_desc" : {
@@ -3022,6 +3043,9 @@
         }
       }
     },
+    "Incluye metabolismo basal y actividad física (HealthKit)" : {
+
+    },
     "Información nutricional" : {
 
     },
@@ -3166,6 +3190,12 @@
           }
         }
       }
+    },
+    "K: %lld" : {
+
+    },
+    "kcal" : {
+
     },
     "kg" : {
 
@@ -3741,6 +3771,9 @@
 
     },
     "Perfil guardado" : {
+
+    },
+    "Periodo" : {
 
     },
     "Peso" : {
@@ -5707,6 +5740,9 @@
     "Sin alimentos registrados." : {
 
     },
+    "Sin datos de actividad para el periodo seleccionado." : {
+
+    },
     "Sin entrenamientos" : {
 
     },
@@ -5716,10 +5752,16 @@
     "Sin inicio" : {
 
     },
+    "Solicitando permisos de Salud..." : {
+
+    },
     "Start a timer" : {
 
     },
     "Start Timer" : {
+
+    },
+    "Superávit calórico: +%lld kcal" : {
 
     },
     "Termina tu primer entreno para ver tu progreso aquí." : {

@@ -91,6 +91,12 @@ struct AlimentacionView: View {
                                                         Spacer(minLength: 8)
                                                         Text("\(Int(entry.grams))g")
                                                             .foregroundStyle(.secondary)
+                                                        let kcalValue = Int((foodBySlug[entry.slug]?.kcal ?? 0) * entry.grams / 100.0)
+                                                        if kcalValue > 0 {
+                                                            Text("K: \(kcalValue)")
+                                                                .font(.caption2)
+                                                                .foregroundStyle(.orange)
+                                                        }
                                                         if entry.protein > 0 {
                                                             Text("P: \(Int(entry.protein))")
                                                                 .font(.caption2)
@@ -927,3 +933,4 @@ struct SearchBar: View {
     AlimentacionView()
         .modelContainer(for: [Meal.self, FoodLog.self], inMemory: true)
 }
+

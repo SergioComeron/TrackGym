@@ -27,14 +27,34 @@ class HealthKitManager {
 
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
+            print("[HK] HealthKit no está disponible en este dispositivo")
             completion(false, NSError(domain: "HealthKit", code: 1, userInfo: [NSLocalizedDescriptionKey: "Health data not available on this device"]))
             return
         }
 
-        let shareTypes: Set<HKSampleType> = [proteinType, carbsType, fatType, energyType]
-        let readTypes: Set<HKObjectType> = [proteinType, carbsType, fatType, energyType]
+        // COMBINAR todos los tipos: nutrición + energía gastada
+        let shareTypes: Set<HKSampleType> = [
+            proteinType, carbsType, fatType, energyType  // Para escribir nutrición
+        ]
+        
+        let readTypes: Set<HKObjectType> = [
+            proteinType, carbsType, fatType, energyType,  // Para leer nutrición
+            HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,  // Para leer calorías gastadas
+            HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!    // Opcional: metabolismo basal
+        ]
 
-        healthStore.requestAuthorization(toShare: shareTypes, read: readTypes, completion: completion)
+        print("[HK] Solicitando permisos de HealthKit para nutrición y energía...")
+        
+        healthStore.requestAuthorization(toShare: shareTypes, read: readTypes) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    print("[HK] ✅ Permisos de HealthKit concedidos")
+                } else {
+                    print("[HK] ❌ Permisos de HealthKit denegados: \(error?.localizedDescription ?? "Error desconocido")")
+                }
+                completion(success, error)
+            }
+        }
     }
 
     func authorizationStatuses() -> [HKSampleType: HKAuthorizationStatus] {
@@ -759,9 +779,76 @@ class HealthKitManager {
         }
     }
 
+    /// Fetches the sum of active energy burned (calories) between the given dates.
+    /// - Parameters:
+    ///   - startDate: Start date of the query range.
+    ///   - endDate: End date of the query range.
+    ///   - completion: Completion handler returning total calories burned as Double.
+    public func fetchActiveEnergyBurned(startDate: Date, endDate: Date, completion: @escaping (Double) -> Void) {
+        let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+
+        // OJO: authorizationStatus(for:) solo refleja permiso de ESCRITURA, no de lectura.
+        // No bloquees la consulta por eso.
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictEndDate)
+
+        let query = HKStatisticsQuery(quantityType: type,
+                                      quantitySamplePredicate: predicate,
+                                      options: .cumulativeSum) { _, stats, error in
+            if let error = error {
+                print("[HK] ❌ Error en consulta activeEnergyBurned: \(error.localizedDescription)")
+                completion(0)
+                return
+            }
+
+            guard let sum = stats?.sumQuantity() else {
+                print("[HK] ⚠️ Sin datos de energía activa para el periodo \(startDate) - \(endDate)")
+                completion(0)
+                return
+            }
+
+            let totalKcal = sum.doubleValue(for: HKUnit.kilocalorie())
+            print("[HK] ✅ Calorías activas obtenidas: \(totalKcal) kcal para \(startDate) - \(endDate)")
+            completion(totalKcal)
+        }
+
+        healthStore.execute(query)
+    }
+    
+    /// Suma energía activa y basal entre dos fechas.
+    public func fetchTotalEnergyBurned(startDate: Date, endDate: Date, completion: @escaping (Double) -> Void) {
+        let activeType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let basalType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictEndDate)
+        let group = DispatchGroup()
+
+        var activeCalories: Double = 0
+        var basalCalories: Double = 0
+
+        group.enter()
+        let activeQuery = HKStatisticsQuery(quantityType: activeType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, error in
+            if let sum = stats?.sumQuantity() {
+                activeCalories = sum.doubleValue(for: HKUnit.kilocalorie())
+            }
+            group.leave()
+        }
+        healthStore.execute(activeQuery)
+
+        group.enter()
+        let basalQuery = HKStatisticsQuery(quantityType: basalType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, error in
+            if let sum = stats?.sumQuantity() {
+                basalCalories = sum.doubleValue(for: HKUnit.kilocalorie())
+            }
+            group.leave()
+        }
+        healthStore.execute(basalQuery)
+
+        group.notify(queue: .main) {
+            completion(activeCalories + basalCalories)
+        }
+    }
     
     // Puedes llamar a esta función pasando el tipo correcto (ejemplo: correlationType forIdentifier: .food) y el UUID que guardaste.
-}
-
-
     
+}

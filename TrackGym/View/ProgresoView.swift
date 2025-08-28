@@ -5,15 +5,21 @@
 import SwiftUI
 import SwiftData
 import FoundationModels
+import HealthKit
 #if canImport(Charts)
 import Charts
 #endif
 
 struct ProgresoView: View {
+    @State private var healthKitAuthorized = false
+    @State private var requestingPermissions = false
+    
     @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
     private var entrenamientos: [Entrenamiento]
     
     @Query private var perfiles: [Perfil]
+    
+    @Query private var meals: [Meal]
     
     @State private var selectedSlug: String? = nil
     @State private var resumenEntrenoHoy: String? = nil
@@ -23,15 +29,114 @@ struct ProgresoView: View {
     @State private var resumenSemana: String? = nil
     @State private var cargandoResumenSemana = false
     
+    @State private var burnedCaloriesHK: Double = 0
+    @State private var consumedCalories: Double = 0
+    
+    @State private var periodoSeleccionado: PeriodoCalorias = .hoy
+
     private let resumenEntrenoKey = "ResumenEntrenoHoy"
     private let resumenEntrenoIDKey = "LastResumenEntrenoID"
     private let resumenSemanaKey = "ResumenSemanaAI"
     private let resumenSemanaDateKey = "FechaResumenSemanaAI"
 
+    enum PeriodoCalorias: String, CaseIterable, Identifiable {
+        case hoy = "Hoy"
+        case semana = "Semana"
+        case mes = "Mes"
+        
+        var id: String { self.rawValue }
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
+                
+                Label("Comparación calorías", systemImage: "chart.pie.fill")
+                    .font(.headline)
+                    .padding(.bottom, 2)
+                
+                Picker("Periodo", selection: $periodoSeleccionado) {
+                    ForEach(PeriodoCalorias.allCases) { periodo in
+                        Text(periodo.rawValue).tag(periodo)
+                    }
+                }
+                .pickerStyle(.segmented)
+                
+                let diff = consumedCalories - burnedCaloriesHK
 
+                VStack(spacing: 8) {
+                    // Cabecera con totales
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading) {
+                            Text("Consumidas").font(.caption)
+                            Text("\(Int(consumedCalories)) kcal")
+                                .font(.title3).bold().foregroundColor(.orange)
+                        }
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            Text("Gastadas").font(.caption)
+                            Text("\(Int(burnedCaloriesHK)) kcal")
+                                .font(.title3).bold().foregroundColor(.blue)
+                        }
+                    }
+                    .padding(.bottom, 6)
+
+                    // Gráfico oficial de Charts (sustituye las barras "artesanales")
+                    #if canImport(Charts)
+                    let chartData: [(String, Double)] = [("Consumidas", consumedCalories), ("Gastadas", burnedCaloriesHK)]
+                    Chart(chartData, id: \.0) { item in
+                        BarMark(
+                            x: .value("Tipo", item.0),
+                            y: .value("kcal", item.1)
+                        )
+                        .foregroundStyle(by: .value("Tipo", item.0))
+                        .annotation(position: .top) {
+                            Text("\(Int(item.1))")
+                                .font(.caption2)
+                        }
+                    }
+                    .chartYAxisLabel("kcal", position: .trailing, alignment: .center)
+                    .chartLegend(.visible)
+                    .frame(height: 180)
+                    .animation(.easeInOut, value: consumedCalories)
+                    .animation(.easeInOut, value: burnedCaloriesHK)
+                    #else
+                    // Fallback si Charts no está disponible (opcional: deja vacío)
+                    EmptyView()
+                    #endif
+                    
+                    Text("Incluye metabolismo basal y actividad física (HealthKit)")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 2)
+                }
+
+                Text(diff >= 0 ? "Superávit calórico: +\(Int(diff)) kcal" : "Déficit calórico: \(Int(diff)) kcal")
+                    .foregroundColor(diff >= 0 ? .red : .green)
+                    .font(.callout)
+                    .padding(.top, 4)
+
+                if burnedCaloriesHK == 0 {
+                    if requestingPermissions {
+                        Text("Solicitando permisos de Salud...")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 2)
+                    } else if !healthKitAuthorized {
+                        Button("Conceder permisos de Salud") {
+                            requestHealthKitPermissions()
+                        }
+                        .font(.footnote)
+                        .foregroundColor(.blue)
+                        .padding(.top, 2)
+                    } else {
+                        Text("Sin datos de actividad para el periodo seleccionado.")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 2)
+                    }
+                }
+                
                 if cargandoResumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
                         ProgressView()
@@ -118,6 +223,7 @@ struct ProgresoView: View {
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("Progreso")
         .onAppear {
+            requestHealthKitPermissions()
             if selectedSlug == nil, let primero = ejercicioMasFrecuenteSlug ?? slugsEjerciciosRealizados.first {
                 selectedSlug = primero
             }
@@ -130,7 +236,79 @@ struct ProgresoView: View {
 
             // NO llamar directamente a generarResumenSemana()
             checkAndGenerateResumenSemana()
+            
+            updateCaloriasHKYConsumidas()
         }
+        .onChange(of: periodoSeleccionado) {
+            updateCaloriasHKYConsumidas()
+        }
+    }
+    
+    private func requestHealthKitPermissions() {
+        guard !healthKitAuthorized else {
+            updateCaloriasHKYConsumidas()
+            return
+        }
+        
+        requestingPermissions = true
+        
+        HealthKitManager.shared.requestAuthorization { [self] success, error in
+            DispatchQueue.main.async {
+                self.requestingPermissions = false
+                self.healthKitAuthorized = success
+                
+                if success {
+                    // Actualizar datos después de obtener permisos
+                    self.updateCaloriasHKYConsumidas()
+                } else {
+                    print("Error al obtener permisos HealthKit: \(error?.localizedDescription ?? "Unknown error")")
+                }
+            }
+        }
+    }
+    
+    private func updateCaloriasHKYConsumidas() {
+        burnedCaloriesHK = 0
+        consumedCalories = 0
+        
+        let calendar = Calendar.current
+        let now = Date()
+        var startDate: Date
+        let endDate = now
+        
+        switch periodoSeleccionado {
+        case .hoy:
+            startDate = calendar.startOfDay(for: now)
+        case .semana:
+            startDate = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? calendar.startOfDay(for: now)
+        case .mes:
+            startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? calendar.startOfDay(for: now)
+        }
+        
+        // Calcular calorías consumidas
+        consumedCalories = meals.filter { meal in
+            let fecha = meal.date
+            return fecha >= startDate && fecha <= endDate
+        }
+        .reduce(0) { $0 + $1.totalKcal }
+        
+        // Solo obtener datos de HealthKit si tenemos permisos
+        guard healthKitAuthorized else {
+            burnedCaloriesHK = 0
+            return
+        }
+        
+        HealthKitManager.shared.fetchTotalEnergyBurned(startDate: startDate, endDate: endDate) { calories in
+            DispatchQueue.main.async {
+                self.burnedCaloriesHK = calories
+            }
+        }
+    }
+
+    private var burnedCalories: Double {
+        // Estimación sencilla: duración total en minutos * 8 kcal/min
+        let minutos = totalDuracion / 60
+        return minutos * 8
     }
 
     private func checkAndGenerateResumenSemana() {
@@ -371,7 +549,7 @@ struct ProgresoView: View {
             if let restricciones = perfil.restricciones, !restricciones.isEmpty {
                 restriccionesStr = ", Restricciones: \(restricciones)"
             }
-            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo: \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
+            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
         }
         
         // Agrupar y listar grupos trabajados en la semana
@@ -555,3 +733,4 @@ private struct PesoChartView: View {
 #Preview {
     ProgresoView()
 }
+
