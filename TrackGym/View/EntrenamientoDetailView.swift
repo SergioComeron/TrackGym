@@ -895,15 +895,27 @@ private struct ExerciseSetsEditorView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if !isFinished && (performedExercise.entrenamiento?.startDate != nil) {
-                    Button("Añadir serie") {
-                        Task {
-                            isSuggestingWeight = true
-                            defer { isSuggestingWeight = false }
-                            await addSet()
+                HStack(spacing: 12) {
+                    if !isFinished && (performedExercise.entrenamiento?.startDate != nil) {
+                        Button {
+                            Task {
+                                isSuggestingWeight = true
+                                defer { isSuggestingWeight = false }
+                                await addSet()
+                            }
+                        } label: {
+                            Label("+", systemImage: "sparkles")
+                        }
+                        .disabled(isSuggestingWeight)
+                        if let lastSetToRepeat = getLastSetToRepeat() {
+                            Button {
+                                repeatLastSet(lastSet: lastSetToRepeat)
+                            } label: {
+                                Text("+")
+                            }
+                            .disabled(isSuggestingWeight)
                         }
                     }
-                    .disabled(isSuggestingWeight)
                 }
             }
         }
@@ -917,6 +929,37 @@ private struct ExerciseSetsEditorView: View {
         .onDisappear {
             saveContext()
         }
+    }
+
+    // Función auxiliar para obtener la última serie (en este u otros entrenamientos) para repetir
+    private func getLastSetToRepeat() -> ExerciseSet? {
+        let allSets = entrenamientos.flatMap { $0.ejercicios }
+            .filter { $0.slug == performedExercise.slug }
+            .flatMap { $0.sets }
+            .sorted { $0.createdAt > $1.createdAt }
+        return allSets.first
+    }
+    
+    // Función auxiliar para repetir la última serie copiada
+    private func repeatLastSet(lastSet: ExerciseSet) {
+        let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
+        let newSet = ExerciseSet(
+            reps: lastSet.reps,
+            weight: lastSet.weight,
+            order: newOrder,
+            performedExercise: performedExercise,
+            createdAt: Date()
+        )
+        newSet.id = UUID()
+        newSet.duration = lastSet.duration
+        context.insert(newSet)
+        performedExercise.sets.append(newSet)
+        // RENUMERAR order por coherencia visual
+        let sorted = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        for (idx, set) in sorted.enumerated() { set.order = idx }
+        saveContext()
+        syncStringsWithModel()
+        actualizarProgresoLiveActivity()
     }
 
     // Sincroniza los arrays de String con los valores actuales del modelo

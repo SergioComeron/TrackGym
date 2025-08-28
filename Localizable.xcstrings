@@ -23,6 +23,9 @@
         }
       }
     },
+    "+" : {
+
+    },
     "⚠️%lld" : {
 
     },
@@ -326,9 +329,6 @@
 
     },
     "Añadir entrenamiento" : {
-
-    },
-    "Añadir serie" : {
 
     },
     "aperturas_banco_inclinado_desc" : {
