@@ -39,15 +39,16 @@ struct MainMenu: View {
     var body: some View {
         @Bindable var router = router
         TabView(selection: $router.selectedTab) {
-            EntrenosTab()
-                .tabItem { Label("Entrenos", systemImage: "dumbbell") }
-                .tag(Router.Tab.entrenos)
-
             NavigationStack {
                 ProgresoView()
             }
             .tabItem { Label("Progreso", systemImage: "chart.bar.fill") }
             .tag(Router.Tab.progreso)
+            EntrenosTab()
+                .tabItem { Label("Entrenos", systemImage: "dumbbell") }
+                .tag(Router.Tab.entrenos)
+
+            
 
             AlimentacionView()
                 .tabItem { Label("Alimentación", systemImage: "fork.knife") }

@@ -31,6 +31,48 @@ struct AlimentacionView: View {
             food.category.rawValue.localizedCaseInsensitiveContains(searchText)
         }
     }
+    
+    // MARK: - Helper Methods
+    
+    private var groupedMealsByDay: [Date: [Meal]] {
+        Dictionary(grouping: meals) { $0.day }
+    }
+    
+    private var timeSinceLastMeal: String {
+        guard let lastMeal = meals.first else {
+            return "Sin registro de comidas"
+        }
+        let interval = Date().timeIntervalSince(lastMeal.date)
+        if interval < 0 {
+            return "Sin registro de comidas"
+        }
+        let hours = Int(interval) / 3600
+        let minutes = (Int(interval) % 3600) / 60
+        
+        var components: [String] = []
+        if hours > 0 {
+            components.append("\(hours)h")
+        }
+        if minutes > 0 || hours == 0 {
+            components.append("\(minutes)m")
+        }
+        
+        return "Hace " + components.joined(separator: " ") + " desde tu última comida"
+    }
+    
+    private var timeSinceLastMealColor: Color {
+        guard let lastMeal = meals.first else {
+            return .gray
+        }
+        let interval = Date().timeIntervalSince(lastMeal.date)
+        if interval >= 7200 {
+            return .red
+        } else if interval >= 0 && interval < 7200 {
+            return .blue
+        } else {
+            return .gray
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -336,6 +378,24 @@ struct AlimentacionView: View {
                 }
             }
         }
+        .overlay(
+            HStack {
+                Spacer()
+                HStack {
+                    Image(systemName: "clock.fill")
+            
+                    Text(timeSinceLastMeal)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .glassEffect(.clear.tint(timeSinceLastMealColor))
+                Spacer()
+            }
+            .padding(.bottom, 32)
+            , alignment: .bottom
+            
+        )
         .onAppear {
             HealthKitManager.shared.requestAuthorization { success, error in
                 if success {
@@ -353,12 +413,8 @@ struct AlimentacionView: View {
             }
         }
     }
-
-    // MARK: - Helper Methods
     
-    private var groupedMealsByDay: [Date: [Meal]] {
-        Dictionary(grouping: meals) { $0.day }
-    }
+
     
     private func dayFormatted(_ date: Date) -> String {
         let f = DateFormatter()

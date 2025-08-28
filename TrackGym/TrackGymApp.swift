@@ -16,7 +16,7 @@ enum AppRoute: Hashable {
 @Observable
 final class Router {
     enum Tab: Hashable { case entrenos, progreso, alimentacion, perfil }
-    var selectedTab: Tab = .entrenos
+    var selectedTab: Tab = .progreso
     var entrenosPath: [AppRoute] = []
     var pendingEntrenamientoID: UUID?
 }
@@ -94,3 +94,4 @@ struct EntrenamientoDetailLoaderView: View {
         }
     }
 }
+
