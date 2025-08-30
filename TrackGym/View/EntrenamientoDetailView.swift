@@ -65,7 +65,7 @@ struct EntrenamientoDetailView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(isGroupSectionExpanded ? "Ocultar grupos musculares" : "Mostrar grupos musculares")
+                    .accessibilityLabel(isGroupSectionExpanded ? "Ocultar grupos musculares" : "Mostrar grupos muscululares")
 
                     if !isGroupSectionExpanded && !entrenamiento.gruposMusculares.isEmpty {
                         Text(entrenamiento.gruposMusculares.map { $0.localizedName }.joined(separator: " · "))
@@ -668,7 +668,11 @@ private struct ExerciseSetsEditorView: View {
         let entrenamientosAnteriores = entrenamientos.filter { $0.ejercicios.contains(where: { $0.slug == performedExercise.slug }) && $0 != performedExercise.entrenamiento }.sorted { ($0.startDate ?? .distantPast) > ($1.startDate ?? .distantPast) }
         let anterior = entrenamientosAnteriores.first
         let fechaAnt = anterior?.startDate
-        let anteriorSets: [ExerciseSet] = anterior?.ejercicios.filter { $0.slug == performedExercise.slug }.flatMap { $0.sets.sorted { $0.order < $1.order } } ?? []
+        // Ordenar las series de la última sesión previa por fecha (createdAt) ascendente
+        let anteriorSets: [ExerciseSet] = anterior?
+            .ejercicios
+            .filter { $0.slug == performedExercise.slug }
+            .flatMap { $0.sets.sorted { $0.createdAt < $1.createdAt } } ?? []
 
         // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
         let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
@@ -695,7 +699,7 @@ private struct ExerciseSetsEditorView: View {
                         }
                         if let fechaAnt, !anteriorSets.isEmpty {
                             Text("Última sesión previa el \(formatDateShort(fechaAnt)):").font(.subheadline)
-                            ForEach(anteriorSets, id: \.id) { set in
+                            ForEach(anteriorSets.sorted(by: { $0.createdAt < $1.createdAt }), id: \.id) { set in
                                 Text("\(set.reps)x\(formatPeso(set.weight)) kg")
                                     .font(.caption)
                             }

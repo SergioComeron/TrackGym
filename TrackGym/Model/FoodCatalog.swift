@@ -71,23 +71,28 @@ let fatFoods: [FoodSeed] = [
     FoodSeed(slug: "aceitunas", category: .fat, protein: 1.0, carbs: 6.0, fat: 11.0, kcal: 115)
 ]
 
+let vegetableFoods: [FoodSeed] = [
+    FoodSeed(slug: "coliflor", category: .vegetable, protein: 1.9, carbs: 5.0, fat: 0.3, kcal: 25),
+    FoodSeed(slug: "tomate_crudo", category: .vegetable, protein: 0.9, carbs: 3.9, fat: 0.2, kcal: 18),
+    FoodSeed(slug: "judias_verdes", category: .vegetable, protein: 1.8, carbs: 7.0, fat: 0.2, kcal: 31)
+]
+
 let fruitFoods: [FoodSeed] = [
     FoodSeed(slug: "platano", category: .fruit, protein: 1.2, carbs: 23.0, fat: 0.3, kcal: 96),
     FoodSeed(slug: "sandia", category: .fruit, protein: 0.6, carbs: 8.0, fat: 0.2, kcal: 30),
     FoodSeed(slug: "melon", category: .fruit, protein: 0.8, carbs: 8.0, fat: 0.2, kcal: 34),
     FoodSeed(slug: "granada", category: .fruit, protein: 1.7, carbs: 19.0, fat: 1.2, kcal: 83),
     FoodSeed(slug: "manzana", category: .fruit, protein: 0.3, carbs: 14.0, fat: 0.2, kcal: 52),
-    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47),
-    FoodSeed(slug: "coliflor", category: .vegetable, protein: 1.9, carbs: 5.0, fat: 0.3, kcal: 25)
+    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47)
 ]
 
 let supplementFoods: [FoodSeed] = [
     FoodSeed(slug: "proteina_whey", category: .misc, protein: 80.0, carbs: 7.0, fat: 6.0, kcal: 389),
-    FoodSeed(slug: "proteina_iso", category: .misc, protein: 90.0, carbs: 2.0, fat: 1.0, kcal: 379),
+    FoodSeed(slug: "proteina_iso", category: .misc, protein: 85.1, carbs: 2.0, fat: 1.0, kcal: 379),
     FoodSeed(slug: "amilopectina", category: .misc, protein: 0.0, carbs: 95.0, fat: 0.0, kcal: 380),
     FoodSeed(slug: "clusterdextrina", category: .misc, protein: 0.0, carbs: 95.0, fat: 0.0, kcal: 380),
     FoodSeed(slug: "creatina_monohidrato", category: .misc, protein: 0.0, carbs: 0.0, fat: 0.0, kcal: 0),
     FoodSeed(slug: "map_aminoacidos", category: .misc, protein: 100.0, carbs: 0.0, fat: 0.0, kcal: 400)
 ]
 
-let defaultFoods = proteinFoods + carbFoods + fatFoods + fruitFoods + supplementFoods
+let defaultFoods = proteinFoods + carbFoods + fatFoods + vegetableFoods + fruitFoods + supplementFoods

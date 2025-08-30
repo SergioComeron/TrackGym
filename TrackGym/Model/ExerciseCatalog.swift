@@ -161,7 +161,12 @@ let tricepsExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "fondos_triceps_banco", group: .triceps, type: .reps),
     ExerciseSeed(slug: "press_frances_barra", group: .triceps, type: .reps),
     ExerciseSeed(slug: "press_frances_mancuernas", group: .triceps, type: .reps),
-    ExerciseSeed(slug: "press_frances_maquina", group: .triceps, type: .reps)
+    ExerciseSeed(slug: "press_frances_maquina", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "patada_atras_triceps_mancuerna", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "patada_atras_triceps_polea", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "extension_triceps_barraV_polea_alta", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "tiron_triceps_polea_prono", group: .triceps, type: .reps),
+    ExerciseSeed(slug: "tiron_triceps_polea_supino", group: .triceps, type: .reps)
 ]
 
 // Bíceps
@@ -177,7 +182,8 @@ let bicepsExercises: [ExerciseSeed] = [
     ExerciseSeed(slug: "curl_arana_mancuernas", group: .biceps, type: .reps),
     ExerciseSeed(slug: "curl_concentrado", group: .biceps, type: .reps),
     ExerciseSeed(slug: "curl_banco_predicador_mancuernas", group: .biceps, type: .reps),
-    ExerciseSeed(slug: "curl_banco_predicador_barra", group: .biceps, type: .reps)
+    ExerciseSeed(slug: "curl_banco_predicador_barra", group: .biceps, type: .reps),
+    ExerciseSeed(slug: "curl_maquina", group: .biceps, type: .reps)
 ]
 
 let gemeloExercises: [ExerciseSeed] = [

@@ -165,6 +165,40 @@
         }
       }
     },
+    "aceitunas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Table olives, rich in monounsaturated fats and sodium."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitunas de mesa, ricas en grasas monoinsaturadas y sodio."
+          }
+        }
+      }
+    },
+    "aceitunas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olives"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitunas"
+          }
+        }
+      }
+    },
     "aductor_maquina_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -756,6 +790,108 @@
         }
       }
     },
+    "coliflor_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low-calorie cruciferous vegetable, rich in fiber and micronutrients."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verdura crucífera baja en calorías y rica en fibra y micronutrientes."
+          }
+        }
+      }
+    },
+    "coliflor_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cauliflower"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coliflor"
+          }
+        }
+      }
+    },
+    "tomate_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw tomato, low-calorie vegetable rich in vitamin C and antioxidants."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomate crudo, hortaliza baja en calorías rica en vitamina C y antioxidantes."
+          }
+        }
+      }
+    },
+    "tomate_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw tomato"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomate crudo"
+          }
+        }
+      }
+    },
+    "judias_verdes_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green beans, fibrous vegetable, source of vitamins and minerals."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Judías verdes, verdura fibrosa fuente de vitaminas y minerales."
+          }
+        }
+      }
+    },
+    "judias_verdes_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green beans"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Judías verdes"
+          }
+        }
+      }
+    },
     "Comparación calorías" : {
 
     },
@@ -1274,6 +1410,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Curl concentrado"
+          }
+        }
+      }
+    },
+    "curl_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biceps curl on machine; guided path with stable resistance."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl de bíceps en máquina; trayectoria guiada con resistencia estable."
+          }
+        }
+      }
+    },
+    "curl_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine curl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl en máquina"
           }
         }
       }
@@ -2082,6 +2252,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extensión tríceps cuerda (polea alta)"
+          }
+        }
+      }
+    },
+    "face_pull_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cable exercise pulling towards the face; strengthens rear delts and external rotators."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio en polea tirando hacia la cara; fortalece deltoides posteriores y rotadores externos."
+          }
+        }
+      }
+    },
+    "face_pull_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face pull"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face pull"
           }
         }
       }
@@ -3416,7 +3620,7 @@
     "minutos" : {
 
     },
-    "Mostrar grupos musculares" : {
+    "Mostrar grupos muscululares" : {
 
     },
     "naranja_desc" : {
@@ -3449,74 +3653,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naranja"
-          }
-        }
-      }
-    },
-    "aceitunas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Olives"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aceitunas"
-          }
-        }
-      }
-    },
-    "aceitunas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Table olives, rich in monounsaturated fats and sodium."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aceitunas de mesa, ricas en grasas monoinsaturadas y sodio."
-          }
-        }
-      }
-    },
-    "coliflor_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cauliflower"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coliflor"
-          }
-        }
-      }
-    },
-    "coliflor_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Low-calorie cruciferous vegetable, rich in fiber and micronutrients."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verdura crucífera baja en calorías y rica en fibra y micronutrientes."
           }
         }
       }
@@ -4928,6 +5064,40 @@
         }
       }
     },
+    "pull_over_banco_mancuerna_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performed lying on a bench with a dumbbell; works chest and lats through shoulder extension."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejecutado tumbado en banco con mancuerna; trabaja pecho y dorsales mediante extensión de hombro."
+          }
+        }
+      }
+    },
+    "pull_over_banco_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dumbbell pull-over (bench)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull-over en banco con mancuerna"
+          }
+        }
+      }
+    },
     "pull_over_polea_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4958,74 +5128,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pull-over polea"
-          }
-        }
-      }
-    },
-    "face_pull_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Face pull"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Face pull"
-          }
-        }
-      }
-    },
-    "face_pull_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cable exercise pulling towards the face; strengthens rear delts and external rotators."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ejercicio en polea tirando hacia la cara; fortalece deltoides posteriores y rotadores externos."
-          }
-        }
-      }
-    },
-    "pull_over_banco_mancuerna_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dumbbell pull-over (bench)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pull-over en banco con mancuerna"
-          }
-        }
-      }
-    },
-    "pull_over_banco_mancuerna_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Performed lying on a bench with a dumbbell; works chest and lats through shoulder extension."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ejecutado tumbado en banco con mancuerna; trabaja pecho y dorsales mediante extensión de hombro."
           }
         }
       }
@@ -6036,6 +6138,76 @@
             "value" : "Tríceps cuerda tras nuca"
           }
         }
+      }
+    },
+    "patada_atras_triceps_mancuerna_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback with dumbbell; isolates triceps with elbow extension." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás de tríceps con mancuerna; aísla el tríceps mediante extensión de codo." } }
+      }
+    },
+    "patada_atras_triceps_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback (dumbbell)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás tríceps mancuerna" } }
+      }
+    },
+    "patada_atras_triceps_polea_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback on cable; constant tension during elbow extension." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás de tríceps en polea; tensión constante durante la extensión de codo." } }
+      }
+    },
+    "patada_atras_triceps_polea_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback (cable)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás tríceps polea" } }
+      }
+    },
+    "extension_triceps_barraV_polea_alta_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with V-bar on high pulley; controlled path for medial head." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps en polea alta con barra en V; recorrido controlado para la cabeza medial." } }
+      }
+    },
+    "extension_triceps_barraV_polea_alta_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps extension (V-bar cable)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión tríceps barra V polea" } }
+      }
+    },
+    "tiron_triceps_polea_prono_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown with pronated grip; emphasizes lateral head." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón de tríceps en polea con agarre prono; énfasis en cabeza lateral." } }
+      }
+    },
+    "tiron_triceps_polea_prono_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown (pronated grip)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón tríceps polea prono" } }
+      }
+    },
+    "tiron_triceps_polea_supino_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown with supinated grip; different wrist angle for long head." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón de tríceps en polea con agarre supino; ángulo distinto de muñeca para cabeza larga." } }
+      }
+    },
+    "tiron_triceps_polea_supino_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown (supinated grip)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón tríceps polea supino" } }
       }
     },
     "Última sesión previa el %@:" : {
