@@ -6048,6 +6048,77 @@
         }
       }
     },
+    "atun_lata_natural_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in brine; lean protein source, low fat." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata al natural; fuente magra de proteína, bajo en grasa." } }
+      }
+    },
+    "atun_lata_natural_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (natural)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata natural" } }
+      }
+    },
+    "atun_lata_aceite_oliva_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in olive oil; protein source with healthy fats." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata con aceite de oliva; proteína con grasas saludables." } }
+      }
+    },
+    "atun_lata_aceite_oliva_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (olive oil)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata aceite de oliva" } }
+      }
+    },
+    "atun_lata_aceite_vegetal_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in vegetable oil; protein source with added fats." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata con aceite vegetal; proteína con grasas añadidas." } }
+      }
+    },
+    "atun_lata_aceite_vegetal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (vegetable oil)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata aceite vegetal" } }
+      }
+    },
+    "arandanos_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Blueberries; small blue fruit rich in antioxidants and vitamin C." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Arándanos; fruta pequeña y azulada, rica en antioxidantes y vitamina C." } }
+      }
+    },
+    "arandanos_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Blueberries" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Arándanos" } }
+      }
+    },
+    "frambuesas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Raspberries; red fruit with sweet-sour flavor, rich in fiber and antioxidants." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Frambuesas; fruta roja de sabor ácido-dulce, rica en fibra y antioxidantes." } }
+      }
+    },
+    "frambuesas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Raspberries" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Frambuesas" } }
+      }
+    },
+    
     "This is an example widget." : {
 
     },

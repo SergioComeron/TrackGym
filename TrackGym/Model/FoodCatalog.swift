@@ -41,6 +41,9 @@ let proteinFoods: [FoodSeed] = [
     FoodSeed(slug: "salmon_crudo", category: .protein, protein: 20.0, carbs: 0.0, fat: 13.0, kcal: 217),
     FoodSeed(slug: "huevo_crudo", category: .protein, protein: 12.6, carbs: 1.1, fat: 10.6, kcal: 160),
     FoodSeed(slug: "clara_huevo", category: .protein, protein: 11.0, carbs: 0.7, fat: 0.2, kcal: 48),
+    FoodSeed(slug: "atun_lata_natural", category: .protein, protein: 23.0, carbs: 0.0, fat: 1.0, kcal: 100),
+    FoodSeed(slug: "atun_lata_aceite_oliva", category: .protein, protein: 23.0, carbs: 0.0, fat: 8.0, kcal: 160),
+    FoodSeed(slug: "atun_lata_aceite_vegetal", category: .protein, protein: 23.0, carbs: 0.0, fat: 10.0, kcal: 180),
     // Lácteos altos en proteína (se miden tal cual)
     FoodSeed(slug: "queso_fresco_batido_0", category: .dairy, protein: 8.5, carbs: 3.8, fat: 0.2, kcal: 58),
     FoodSeed(slug: "yogur_griego_0", category: .dairy, protein: 10.0, carbs: 3.5, fat: 0.2, kcal: 59)
@@ -83,7 +86,9 @@ let fruitFoods: [FoodSeed] = [
     FoodSeed(slug: "melon", category: .fruit, protein: 0.8, carbs: 8.0, fat: 0.2, kcal: 34),
     FoodSeed(slug: "granada", category: .fruit, protein: 1.7, carbs: 19.0, fat: 1.2, kcal: 83),
     FoodSeed(slug: "manzana", category: .fruit, protein: 0.3, carbs: 14.0, fat: 0.2, kcal: 52),
-    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47)
+    FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47),
+    FoodSeed(slug: "arandanos", category: .fruit, protein: 0.7, carbs: 14.5, fat: 0.3, kcal: 57),
+    FoodSeed(slug: "frambuesas", category: .fruit, protein: 1.2, carbs: 12.0, fat: 0.7, kcal: 52)
 ]
 
 let supplementFoods: [FoodSeed] = [
