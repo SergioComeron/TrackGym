@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "/ %lld%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "/ %1$lld%2$@"
+          }
+        }
+      }
+    },
     "%" : {
 
     },
@@ -9,6 +19,16 @@
     },
     "%lld kcal" : {
 
+    },
+    "%lld%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld%2$@"
+          }
+        }
+      }
     },
     "%lld%%" : {
 
@@ -371,6 +391,9 @@
     "Añadir entrenamiento" : {
 
     },
+    "Análisis de macros" : {
+
+    },
     "aperturas_banco_inclinado_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -507,6 +530,40 @@
         }
       }
     },
+    "arandanos_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blueberries; small blue fruit rich in antioxidants and vitamin C."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arándanos; fruta pequeña y azulada, rica en antioxidantes y vitamina C."
+          }
+        }
+      }
+    },
+    "arandanos_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blueberries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arándanos"
+          }
+        }
+      }
+    },
     "arroz_blanco_crudo_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -609,6 +666,108 @@
         }
       }
     },
+    "atun_lata_aceite_oliva_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna in olive oil; protein source with healthy fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún en lata con aceite de oliva; proteína con grasas saludables."
+          }
+        }
+      }
+    },
+    "atun_lata_aceite_oliva_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna (olive oil)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún lata aceite de oliva"
+          }
+        }
+      }
+    },
+    "atun_lata_aceite_vegetal_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna in vegetable oil; protein source with added fats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún en lata con aceite vegetal; proteína con grasas añadidas."
+          }
+        }
+      }
+    },
+    "atun_lata_aceite_vegetal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna (vegetable oil)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún lata aceite vegetal"
+          }
+        }
+      }
+    },
+    "atun_lata_natural_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna in brine; lean protein source, low fat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún en lata al natural; fuente magra de proteína, bajo en grasa."
+          }
+        }
+      }
+    },
+    "atun_lata_natural_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canned tuna (natural)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atún lata natural"
+          }
+        }
+      }
+    },
     "Aún no has añadido ejercicios" : {
 
     },
@@ -688,6 +847,40 @@
     },
     "Bíceps" : {
 
+    },
+    "bocadillo_calamares_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typical Spanish calamari sandwich; combines bread with fried squid rings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Típico bocadillo de calamares; combina pan con anillas de calamar fritas."
+          }
+        }
+      }
+    },
+    "bocadillo_calamares_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calamari sandwich"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bocadillo de calamares"
+          }
+        }
+      }
     },
     "Buscar alimentos..." : {
 
@@ -824,74 +1017,6 @@
         }
       }
     },
-    "tomate_crudo_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Raw tomato, low-calorie vegetable rich in vitamin C and antioxidants."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tomate crudo, hortaliza baja en calorías rica en vitamina C y antioxidantes."
-          }
-        }
-      }
-    },
-    "tomate_crudo_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Raw tomato"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tomate crudo"
-          }
-        }
-      }
-    },
-    "judias_verdes_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Green beans, fibrous vegetable, source of vitamins and minerals."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Judías verdes, verdura fibrosa fuente de vitaminas y minerales."
-          }
-        }
-      }
-    },
-    "judias_verdes_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Green beans"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Judías verdes"
-          }
-        }
-      }
-    },
     "Comparación calorías" : {
 
     },
@@ -902,6 +1027,9 @@
 
     },
     "Consumidas" : {
+
+    },
+    "Consumido" : {
 
     },
     "contractora_maquina_desc" : {
@@ -1414,40 +1542,6 @@
         }
       }
     },
-    "curl_maquina_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biceps curl on machine; guided path with stable resistance."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Curl de bíceps en máquina; trayectoria guiada con resistencia estable."
-          }
-        }
-      }
-    },
-    "curl_maquina_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Machine curl"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Curl en máquina"
-          }
-        }
-      }
-    },
     "curl_femoral_sentado_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1580,6 +1674,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Curl inclinado simultáneo con mancuernas"
+          }
+        }
+      }
+    },
+    "curl_maquina_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biceps curl on machine; guided path with stable resistance."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl de bíceps en máquina; trayectoria guiada con resistencia estable."
+          }
+        }
+      }
+    },
+    "curl_maquina_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine curl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl en máquina"
           }
         }
       }
@@ -2222,6 +2350,40 @@
         }
       }
     },
+    "extension_triceps_barraV_polea_alta_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overhead triceps extension with V-bar on high pulley; controlled path for medial head."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión de tríceps en polea alta con barra en V; recorrido controlado para la cabeza medial."
+          }
+        }
+      }
+    },
+    "extension_triceps_barraV_polea_alta_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps extension (V-bar cable)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensión tríceps barra V polea"
+          }
+        }
+      }
+    },
     "extension_triceps_cuerda_polea_alta_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2471,6 +2633,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fondos tríceps en paralelas"
+          }
+        }
+      }
+    },
+    "frambuesas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspberries; red fruit with sweet-sour flavor, rich in fiber and antioxidants."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frambuesas; fruta roja de sabor ácido-dulce, rica en fibra y antioxidantes."
+          }
+        }
+      }
+    },
+    "frambuesas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspberries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frambuesas"
           }
         }
       }
@@ -3395,6 +3591,40 @@
         }
       }
     },
+    "judias_verdes_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green beans, fibrous vegetable, source of vitamins and minerals."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Judías verdes, verdura fibrosa fuente de vitaminas y minerales."
+          }
+        }
+      }
+    },
+    "judias_verdes_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green beans"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Judías verdes"
+          }
+        }
+      }
+    },
     "K: %lld" : {
 
     },
@@ -3440,6 +3670,9 @@
           }
         }
       }
+    },
+    "Macro" : {
+
     },
     "mantequilla_cacahuete_desc" : {
       "extractionState" : "manual",
@@ -3712,6 +3945,9 @@
     "Objetivo" : {
 
     },
+    "Objetivos estimados con Mifflin-St Jeor y tu nivel de actividad y objetivo del perfil." : {
+
+    },
     "Ocultar grupos musculares" : {
 
     },
@@ -3829,6 +4065,74 @@
         }
       }
     },
+    "patatas_fritas_racion_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full serving of French fries; approx 150 g portion, fried potatoes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ración completa de patatas fritas; porción de aprox. 150 g de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_fritas_racion_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French fries (full serving)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas fritas (ración completa)"
+          }
+        }
+      }
+    },
+    "patatas_fritas_media_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Half serving of French fries; approx 75 g portion, fried potatoes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media ración de patatas fritas; porción de aprox. 75 g de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_fritas_media_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French fries (half serving)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas fritas (media ración)"
+          }
+        }
+      }
+    },
     "pasta_cruda_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3893,6 +4197,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patada atrás en máquina"
+          }
+        }
+      }
+    },
+    "patada_atras_triceps_mancuerna_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps kickback with dumbbell; isolates triceps with elbow extension."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patada atrás de tríceps con mancuerna; aísla el tríceps mediante extensión de codo."
+          }
+        }
+      }
+    },
+    "patada_atras_triceps_mancuerna_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps kickback (dumbbell)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patada atrás tríceps mancuerna"
+          }
+        }
+      }
+    },
+    "patada_atras_triceps_polea_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps kickback on cable; constant tension during elbow extension."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patada atrás de tríceps en polea; tensión constante durante la extensión de codo."
+          }
+        }
+      }
+    },
+    "patada_atras_triceps_polea_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps kickback (cable)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patada atrás tríceps polea"
           }
         }
       }
@@ -6048,77 +6420,6 @@
         }
       }
     },
-    "atun_lata_natural_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in brine; lean protein source, low fat." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata al natural; fuente magra de proteína, bajo en grasa." } }
-      }
-    },
-    "atun_lata_natural_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (natural)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata natural" } }
-      }
-    },
-    "atun_lata_aceite_oliva_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in olive oil; protein source with healthy fats." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata con aceite de oliva; proteína con grasas saludables." } }
-      }
-    },
-    "atun_lata_aceite_oliva_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (olive oil)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata aceite de oliva" } }
-      }
-    },
-    "atun_lata_aceite_vegetal_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna in vegetable oil; protein source with added fats." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún en lata con aceite vegetal; proteína con grasas añadidas." } }
-      }
-    },
-    "atun_lata_aceite_vegetal_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Canned tuna (vegetable oil)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atún lata aceite vegetal" } }
-      }
-    },
-    "arandanos_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Blueberries; small blue fruit rich in antioxidants and vitamin C." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Arándanos; fruta pequeña y azulada, rica en antioxidantes y vitamina C." } }
-      }
-    },
-    "arandanos_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Blueberries" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Arándanos" } }
-      }
-    },
-    "frambuesas_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Raspberries; red fruit with sweet-sour flavor, rich in fiber and antioxidants." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Frambuesas; fruta roja de sabor ácido-dulce, rica en fibra y antioxidantes." } }
-      }
-    },
-    "frambuesas_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Raspberries" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Frambuesas" } }
-      }
-    },
-    
     "This is an example widget." : {
 
     },
@@ -6139,6 +6440,108 @@
     },
     "Tipo" : {
 
+    },
+    "tiron_triceps_polea_prono_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps pushdown with pronated grip; emphasizes lateral head."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirón de tríceps en polea con agarre prono; énfasis en cabeza lateral."
+          }
+        }
+      }
+    },
+    "tiron_triceps_polea_prono_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps pushdown (pronated grip)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirón tríceps polea prono"
+          }
+        }
+      }
+    },
+    "tiron_triceps_polea_supino_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps pushdown with supinated grip; different wrist angle for long head."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirón de tríceps en polea con agarre supino; ángulo distinto de muñeca para cabeza larga."
+          }
+        }
+      }
+    },
+    "tiron_triceps_polea_supino_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps pushdown (supinated grip)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirón tríceps polea supino"
+          }
+        }
+      }
+    },
+    "tomate_crudo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw tomato, low-calorie vegetable rich in vitamin C and antioxidants."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomate crudo, hortaliza baja en calorías rica en vitamina C y antioxidantes."
+          }
+        }
+      }
+    },
+    "tomate_crudo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raw tomato"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomate crudo"
+          }
+        }
+      }
     },
     "tostas_centeno_desc" : {
       "extractionState" : "manual",
@@ -6211,77 +6614,10 @@
         }
       }
     },
-    "patada_atras_triceps_mancuerna_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback with dumbbell; isolates triceps with elbow extension." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás de tríceps con mancuerna; aísla el tríceps mediante extensión de codo." } }
-      }
-    },
-    "patada_atras_triceps_mancuerna_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback (dumbbell)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás tríceps mancuerna" } }
-      }
-    },
-    "patada_atras_triceps_polea_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback on cable; constant tension during elbow extension." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás de tríceps en polea; tensión constante durante la extensión de codo." } }
-      }
-    },
-    "patada_atras_triceps_polea_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps kickback (cable)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Patada atrás tríceps polea" } }
-      }
-    },
-    "extension_triceps_barraV_polea_alta_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overhead triceps extension with V-bar on high pulley; controlled path for medial head." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión de tríceps en polea alta con barra en V; recorrido controlado para la cabeza medial." } }
-      }
-    },
-    "extension_triceps_barraV_polea_alta_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps extension (V-bar cable)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extensión tríceps barra V polea" } }
-      }
-    },
-    "tiron_triceps_polea_prono_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown with pronated grip; emphasizes lateral head." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón de tríceps en polea con agarre prono; énfasis en cabeza lateral." } }
-      }
-    },
-    "tiron_triceps_polea_prono_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown (pronated grip)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón tríceps polea prono" } }
-      }
-    },
-    "tiron_triceps_polea_supino_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown with supinated grip; different wrist angle for long head." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón de tríceps en polea con agarre supino; ángulo distinto de muñeca para cabeza larga." } }
-      }
-    },
-    "tiron_triceps_polea_supino_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Triceps pushdown (supinated grip)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tirón tríceps polea supino" } }
-      }
-    },
     "Última sesión previa el %@:" : {
+
+    },
+    "Usar ración estándar (%lld g)" : {
 
     },
     "yogur_griego_0_desc" : {

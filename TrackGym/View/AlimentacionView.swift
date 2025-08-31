@@ -16,6 +16,7 @@ struct AlimentacionView: View {
     @State private var grams: Double = 100
     @State private var notes: String = ""
     @State private var selectedMeal: Meal? = nil
+    @State private var useStandardServing: Bool = false
     
     @State private var showingFoodList = false
     @State private var searchText = ""
@@ -296,16 +297,34 @@ struct AlimentacionView: View {
                                 }
                             }
                             
-                            // Cantidad
+                            // Cantidad (con soporte de ración estándar si existe)
                             Section("Cantidad") {
-                                HStack {
-                                    Text("Gramos")
-                                    Spacer()
-                                    TextField("0", value: $grams, formatter: NumberFormatter())
-                                        .keyboardType(.decimalPad)
-                                        .frame(width: 80)
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .multilineTextAlignment(.center)
+                                if let f = selectedFood, let g = defaultGrams(for: f.slug) {
+                                    Toggle("Usar ración estándar (\(Int(g)) g)", isOn: $useStandardServing)
+                                        .onChange(of: useStandardServing) { _, on in
+                                            if on { grams = g }
+                                        }
+
+                                    HStack {
+                                        Text("Gramos")
+                                        Spacer()
+                                        TextField("0", value: $grams, formatter: NumberFormatter())
+                                            .keyboardType(.decimalPad)
+                                            .frame(width: 80)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .multilineTextAlignment(.center)
+                                            .disabled(useStandardServing)
+                                    }
+                                } else {
+                                    HStack {
+                                        Text("Gramos")
+                                        Spacer()
+                                        TextField("0", value: $grams, formatter: NumberFormatter())
+                                            .keyboardType(.decimalPad)
+                                            .frame(width: 80)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .multilineTextAlignment(.center)
+                                    }
                                 }
                             }
                             
@@ -366,6 +385,14 @@ struct AlimentacionView: View {
                                 }
                             }
                             .disabled(selectedFood == nil || grams <= 0)
+                        }
+                    }
+                    .onChange(of: selectedFood) { _, newValue in
+                        if let f = newValue, let g = defaultGrams(for: f.slug) {
+                            useStandardServing = true
+                            grams = g
+                        } else {
+                            useStandardServing = false
                         }
                     }
                     .sheet(isPresented: $showingFoodList) {
@@ -990,3 +1017,9 @@ struct SearchBar: View {
         .modelContainer(for: [Meal.self, FoodLog.self], inMemory: true)
 }
 
+
+
+//// Helper to get default grams for a food slug (returns Double? or nil if not found)
+//private func defaultGrams(for slug: String) -> Double? {
+//    foodBySlug[slug]?.defaultServingGrams
+//}

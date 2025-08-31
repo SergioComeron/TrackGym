@@ -32,6 +32,18 @@ struct ProgresoView: View {
     @State private var burnedCaloriesHK: Double = 0
     @State private var consumedCalories: Double = 0
     
+    // NUEVO: macros reales del periodo
+    @State private var proteinReal: Double = 0
+    @State private var carbsReal: Double = 0
+    @State private var fatReal: Double = 0
+    @State private var kcalReal: Double = 0
+    
+    // NUEVO: objetivos (targets) calculados
+    @State private var calTarget: Double = 0
+    @State private var proteinTarget: Double = 0
+    @State private var fatTarget: Double = 0
+    @State private var carbsTarget: Double = 0
+    
     @State private var periodoSeleccionado: PeriodoCalorias = .hoy
 
     private let resumenEntrenoKey = "ResumenEntrenoHoy"
@@ -137,6 +149,75 @@ struct ProgresoView: View {
                     }
                 }
                 
+                // NUEVA SECCIÓN: Análisis de macros
+                GroupBox(label: Label("Análisis de macros", systemImage: "chart.bar.doc.horizontal")) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        // Objetivos y reales
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Objetivo").font(.caption).foregroundStyle(.secondary)
+                                Text("🔥 \(Int(round(calTarget))) kcal")
+                                    .font(.headline)
+                            }
+                            Spacer()
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Consumido").font(.caption).foregroundStyle(.secondary)
+                                Text("🔥 \(Int(round(kcalReal))) kcal")
+                                    .font(.headline)
+                            }
+                        }
+                        
+                        HStack(spacing: 12) {
+                            macroPill(name: "P", color: .blue, real: proteinReal, target: proteinTarget, unit: "g")
+                            macroPill(name: "C", color: .green, real: carbsReal, target: carbsTarget, unit: "g")
+                            macroPill(name: "G", color: .orange, real: fatReal, target: fatTarget, unit: "g")
+                        }
+                        
+                        // Diagnóstico textual
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(diagnosisMacro(name: "Proteína", real: proteinReal, target: proteinTarget))
+                            Text(diagnosisMacro(name: "Carbohidratos", real: carbsReal, target: carbsTarget))
+                            Text(diagnosisMacro(name: "Grasas", real: fatReal, target: fatTarget))
+                            Text(diagnosisGlobal(kcalReal: kcalReal, kcalTarget: calTarget))
+                                .fontWeight(.semibold)
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        
+                        #if canImport(Charts)
+                        // Gráfico comparando Objetivo vs Real por macro
+                        let macroChartData: [(String, String, Double)] = [
+                            ("Proteína", "Objetivo", proteinTarget),
+                            ("Proteína", "Real", proteinReal),
+                            ("Carbohidratos", "Objetivo", carbsTarget),
+                            ("Carbohidratos", "Real", carbsReal),
+                            ("Grasas", "Objetivo", fatTarget),
+                            ("Grasas", "Real", fatReal)
+                        ]
+                        Chart(macroChartData, id: \.0) { item in
+                            BarMark(
+                                x: .value("Macro", item.0),
+                                y: .value("g", item.2)
+                            )
+                            .foregroundStyle(by: .value("Tipo", item.1))
+                            .position(by: .value("Tipo", item.1))
+                            .annotation(position: .top) {
+                                Text("\(Int(round(item.2)))")
+                                    .font(.caption2)
+                            }
+                        }
+                        .chartYAxisLabel("g", position: .trailing, alignment: .center)
+                        .frame(height: 180)
+                        #endif
+                        
+                        // Nota de cómo se calculan los objetivos
+                        Text("Objetivos estimados con Mifflin-St Jeor y tu nivel de actividad y objetivo del perfil.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 6)
+                }
+
                 if cargandoResumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
                         ProgressView()
@@ -271,6 +352,13 @@ struct ProgresoView: View {
         burnedCaloriesHK = 0
         consumedCalories = 0
         
+        // NUEVO: reset de macros reales
+        proteinReal = 0
+        carbsReal = 0
+        fatReal = 0
+        kcalReal = 0
+        
+        // Calcular rango de fechas del periodo
         let calendar = Calendar.current
         let now = Date()
         var startDate: Date
@@ -285,12 +373,19 @@ struct ProgresoView: View {
             startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? calendar.startOfDay(for: now)
         }
         
-        // Calcular calorías consumidas
-        consumedCalories = meals.filter { meal in
+        // Calcular calorías y macros consumidas en el periodo
+        let mealsPeriodo = meals.filter { meal in
             let fecha = meal.date
             return fecha >= startDate && fecha <= endDate
         }
-        .reduce(0) { $0 + $1.totalKcal }
+        consumedCalories = mealsPeriodo.reduce(0) { $0 + $1.totalKcal }
+        kcalReal = consumedCalories
+        proteinReal = mealsPeriodo.reduce(0) { $0 + $1.totalProtein }
+        carbsReal   = mealsPeriodo.reduce(0) { $0 + $1.totalCarbs }
+        fatReal     = mealsPeriodo.reduce(0) { $0 + $1.totalFat }
+        
+        // Recalcular objetivos a partir del perfil
+        recalculateTargets()
         
         // Solo obtener datos de HealthKit si tenemos permisos
         guard healthKitAuthorized else {
@@ -303,6 +398,24 @@ struct ProgresoView: View {
                 self.burnedCaloriesHK = calories
             }
         }
+    }
+    
+    // NUEVO: recalcular objetivos en base al Perfil
+    private func recalculateTargets() {
+        guard let perfil = perfiles.first else {
+            // Sin perfil: deja targets en 0
+            calTarget = 0
+            proteinTarget = 0
+            fatTarget = 0
+            carbsTarget = 0
+            return
+        }
+        let cal = calorieTarget(for: perfil)
+        let macros = macroTargets(for: perfil, calTarget: cal)
+        calTarget = cal
+        proteinTarget = macros.p
+        fatTarget = macros.f
+        carbsTarget = macros.c
     }
 
     private var burnedCalories: Double {
@@ -419,6 +532,23 @@ struct ProgresoView: View {
         .frame(maxWidth: .infinity)
         .padding(8)
     }
+    
+    // NUEVO: píldora de macro con color e indicador de desviación
+    private func macroPill(name: String, color: Color, real: Double, target: Double, unit: String) -> some View {
+        let pct = target > 0 ? (real / target) : 0
+        let statusColor: Color = pct < 0.9 ? .orange : (pct > 1.1 ? .red : .green)
+        return HStack(spacing: 6) {
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(name).font(.caption).foregroundStyle(.secondary)
+            Text("\(Int(round(real)))\(unit)").font(.subheadline).bold()
+            Text("/ \(Int(round(target)))\(unit)").font(.caption2).foregroundStyle(.secondary)
+            Circle().fill(statusColor).frame(width: 8, height: 8)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(Color(.systemGray6))
+        .clipShape(Capsule())
+    }
 
     private func duracionText(from start: Date, to end: Date) -> String {
         let interval = Int(end.timeIntervalSince(start))
@@ -487,9 +617,6 @@ struct ProgresoView: View {
         let ejerciciosDisponibles = defaultExercises.filter { gruposTrabajados.contains($0.group) }
             .map { $0.name }
             .joined(separator: ", ")
-        
-
-//        let prompt = "\(perfilStr)Eres un entrenador personal de gimnasio avanzado, experto en cambios físicos para aumemntar masa muscular o perder grasa. Analiza este entrenamiento de hoy:\n- Grupos trabajados: \(grupos)\n- Ejercicios realizados:\n\(ejerciciosStr)\nDime si he hecho bien el entreno para trabajar los musculos que te he dicho. Estas repeticiones y pesos están bien? Si ves que falta algun otro ejercicio proponme alguno de esta lista: \(ejerciciosDisponibles).\nEsplicame por qué lo sugieres.\nDime en que esta flojo este entrenamiento y cuales son los puntos débiles asi como los puntos fuertes. Sé claro, directo y concreto en español.\nToda tu respuesta no puede ocupar mas de dos párrafos"
         
         let prompt = """
             \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza este entrenamiento que he registrado hoy:
@@ -638,6 +765,101 @@ Valora el equilibrio del entrenamiento semanal, indica si falta algún grupo mus
             }
         }
     }
+    
+    // MARK: - Helpers de objetivos y diagnóstico (NUEVOS)
+    
+    private func bmr(for perfil: Perfil) -> Double {
+        let peso = perfil.peso
+        let altura = perfil.altura
+        let edad = Double(perfil.edad)
+        let sexoLower = perfil.sexo.lowercased()
+        // Mifflin-St Jeor
+        let base = 10 * peso + 6.25 * altura - 5 * edad
+        if sexoLower.contains("fem") {
+            return base - 161
+        } else {
+            return base + 5
+        }
+    }
+    
+    private func activityFactor(from nivel: String) -> Double {
+        let lower = nivel.lowercased()
+        if lower.contains("alta") { return 1.725 }
+        if lower.contains("moder") { return 1.55 }
+        if lower.contains("baja") { return 1.2 }
+        // fallback razonable
+        return 1.4
+    }
+    
+    private func calorieTarget(for perfil: Perfil) -> Double {
+        let b = bmr(for: perfil)
+        let af = activityFactor(from: perfil.nivelActividad)
+        let objetivoLower = perfil.objetivo.lowercased()
+        let ajuste: Double
+        if objetivoLower.contains("ganar") {
+            ajuste = 0.12 // +12%
+        } else if objetivoLower.contains("perder") {
+            ajuste = -0.15 // -15%
+        } else {
+            ajuste = 0.0
+        }
+        return (b * af) * (1.0 + ajuste)
+    }
+    
+    private func macroTargets(for perfil: Perfil, calTarget: Double) -> (p: Double, c: Double, f: Double) {
+        let peso = perfil.peso
+        let objetivoLower = perfil.objetivo.lowercased()
+        // Proteína g/kg
+        let pPerKg: Double
+        if objetivoLower.contains("ganar") {
+            pPerKg = 2.0
+        } else if objetivoLower.contains("perder") {
+            pPerKg = 2.2
+        } else {
+            pPerKg = 1.8
+        }
+        // Grasas g/kg
+        let fPerKg: Double = objetivoLower.contains("perder") ? 0.7 : 0.8
+        
+        let pGr = max(0, pPerKg * peso)
+        let fGr = max(0, fPerKg * peso)
+        
+        let kcalFromP = pGr * 4
+        let kcalFromF = fGr * 9
+        let remaining = max(0, calTarget - kcalFromP - kcalFromF)
+        let cGr = remaining / 4.0
+        
+        return (p: pGr, c: cGr, f: fGr)
+    }
+    
+    private func diagnosisMacro(name: String, real: Double, target: Double) -> String {
+        guard target > 0 else { return "\(name): sin objetivo definido." }
+        let ratio = real / target
+        let diff = real - target
+        let absDiff = abs(diff)
+        let sign = diff >= 0 ? "+" : "-"
+        
+        if ratio < 0.9 {
+            return "\(name): te faltan \(Int(round(absDiff))) g (−\(Int(round((1 - ratio) * 100)))%)."
+        } else if ratio > 1.1 {
+            return "\(name): te pasas \(Int(round(absDiff))) g (\(sign)\(Int(round((ratio - 1) * 100)))%)."
+        } else {
+            return "\(name): OK (±10%)."
+        }
+    }
+    
+    private func diagnosisGlobal(kcalReal: Double, kcalTarget: Double) -> String {
+        guard kcalTarget > 0 else { return "Calorías: sin objetivo definido." }
+        let ratio = kcalReal / kcalTarget
+        let diff = Int(round(kcalReal - kcalTarget))
+        if ratio < 0.95 {
+            return "Calorías: déficit no planificado (\(diff) kcal)."
+        } else if ratio > 1.05 {
+            return "Calorías: superávit no planificado (+\(diff) kcal)."
+        } else {
+            return "Calorías: dentro de objetivo (±5%)."
+        }
+    }
 }
 
 private func nombreEjercicioDesdeSlug(_ slug: String) -> String {
@@ -733,4 +955,3 @@ private struct PesoChartView: View {
 #Preview {
     ProgresoView()
 }
-

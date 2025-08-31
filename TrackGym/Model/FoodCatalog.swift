@@ -100,4 +100,31 @@ let supplementFoods: [FoodSeed] = [
     FoodSeed(slug: "map_aminoacidos", category: .misc, protein: 100.0, carbs: 0.0, fat: 0.0, kcal: 400)
 ]
 
-let defaultFoods = proteinFoods + carbFoods + fatFoods + vegetableFoods + fruitFoods + supplementFoods
+// Preparados / "fuera de dieta" (valores por 100 g)
+let preparedFoods: [FoodSeed] = [
+    // Bocadillo de calamares típico (aprox). Mezcla pan + calamar rebozado y frito.
+    // Estimación por 100 g: ~11P / 33C / 11G / 275 kcal.
+    FoodSeed(slug: "bocadillo_calamares", category: .misc, protein: 11.0, carbs: 33.0, fat: 11.0, kcal: 275),
+
+    // Patatas fritas (ración completa, aprox 150 g -> valores por 100 g).
+    // Estimación por 100 g: ~3P / 41C / 15G / 312 kcal.
+    FoodSeed(slug: "patatas_fritas_racion", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312),
+
+    // Patatas fritas (media ración, aprox 75 g -> mismos valores por 100 g).
+    FoodSeed(slug: "patatas_fritas_media", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312)
+]
+
+/// Tamaños de ración sugeridos (en gramos) para ciertos alimentos preparados.
+/// Úsalo en la UI como atajo para no tener que introducir gramos manualmente.
+/// Nota: un bocadillo de ~34 cm suele rondar ~350–400 g; fijamos 380 g por defecto.
+let defaultServingGrams: [String: Double] = [
+    "bocadillo_calamares": 380,
+    "patatas_fritas_racion": 150,
+    "patatas_fritas_media": 75
+]
+
+func defaultGrams(for slug: String) -> Double? {
+    return defaultServingGrams[slug]
+}
+
+let defaultFoods = proteinFoods + carbFoods + fatFoods + vegetableFoods + fruitFoods + supplementFoods + preparedFoods
