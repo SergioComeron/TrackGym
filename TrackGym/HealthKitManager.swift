@@ -474,63 +474,6 @@ class HealthKitManager {
         ///   - around: Optional date to narrow the deletion window (helps avoid deleting multiple entries with the same name/grams). If provided, a ±windowMinutes predicate is added.
         ///   - windowMinutes: Minutes for the date window when `around` is provided. Default 5.
         ///   - completion: Returns (success, totalDeletedCount, error)
-//        func deleteByFoodName(_ foodName: String, around: Date? = nil, windowMinutes: Int = 5, completion: @escaping (Bool, Int, Error?) -> Void) {
-//            // Build metadata predicate for the exact FoodType value
-//            let metaPredicate = HKQuery.predicateForObjects(withMetadataKey: HKMetadataKeyFoodType, allowedValues: [foodName])
-//
-//            // Optionally limit to a small time window around the provided date
-//            var predicates: [NSPredicate] = [metaPredicate]
-//            if let date = around, windowMinutes > 0 {
-//                let delta = TimeInterval(windowMinutes * 60)
-//                let start = date.addingTimeInterval(-delta)
-//                let end   = date.addingTimeInterval(+delta)
-//                let datePredicate = HKQuery.predicateForSamples(withStart: start, end: end, options: [.strictStartDate, .strictEndDate])
-//                predicates.append(datePredicate)
-//            }
-//
-//            // Limit to data written by this app (avoid deleting entries from other sources)
-//            let sourcePredicate = HKQuery.predicateForObjects(from: HKSource.default())
-//            predicates.append(sourcePredicate)
-//
-//            let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//
-//            // Types to delete: correlation .food + nutrient quantity types
-//            var sampleTypes: [HKSampleType] = [proteinType, carbsType, fatType, energyType]
-//            if let foodCorrelation = HKCorrelationType.correlationType(forIdentifier: .food) {
-//                sampleTypes.insert(foodCorrelation, at: 0)
-//            }
-//
-//            let group = DispatchGroup()
-//            var overallSuccess = true
-//            var totalDeleted = 0
-//            var firstError: Error?
-//
-//            for type in sampleTypes {
-//                group.enter()
-//                self.healthStore.deleteObjects(of: type, predicate: finalPredicate) { success, count, error in
-//                    print("[HK] 🗑️ deleteObjects(of: \(type.identifier)) → success=\(success) count=\(count) error=\(error?.localizedDescription ?? "nil")")
-//                    overallSuccess = overallSuccess && success
-//                    totalDeleted += count
-//                    if firstError == nil, let error = error { firstError = error }
-//                    group.leave()
-//                }
-//            }
-//
-//            group.notify(queue: .main) {
-//                if totalDeleted == 0 && overallSuccess {
-//                    // Consider no-op deletions as success but report 0
-//                    print("[HK] ℹ️ No matching samples found for FoodType=\(foodName)")
-//                }
-//                completion(overallSuccess, totalDeleted, firstError)
-//            }
-//        }
-
-        /// Deletes nutrition data saved by this app using the metadata `HKMetadataKeyFoodType` (e.g., "Tostada (60g)").
-        /// - Parameters:
-        ///   - foodName: Exact value used in metadata for `HKMetadataKeyFoodType` (e.g., "\(food.name) (\(Int(entry.grams))g)")
-        ///   - around: Optional date to narrow the deletion window (helps avoid deleting multiple entries with the same name/grams). If provided, a ±windowMinutes predicate is added.
-        ///   - windowMinutes: Minutes for the date window when `around` is provided. Default 5.
-        ///   - completion: Returns (success, totalDeletedCount, error)
         func deleteByFoodName(_ foodName: String, around: Date? = nil, windowMinutes: Int = 5, completion: @escaping (Bool, Int, Error?) -> Void) {
             // Build metadata predicate for the exact FoodType value
             let metaPredicate = HKQuery.predicateForObjects(withMetadataKey: HKMetadataKeyFoodType, allowedValues: [foodName])
@@ -850,5 +793,25 @@ class HealthKitManager {
     }
     
     // Puedes llamar a esta función pasando el tipo correcto (ejemplo: correlationType forIdentifier: .food) y el UUID que guardaste.
+    
+    /// Recupera todas las muestras de energía activa (calorías gastadas), dentro del rango dado.
+    /// Devuelve un array de HKQuantitySample. Puedes filtrar por hora/periodo después.
+    public func fetchActiveEnergySamples(startDate: Date, endDate: Date, completion: @escaping ([HKQuantitySample]) -> Void) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else {
+            completion([])
+            return
+        }
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, samples, error in
+            guard let samples = samples as? [HKQuantitySample], error == nil else {
+                print("[HK] Error al recuperar muestras de energía activa: \(error?.localizedDescription ?? "?")")
+                completion([])
+                return
+            }
+            completion(samples)
+        }
+        healthStore.execute(query)
+    }
     
 }

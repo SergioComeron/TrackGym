@@ -10,6 +10,12 @@ import HealthKit
 import Charts
 #endif
 
+struct CaloriePoint: Identifiable {
+    let id = UUID()
+    let date: Date
+    let accumulated: Double
+}
+
 struct ProgresoView: View {
     @State private var healthKitAuthorized = false
     @State private var requestingPermissions = false
@@ -45,6 +51,9 @@ struct ProgresoView: View {
     @State private var carbsTarget: Double = 0
     
     @State private var periodoSeleccionado: PeriodoCalorias = .hoy
+    
+    @State private var consumedPoints: [CaloriePoint] = []
+    @State private var burnedPoints: [CaloriePoint] = []
 
     private let resumenEntrenoKey = "ResumenEntrenoHoy"
     private let resumenEntrenoIDKey = "LastResumenEntrenoID"
@@ -62,6 +71,38 @@ struct ProgresoView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
+                
+                #if canImport(Charts)
+                GroupBox(label: Label("Evolución de calorías en el día", systemImage: "chart.line.uptrend.xyaxis")) {
+                    if !consumedPoints.isEmpty || !burnedPoints.isEmpty {
+                        Chart {
+                            ForEach(consumedPoints) { pt in
+                                LineMark(
+                                    x: .value("Hora", pt.date),
+                                    y: .value("Consumidas acumuladas", pt.accumulated)
+                                )
+                                .foregroundStyle(by: .value("Serie", "Consumidas"))
+                            }
+                            ForEach(burnedPoints) { pt in
+                                LineMark(
+                                    x: .value("Hora", pt.date),
+                                    y: .value("Gastadas acumuladas", pt.accumulated)
+                                )
+                                .foregroundStyle(by: .value("Serie", "Gastadas"))
+                            }
+                        }
+                        .chartLegend(.visible)
+                        .chartYAxisLabel("kcal", position: .trailing, alignment: .center)
+                        .frame(height: 180)
+                        .padding(.vertical, 4)
+                    } else {
+                        Text("No hay datos suficientes para mostrar el gráfico hoy.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.vertical, 8)
+                    }
+                }
+                #endif
                 
                 Label("Comparación calorías", systemImage: "chart.pie.fill")
                     .font(.headline)
@@ -384,6 +425,8 @@ struct ProgresoView: View {
         carbsReal   = mealsPeriodo.reduce(0) { $0 + $1.totalCarbs }
         fatReal     = mealsPeriodo.reduce(0) { $0 + $1.totalFat }
         
+        updateCaloriePoints(meals: mealsPeriodo, startDate: startDate, endDate: endDate)
+        
         // Recalcular objetivos a partir del perfil
         recalculateTargets()
         
@@ -392,10 +435,49 @@ struct ProgresoView: View {
             burnedCaloriesHK = 0
             return
         }
+
+        self.burnedPoints = [] // limpiar mientras espera HealthKit
         
         HealthKitManager.shared.fetchTotalEnergyBurned(startDate: startDate, endDate: endDate) { calories in
             DispatchQueue.main.async {
                 self.burnedCaloriesHK = calories
+                self.updateBurnedCaloriePoints(startDate: startDate, endDate: endDate)
+            }
+        }
+    }
+    
+    private func updateCaloriePoints(meals: [Meal], startDate: Date, endDate: Date) {
+        // Genera puntos solo en los momentos de cada comida (acumulativo)
+        let mealsSorted = meals.sorted(by: { $0.date < $1.date })
+        var acum: Double = 0
+        var points: [CaloriePoint] = []
+        let startOfDay = Calendar.current.startOfDay(for: startDate)
+        points.append(CaloriePoint(date: startOfDay, accumulated: 0))
+        for meal in mealsSorted {
+            acum += meal.totalKcal
+            points.append(CaloriePoint(date: meal.date, accumulated: acum))
+        }
+        self.consumedPoints = points
+    }
+
+    private func updateBurnedCaloriePoints(startDate: Date, endDate: Date) {
+        HealthKitManager.shared.fetchActiveEnergySamples(startDate: startDate, endDate: endDate) { samples in
+            let sorted = samples.sorted(by: { $0.startDate < $1.startDate })
+            var acum: Double = 0
+            var points: [CaloriePoint] = []
+            let startOfDay = Calendar.current.startOfDay(for: startDate)
+            points.append(CaloriePoint(date: startOfDay, accumulated: 0))
+            for s in sorted {
+                let kcal = s.quantity.doubleValue(for: HKUnit.kilocalorie())
+                acum += kcal
+                points.append(CaloriePoint(date: s.startDate, accumulated: acum))
+            }
+            print("[DEBUG] burnedPoints:")
+            for p in points {
+                print("Hora: \(p.date), Acumuladas: \(p.accumulated)")
+            }
+            DispatchQueue.main.async {
+                self.burnedPoints = points
             }
         }
     }
@@ -955,3 +1037,4 @@ private struct PesoChartView: View {
 #Preview {
     ProgresoView()
 }
+

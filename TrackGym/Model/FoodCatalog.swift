@@ -88,7 +88,8 @@ let fruitFoods: [FoodSeed] = [
     FoodSeed(slug: "manzana", category: .fruit, protein: 0.3, carbs: 14.0, fat: 0.2, kcal: 52),
     FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47),
     FoodSeed(slug: "arandanos", category: .fruit, protein: 0.7, carbs: 14.5, fat: 0.3, kcal: 57),
-    FoodSeed(slug: "frambuesas", category: .fruit, protein: 1.2, carbs: 12.0, fat: 0.7, kcal: 52)
+    FoodSeed(slug: "frambuesas", category: .fruit, protein: 1.2, carbs: 12.0, fat: 0.7, kcal: 52),
+    FoodSeed(slug: "melocoton", category: .fruit, protein: 0.9, carbs: 10.0, fat: 0.3, kcal: 39)
 ]
 
 let supplementFoods: [FoodSeed] = [
@@ -123,8 +124,62 @@ let defaultServingGrams: [String: Double] = [
     "patatas_fritas_media": 75
 ]
 
+let defaultServingGramsMcdonalds: [String: Double] = [
+    "bigmac": 220,
+    "mcroyal": 250,
+    "cbo": 240,
+    "mccrispy": 220,
+    "nuggets_9": 160,
+    "mcpollo": 210,
+    "cuarto_libra_queso": 240,
+    "mcextreme_bacon": 270,
+    "mcwrap": 200,
+    "cheeseburger": 115,
+    "hamburguesa": 110,
+    "patatas_pequenas": 80,
+    "patatas_medianas": 110,
+    "patatas_grandes": 150,
+    "patatas_deluxe_pequenas": 85,
+    "patatas_deluxe_medianas": 120,
+    "patatas_deluxe_grandes": 160,
+    "nuggets_6": 105,
+    "nuggets_4": 70,
+    "mcflurry": 170,
+    "mini_mcflurry": 100,
+    "sundae": 150,
+    "apple_pie": 80,
+    "cono_helado": 75
+]
+
 func defaultGrams(for slug: String) -> Double? {
-    return defaultServingGrams[slug]
+    return defaultServingGrams[slug] ?? defaultServingGramsMcdonalds[slug]
 }
 
-let defaultFoods = proteinFoods + carbFoods + fatFoods + vegetableFoods + fruitFoods + supplementFoods + preparedFoods
+let mcdonaldsFoods: [FoodSeed] = [
+    FoodSeed(slug: "bigmac", category: .misc, protein: 25.0, carbs: 45.0, fat: 28.0, kcal: 550),
+    FoodSeed(slug: "mcroyal", category: .misc, protein: 30.0, carbs: 40.0, fat: 30.0, kcal: 580),
+    FoodSeed(slug: "cbo", category: .misc, protein: 27.0, carbs: 42.0, fat: 29.0, kcal: 570),
+    FoodSeed(slug: "mccrispy", category: .misc, protein: 23.0, carbs: 40.0, fat: 25.0, kcal: 520),
+    FoodSeed(slug: "nuggets_9", category: .misc, protein: 21.0, carbs: 18.0, fat: 30.0, kcal: 450),
+    FoodSeed(slug: "mcpollo", category: .misc, protein: 27.0, carbs: 39.0, fat: 30.0, kcal: 570),
+    FoodSeed(slug: "cuarto_libra_queso", category: .misc, protein: 28.0, carbs: 38.0, fat: 32.0, kcal: 600),
+    FoodSeed(slug: "mcextreme_bacon", category: .misc, protein: 30.0, carbs: 40.0, fat: 35.0, kcal: 650),
+    FoodSeed(slug: "mcwrap", category: .misc, protein: 20.0, carbs: 35.0, fat: 20.0, kcal: 430),
+    FoodSeed(slug: "cheeseburger", category: .misc, protein: 15.0, carbs: 30.0, fat: 15.0, kcal: 300),
+    FoodSeed(slug: "hamburguesa", category: .misc, protein: 14.0, carbs: 28.0, fat: 14.0, kcal: 290),
+    FoodSeed(slug: "patatas_pequenas", category: .misc, protein: 3.0, carbs: 35.0, fat: 17.0, kcal: 350),
+    FoodSeed(slug: "patatas_medianas", category: .misc, protein: 4.0, carbs: 40.0, fat: 20.0, kcal: 400),
+    FoodSeed(slug: "patatas_grandes", category: .misc, protein: 5.0, carbs: 45.0, fat: 23.0, kcal: 450),
+    FoodSeed(slug: "patatas_deluxe_pequenas", category: .misc, protein: 4.0, carbs: 30.0, fat: 22.0, kcal: 370),
+    FoodSeed(slug: "patatas_deluxe_medianas", category: .misc, protein: 5.0, carbs: 35.0, fat: 25.0, kcal: 420),
+    FoodSeed(slug: "patatas_deluxe_grandes", category: .misc, protein: 6.0, carbs: 40.0, fat: 28.0, kcal: 470),
+    FoodSeed(slug: "nuggets_6", category: .misc, protein: 14.0, carbs: 12.0, fat: 20.0, kcal: 300),
+    FoodSeed(slug: "nuggets_4", category: .misc, protein: 9.0, carbs: 8.0, fat: 13.0, kcal: 200),
+    FoodSeed(slug: "mcflurry", category: .misc, protein: 8.0, carbs: 50.0, fat: 15.0, kcal: 350),
+    FoodSeed(slug: "mini_mcflurry", category: .misc, protein: 4.0, carbs: 25.0, fat: 8.0, kcal: 180),
+    FoodSeed(slug: "sundae", category: .misc, protein: 5.0, carbs: 35.0, fat: 10.0, kcal: 280),
+    FoodSeed(slug: "apple_pie", category: .misc, protein: 2.0, carbs: 40.0, fat: 15.0, kcal: 300),
+    FoodSeed(slug: "cono_helado", category: .misc, protein: 4.0, carbs: 30.0, fat: 10.0, kcal: 240)
+]
+
+let defaultFoods = proteinFoods + carbFoods + fatFoods + vegetableFoods + fruitFoods + supplementFoods + preparedFoods + mcdonaldsFoods

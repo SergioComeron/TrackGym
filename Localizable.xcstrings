@@ -530,6 +530,40 @@
         }
       }
     },
+    "apple_pie_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warm pastry filled with apple compote."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastelito caliente relleno de compota de manzana."
+          }
+        }
+      }
+    },
+    "apple_pie_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Pie"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarta de manzana"
+          }
+        }
+      }
+    },
     "arandanos_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -848,6 +882,40 @@
     "Bíceps" : {
 
     },
+    "bigmac_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classic Big Mac with two beef patties, lettuce, cheese, pickles, onions, and special sauce."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clásico Big Mac con dos hamburguesas de ternera, lechuga, queso, pepinillos, cebolla y salsa especial."
+          }
+        }
+      }
+    },
+    "bigmac_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Big Mac"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Big Mac"
+          }
+        }
+      }
+    },
     "bocadillo_calamares_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -909,8 +977,76 @@
     "Cargando…" : {
 
     },
+    "cbo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chicken, bacon, and onion burger with cheese and creamy sauce."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa de pollo, bacon y cebolla con queso y salsa cremosa."
+          }
+        }
+      }
+    },
+    "cbo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CBO"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CBO"
+          }
+        }
+      }
+    },
     "Cerrar" : {
 
+    },
+    "cheeseburger_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classic burger with beef patty, cheese, pickles, ketchup, and mustard."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clásica hamburguesa con carne, queso, pepinillos, kétchup y mostaza."
+          }
+        }
+      }
+    },
+    "cheeseburger_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cheeseburger"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cheeseburger"
+          }
+        }
+      }
     },
     "Cintura" : {
 
@@ -1026,7 +1162,44 @@
     "Configuration" : {
 
     },
+    "cono_helado_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soft serve vanilla ice cream in a cone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helado soft de vainilla en cono."
+          }
+        }
+      }
+    },
+    "cono_helado_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ice cream cone"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cono de helado"
+          }
+        }
+      }
+    },
     "Consumidas" : {
+
+    },
+    "Consumidas acumuladas" : {
 
     },
     "Consumido" : {
@@ -1334,6 +1507,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crunch en máquina"
+          }
+        }
+      }
+    },
+    "cuarto_libra_queso_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beef burger with cheese, pickles, onions, ketchup, and mustard."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa de vacuno con queso, pepinillos, cebolla, kétchup y mostaza."
+          }
+        }
+      }
+    },
+    "cuarto_libra_queso_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quarter Pounder with Cheese"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuarto de libra con queso"
           }
         }
       }
@@ -2276,6 +2483,9 @@
     "Estado" : {
 
     },
+    "Evolución de calorías en el día" : {
+
+    },
     "Evolución duración: %@" : {
 
     },
@@ -2678,6 +2888,9 @@
 
     },
     "Gastadas" : {
+
+    },
+    "Gastadas acumuladas" : {
 
     },
     "gemelo_de_pie_maquina_desc" : {
@@ -3239,6 +3452,40 @@
     "Guardar perfil" : {
 
     },
+    "hamburguesa_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simple beef burger with pickles, ketchup, and mustard."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa sencilla de vacuno con pepinillos, kétchup y mostaza."
+          }
+        }
+      }
+    },
+    "hamburguesa_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburger"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa"
+          }
+        }
+      }
+    },
     "harina_arroz_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3374,6 +3621,9 @@
           }
         }
       }
+    },
+    "Hora" : {
+
     },
     "huevo_crudo_desc" : {
       "extractionState" : "manual",
@@ -3776,11 +4026,249 @@
         }
       }
     },
+    "mccrispy_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy chicken fillet sandwich with lettuce and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sándwich de filete de pollo crujiente con lechuga y mayonesa."
+          }
+        }
+      }
+    },
+    "mccrispy_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McCrispy"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McCrispy"
+          }
+        }
+      }
+    },
+    "mcextreme_bacon_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burger with beef, bacon, cheese, and smoky sauce."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa con carne de vacuno, bacon, queso y salsa ahumada."
+          }
+        }
+      }
+    },
+    "mcextreme_bacon_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McExtreme Bacon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McExtreme Bacon"
+          }
+        }
+      }
+    },
+    "mcflurry_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soft serve ice cream dessert with mix-in toppings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postre de helado soft con toppings mezclados."
+          }
+        }
+      }
+    },
+    "mcflurry_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McFlurry"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McFlurry"
+          }
+        }
+      }
+    },
+    "mcpollo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breaded chicken burger with lettuce and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa de pollo empanado con lechuga y mayonesa."
+          }
+        }
+      }
+    },
+    "mcpollo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McPollo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McPollo"
+          }
+        }
+      }
+    },
+    "mcroyal_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burger with 100% beef patty, cheese, lettuce, tomato, and sauce."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa con carne 100% vacuno, queso, lechuga, tomate y salsa."
+          }
+        }
+      }
+    },
+    "mcroyal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McRoyal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McRoyal"
+          }
+        }
+      }
+    },
+    "mcwrap_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tortilla wrap with crispy chicken, lettuce, and sauce."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrap de tortilla con pollo crujiente, lechuga y salsa."
+          }
+        }
+      }
+    },
+    "mcwrap_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McWrap"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McWrap"
+          }
+        }
+      }
+    },
     "Medidas corporales (cm)" : {
 
     },
     "Mejores marcas: %@" : {
 
+    },
+    "melocoton_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweet juicy fruit, low in calories and rich in vitamins."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fruta dulce y jugosa, baja en calorías y rica en vitaminas."
+          }
+        }
+      }
+    },
+    "melocoton_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peach"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melocotón"
+          }
+        }
+      }
     },
     "melon_desc" : {
       "extractionState" : "manual",
@@ -3850,6 +4338,40 @@
         }
       }
     },
+    "mini_mcflurry_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small-size McFlurry with soft serve and toppings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "McFlurry en tamaño pequeño con helado soft y toppings."
+          }
+        }
+      }
+    },
+    "mini_mcflurry_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mini McFlurry"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mini McFlurry"
+          }
+        }
+      }
+    },
     "minutos" : {
 
     },
@@ -3896,6 +4418,9 @@
     "No hay datos para este ejercicio." : {
 
     },
+    "No hay datos suficientes para mostrar el gráfico hoy." : {
+
+    },
     "Notas (opcional)" : {
 
     },
@@ -3938,6 +4463,108 @@
     },
     "Nuevo entrenamiento" : {
 
+    },
+    "nuggets_4_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Four pieces of crispy chicken nuggets."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuatro piezas de nuggets de pollo crujientes."
+          }
+        }
+      }
+    },
+    "nuggets_4_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chicken McNuggets (4)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuggets de pollo (4)"
+          }
+        }
+      }
+    },
+    "nuggets_6_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Six pieces of crispy chicken nuggets."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seis piezas de nuggets de pollo crujientes."
+          }
+        }
+      }
+    },
+    "nuggets_6_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chicken McNuggets (6)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuggets de pollo (6)"
+          }
+        }
+      }
+    },
+    "nuggets_9_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nine pieces of crispy chicken nuggets."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueve piezas de nuggets de pollo crujientes."
+          }
+        }
+      }
+    },
+    "nuggets_9_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chicken McNuggets (9)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuggets de pollo (9)"
+          }
+        }
+      }
     },
     "Nunca has registrado este ejercicio" : {
 
@@ -4061,74 +4688,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pan blanco"
-          }
-        }
-      }
-    },
-    "patatas_fritas_racion_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full serving of French fries; approx 150 g portion, fried potatoes."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ración completa de patatas fritas; porción de aprox. 150 g de patatas fritas."
-          }
-        }
-      }
-    },
-    "patatas_fritas_racion_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "French fries (full serving)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Patatas fritas (ración completa)"
-          }
-        }
-      }
-    },
-    "patatas_fritas_media_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Half serving of French fries; approx 75 g portion, fried potatoes."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Media ración de patatas fritas; porción de aprox. 75 g de patatas fritas."
-          }
-        }
-      }
-    },
-    "patatas_fritas_media_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "French fries (half serving)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Patatas fritas (media ración)"
           }
         }
       }
@@ -4299,6 +4858,278 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patata cruda"
+          }
+        }
+      }
+    },
+    "patatas_deluxe_grandes_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large portion of seasoned Deluxe potato wedges."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción grande de patatas Deluxe sazonadas."
+          }
+        }
+      }
+    },
+    "patatas_deluxe_grandes_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large Deluxe fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas Deluxe grandes"
+          }
+        }
+      }
+    },
+    "patatas_deluxe_medianas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium portion of seasoned Deluxe potato wedges."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción mediana de patatas Deluxe sazonadas."
+          }
+        }
+      }
+    },
+    "patatas_deluxe_medianas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium Deluxe fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas Deluxe medianas"
+          }
+        }
+      }
+    },
+    "patatas_deluxe_pequenas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small portion of seasoned Deluxe potato wedges."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción pequeña de patatas Deluxe sazonadas."
+          }
+        }
+      }
+    },
+    "patatas_deluxe_pequenas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small Deluxe fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas Deluxe pequeñas"
+          }
+        }
+      }
+    },
+    "patatas_fritas_media_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Half serving of French fries; approx 75 g portion, fried potatoes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media ración de patatas fritas; porción de aprox. 75 g de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_fritas_media_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French fries (half serving)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas fritas (media ración)"
+          }
+        }
+      }
+    },
+    "patatas_fritas_racion_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full serving of French fries; approx 150 g portion, fried potatoes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ración completa de patatas fritas; porción de aprox. 150 g de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_fritas_racion_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French fries (full serving)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas fritas (ración completa)"
+          }
+        }
+      }
+    },
+    "patatas_grandes_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large portion of French fries."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción grande de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_grandes_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas grandes"
+          }
+        }
+      }
+    },
+    "patatas_medianas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium portion of French fries."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción mediana de patatas fritas."
+          }
+        }
+      }
+    },
+    "patatas_medianas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas medianas"
+          }
+        }
+      }
+    },
+    "patatas_pequenas_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small portion of classic French fries."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porción pequeña de patatas fritas clásicas."
+          }
+        }
+      }
+    },
+    "patatas_pequenas_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small fries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patatas pequeñas"
           }
         }
       }
@@ -6370,6 +7201,40 @@
     },
     "Start Timer" : {
 
+    },
+    "sundae_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soft serve ice cream with syrup topping."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helado soft con sirope por encima."
+          }
+        }
+      }
+    },
+    "sundae_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sundae"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sundae"
+          }
+        }
+      }
     },
     "Superávit calórico: +%lld kcal" : {
 
