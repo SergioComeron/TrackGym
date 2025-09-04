@@ -813,5 +813,25 @@ class HealthKitManager {
         }
         healthStore.execute(query)
     }
+
+    /// Recupera todas las muestras de energía basal (metabolismo basal) dentro del rango dado.
+    /// Devuelve un array de HKQuantitySample, ordenado por fecha de inicio ascendente.
+    public func fetchBasalEnergySamples(startDate: Date, endDate: Date, completion: @escaping ([HKQuantitySample]) -> Void) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned) else {
+            completion([])
+            return
+        }
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, samples, error in
+            guard let samples = samples as? [HKQuantitySample], error == nil else {
+                print("[HK] Error al recuperar muestras de energía basal: \(error?.localizedDescription ?? "?")")
+                completion([])
+                return
+            }
+            completion(samples)
+        }
+        healthStore.execute(query)
+    }
     
 }

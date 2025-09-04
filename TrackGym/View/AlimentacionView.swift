@@ -169,20 +169,41 @@ struct AlimentacionView: View {
                                                 .foregroundStyle(.secondary)
                                         }
                                         
-                                        // Botón para añadir alimentos - AL FINAL dentro del VStack y dentro del NavigationLink
-                                        Button {
-                                            print("🍎 Add food button pressed for meal: \(meal.type.rawValue)")
-                                            selectedMeal = meal
-                                            showingAddFoodLogFor = meal
-                                        } label: {
-                                            HStack {
-                                                Image(systemName: "plus.circle.fill")
-                                                Text("Añadir alimento")
+                                        // Botones en la misma fila: Añadir (izquierda) y Repetir (derecha)
+                                        HStack(alignment: .center) {
+                                            // Añadir alimento (izquierda)
+                                            Button {
+                                                print("🍎 Add food button pressed for meal: \(meal.type.rawValue)")
+                                                selectedMeal = meal
+                                                showingAddFoodLogFor = meal
+                                            } label: {
+                                                HStack {
+                                                    Image(systemName: "plus.circle.fill")
+                                                    Text("Añadir alimento")
+                                                }
+                                                .font(.subheadline)
+                                                .foregroundStyle(.blue)
                                             }
-                                            .font(.subheadline)
-                                            .foregroundStyle(.blue)
+                                            .buttonStyle(.borderless)
+                                            .controlSize(.regular)
+
+                                            Spacer()
+
+                                            // Repetir comida (derecha)
+                                            Button {
+                                                print("🔁 Repeat meal button pressed for: \(meal.type.rawValue) at \(meal.date)")
+                                                repeatMeal(meal)
+                                            } label: {
+                                                HStack {
+                                                    Image(systemName: "gobackward")
+                                                    Text("Repetir comida")
+                                                }
+                                                .font(.subheadline)
+                                            }
+                                            .buttonStyle(.borderless)
+                                            .controlSize(.regular)
+                                            .disabled(meal.entries.isEmpty)
                                         }
-                                        .buttonStyle(.borderless)
                                     }
                                     .padding(.vertical, 4)
                                 }
@@ -679,6 +700,41 @@ struct AlimentacionView: View {
         }
         meal.entries.remove(atOffsets: offsets)
         try? context.save()
+    }
+
+    // MARK: - Repeat Meal
+    private func repeatMeal(_ original: Meal) {
+        let now = Date()
+        // Crear nueva comida con el mismo tipo, en la fecha actual
+        let newMeal = Meal(date: now, type: original.type)
+        context.insert(newMeal)
+
+        // Copiar todas las entradas (alimentos) con las mismas cantidades
+        for oldEntry in original.entries {
+            let newEntry = FoodLog(
+                date: now,
+                slug: oldEntry.slug,
+                grams: oldEntry.grams,
+                notes: oldEntry.notes,
+                meal: newMeal
+            )
+            context.insert(newEntry)
+            newMeal.entries.append(newEntry)
+
+            // Exportar a HealthKit como en el alta manual
+            if let seed = foodBySlug[oldEntry.slug] {
+                exportEntryDirectly(newEntry, food: seed)
+            } else {
+                print("⚠️ No FoodSeed found for slug: \(oldEntry.slug), skipping HK export")
+            }
+        }
+
+        do {
+            try context.save()
+            print("✅ Meal repeated successfully with \(newMeal.entries.count) entries")
+        } catch {
+            print("❌ Error repeating meal: \(error)")
+        }
     }
 }
 

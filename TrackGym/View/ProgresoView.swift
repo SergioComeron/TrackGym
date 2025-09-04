@@ -16,6 +16,105 @@ struct CaloriePoint: Identifiable {
     let accumulated: Double
 }
 
+struct DailyCalorieBalance: Identifiable {
+    let id = UUID()
+    let date: Date
+    let consumed: Double
+    let burned: Double
+    var diff: Double { consumed - burned }
+}
+
+#if canImport(Charts)
+private struct MonthlyBalanceChartView: View {
+    let monthlyBalances: [DailyCalorieBalance]
+    @Binding var selected: DailyCalorieBalance?
+
+    var body: some View {
+        if monthlyBalances.contains(where: { $0.consumed > 0 || $0.burned > 0 }) {
+            GroupBox(label: Label("Balance diario (últimos 30 días)", systemImage: "calendar.badge.clock")) {
+                Chart {
+                    ForEach(monthlyBalances) { item in
+                        BarMark(
+                            x: .value("Día", item.date, unit: .day),
+                            y: .value("Diferencia (kcal)", item.diff)
+                        )
+                        .foregroundStyle(item.diff >= 0 ? .red : .green)
+                    }
+                    RuleMark(y: .value("Referencia", 0))
+                        .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                        .foregroundStyle(.secondary)
+                }
+                .chartYAxisLabel("kcal", position: .trailing, alignment: .center)
+                .frame(height: 220)
+                .chartOverlay { proxy in
+                    GeometryReader { geo in
+                        Rectangle()
+                            .fill(.clear)
+                            .contentShape(Rectangle())
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { value in
+                                        if let plot = proxy.plotFrame {
+                                            let origin = geo[plot].origin
+                                            let xPos = value.location.x - origin.x
+                                            if let date: Date = proxy.value(atX: xPos) {
+                                                if let nearest = nearest(date: date) {
+                                                    selected = nearest
+                                                }
+                                            }
+                                        }
+                                    }
+                            )
+                    }
+                }
+
+                if let sel = selected {
+                    HStack(spacing: 6) {
+                        Text(dateString(sel.date))
+                        Text("·")
+                        let sign = sel.diff >= 0 ? "+" : ""
+                        Text("\(sign)\(Int(sel.diff)) kcal")
+                        Text("·")
+                        Text("consumidas: \(Int(sel.consumed))")
+                        Text("·")
+                        Text("gastadas: \(Int(sel.burned))")
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 4)
+                } else {
+                    Text("Toca una barra para ver detalle.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .padding(.top, 4)
+                }
+
+                Text("Rojo = superávit (consumidas > gastadas). Verde = déficit.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 2)
+            }
+        }
+    }
+
+    private func nearest(date: Date) -> DailyCalorieBalance? {
+        let cal = Calendar.current
+        let day = cal.startOfDay(for: date)
+        if let exact = monthlyBalances.first(where: { cal.isDate($0.date, inSameDayAs: day) }) { return exact }
+        return monthlyBalances.min { lhs, rhs in
+            abs(lhs.date.timeIntervalSince(day)) < abs(rhs.date.timeIntervalSince(day))
+        }
+    }
+
+    private func dateString(_ date: Date) -> String {
+        let df = DateFormatter()
+        df.locale = Locale(identifier: "es_ES")
+        df.setLocalizedDateFormatFromTemplate("d MMM")
+        return df.string(from: date)
+    }
+}
+#endif
+
 struct ProgresoView: View {
     @State private var healthKitAuthorized = false
     @State private var requestingPermissions = false
@@ -37,6 +136,9 @@ struct ProgresoView: View {
     
     @State private var burnedCaloriesHK: Double = 0
     @State private var consumedCalories: Double = 0
+
+    @State private var monthlyBalances: [DailyCalorieBalance] = []
+    @State private var selectedMonthlyBalance: DailyCalorieBalance? = nil
     
     // NUEVO: macros reales del periodo
     @State private var proteinReal: Double = 0
@@ -50,23 +152,17 @@ struct ProgresoView: View {
     @State private var fatTarget: Double = 0
     @State private var carbsTarget: Double = 0
     
-    @State private var periodoSeleccionado: PeriodoCalorias = .hoy
     
     @State private var consumedPoints: [CaloriePoint] = []
     @State private var burnedPoints: [CaloriePoint] = []
+    @State private var burnedTotalPoints: [CaloriePoint] = []
+    @State private var burnedActivityPoints: [CaloriePoint] = []
 
     private let resumenEntrenoKey = "ResumenEntrenoHoy"
     private let resumenEntrenoIDKey = "LastResumenEntrenoID"
     private let resumenSemanaKey = "ResumenSemanaAI"
     private let resumenSemanaDateKey = "FechaResumenSemanaAI"
 
-    enum PeriodoCalorias: String, CaseIterable, Identifiable {
-        case hoy = "Hoy"
-        case semana = "Semana"
-        case mes = "Mes"
-        
-        var id: String { self.rawValue }
-    }
 
     var body: some View {
         ScrollView {
@@ -74,8 +170,9 @@ struct ProgresoView: View {
                 
                 #if canImport(Charts)
                 GroupBox(label: Label("Evolución de calorías en el día", systemImage: "chart.line.uptrend.xyaxis")) {
-                    if !consumedPoints.isEmpty || !burnedPoints.isEmpty {
+                    if !consumedPoints.isEmpty || !burnedTotalPoints.isEmpty || !burnedActivityPoints.isEmpty {
                         Chart {
+                            // Consumidas (acumuladas por comidas)
                             ForEach(consumedPoints) { pt in
                                 LineMark(
                                     x: .value("Hora", pt.date),
@@ -83,12 +180,22 @@ struct ProgresoView: View {
                                 )
                                 .foregroundStyle(by: .value("Serie", "Consumidas"))
                             }
-                            ForEach(burnedPoints) { pt in
+                            // Gastadas totales = basal + actividad (para comparar con consumidas)
+                            ForEach(burnedTotalPoints) { pt in
                                 LineMark(
                                     x: .value("Hora", pt.date),
-                                    y: .value("Gastadas acumuladas", pt.accumulated)
+                                    y: .value("Gastadas totales", pt.accumulated)
                                 )
-                                .foregroundStyle(by: .value("Serie", "Gastadas"))
+                                .foregroundStyle(by: .value("Serie", "Gastadas totales"))
+                            }
+                            // Solo actividad física (línea de contexto, discontinua)
+                            ForEach(burnedActivityPoints) { pt in
+                                LineMark(
+                                    x: .value("Hora", pt.date),
+                                    y: .value("Actividad", pt.accumulated)
+                                )
+                                .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                                .foregroundStyle(by: .value("Serie", "Actividad"))
                             }
                         }
                         .chartLegend(.visible)
@@ -108,12 +215,6 @@ struct ProgresoView: View {
                     .font(.headline)
                     .padding(.bottom, 2)
                 
-                Picker("Periodo", selection: $periodoSeleccionado) {
-                    ForEach(PeriodoCalorias.allCases) { periodo in
-                        Text(periodo.rawValue).tag(periodo)
-                    }
-                }
-                .pickerStyle(.segmented)
                 
                 let diff = consumedCalories - burnedCaloriesHK
 
@@ -259,6 +360,10 @@ struct ProgresoView: View {
                     .padding(.vertical, 6)
                 }
 
+                #if canImport(Charts)
+                MonthlyBalanceChartView(monthlyBalances: monthlyBalances, selected: $selectedMonthlyBalance)
+                #endif
+
                 if cargandoResumenEntrenoHoy {
                     GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
                         ProgressView()
@@ -360,9 +465,10 @@ struct ProgresoView: View {
             checkAndGenerateResumenSemana()
             
             updateCaloriasHKYConsumidas()
+            updateMonthlyBalancesLast30Days()
         }
-        .onChange(of: periodoSeleccionado) {
-            updateCaloriasHKYConsumidas()
+        .onChange(of: meals) { oldValue, newValue in
+            updateMonthlyBalancesLast30Days()
         }
     }
     
@@ -382,13 +488,65 @@ struct ProgresoView: View {
                 if success {
                     // Actualizar datos después de obtener permisos
                     self.updateCaloriasHKYConsumidas()
+                    self.updateMonthlyBalancesLast30Days()
                 } else {
                     print("Error al obtener permisos HealthKit: \(error?.localizedDescription ?? "Unknown error")")
                 }
             }
         }
     }
+
+    private func updateMonthlyBalancesLast30Days() {
+        let calendar = Calendar.current
+        let todayStart = calendar.startOfDay(for: Date())
+        // Últimos 30 días incluyendo hoy (de más antiguo a más reciente)
+        let days: [Date] = (0..<30)
+            .compactMap { calendar.date(byAdding: .day, value: -$0, to: todayStart) }
+            .sorted()
+
+        // 1) Consumidas por día (desde Meals)
+        var consumedByDay: [Date: Double] = [:]
+        for dayStart in days {
+            let nextDay = calendar.date(byAdding: .day, value: 1, to: dayStart) ?? dayStart
+            let dayMeals = meals.filter { $0.date >= dayStart && $0.date < nextDay }
+            let consumed = dayMeals.reduce(0.0) { $0 + $1.totalKcal }
+            consumedByDay[dayStart] = consumed
+        }
+
+        // 2) Gastadas por día (HealthKit: basal + actividad). Si no hay permisos, será 0.
+        guard healthKitAuthorized else {
+            let rows = days.map { d in
+                DailyCalorieBalance(date: d, consumed: consumedByDay[d] ?? 0, burned: 0)
+            }
+            self.monthlyBalances = rows
+            return
+        }
+
+        let group = DispatchGroup()
+        var burnedByDay: [Date: Double] = [:]
+        // Serial queue for safe mutations
+        let writeQueue = DispatchQueue(label: "monthlyBalances.writeQueue")
+
+        for dayStart in days {
+            let nextDay = calendar.date(byAdding: .day, value: 1, to: dayStart) ?? dayStart
+            group.enter()
+            HealthKitManager.shared.fetchTotalEnergyBurned(startDate: dayStart, endDate: nextDay) { calories in
+                writeQueue.async {
+                    burnedByDay[dayStart] = calories
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: .main) {
+            let rows = days.map { d in
+                DailyCalorieBalance(date: d, consumed: consumedByDay[d] ?? 0, burned: burnedByDay[d] ?? 0)
+            }
+            self.monthlyBalances = rows
+        }
+    }
     
+
     private func updateCaloriasHKYConsumidas() {
         burnedCaloriesHK = 0
         consumedCalories = 0
@@ -399,20 +557,11 @@ struct ProgresoView: View {
         fatReal = 0
         kcalReal = 0
         
-        // Calcular rango de fechas del periodo
+        // Calcular rango de fechas del periodo (siempre hoy)
         let calendar = Calendar.current
         let now = Date()
-        var startDate: Date
+        let startDate = calendar.startOfDay(for: now)
         let endDate = now
-        
-        switch periodoSeleccionado {
-        case .hoy:
-            startDate = calendar.startOfDay(for: now)
-        case .semana:
-            startDate = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? calendar.startOfDay(for: now)
-        case .mes:
-            startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? calendar.startOfDay(for: now)
-        }
         
         // Calcular calorías y macros consumidas en el periodo
         let mealsPeriodo = meals.filter { meal in
@@ -436,7 +585,9 @@ struct ProgresoView: View {
             return
         }
 
-        self.burnedPoints = [] // limpiar mientras espera HealthKit
+        self.burnedPoints = [] // (deprecated: mantenemos por compatibilidad interna si lo usas en otro sitio)
+        self.burnedActivityPoints = []
+        self.burnedTotalPoints = []
         
         HealthKitManager.shared.fetchTotalEnergyBurned(startDate: startDate, endDate: endDate) { calories in
             DispatchQueue.main.async {
@@ -461,23 +612,73 @@ struct ProgresoView: View {
     }
 
     private func updateBurnedCaloriePoints(startDate: Date, endDate: Date) {
-        HealthKitManager.shared.fetchActiveEnergySamples(startDate: startDate, endDate: endDate) { samples in
-            let sorted = samples.sorted(by: { $0.startDate < $1.startDate })
-            var acum: Double = 0
-            var points: [CaloriePoint] = []
-            let startOfDay = Calendar.current.startOfDay(for: startDate)
-            points.append(CaloriePoint(date: startOfDay, accumulated: 0))
-            for s in sorted {
-                let kcal = s.quantity.doubleValue(for: HKUnit.kilocalorie())
-                acum += kcal
-                points.append(CaloriePoint(date: s.startDate, accumulated: acum))
-            }
-            print("[DEBUG] burnedPoints:")
-            for p in points {
-                print("Hora: \(p.date), Acumuladas: \(p.accumulated)")
-            }
-            DispatchQueue.main.async {
-                self.burnedPoints = points
+        // Obtenemos muestras de actividad y basal, y generamos tres líneas:
+        // 1) burnedActivityPoints (solo actividad)
+        // 2) burnedTotalPoints (actividad + basal)
+        // Nota: requires HealthKitManager.fetchBasalEnergySamples(startDate:endDate:)
+        HealthKitManager.shared.fetchActiveEnergySamples(startDate: startDate, endDate: endDate) { activeSamples in
+            HealthKitManager.shared.fetchBasalEnergySamples(startDate: startDate, endDate: endDate) { basalSamples in
+                // Ordenar ambas series por fecha
+                let a = activeSamples.sorted { $0.startDate < $1.startDate }
+                let b = basalSamples.sorted { $0.startDate < $1.startDate }
+
+                // Acumulado actividad
+                var acumA: Double = 0
+                var activityPoints: [CaloriePoint] = []
+                let startOfPeriod = Calendar.current.startOfDay(for: startDate)
+                activityPoints.append(CaloriePoint(date: startOfPeriod, accumulated: 0))
+                for s in a {
+                    let kcal = s.quantity.doubleValue(for: HKUnit.kilocalorie())
+                    acumA += kcal
+                    activityPoints.append(CaloriePoint(date: s.startDate, accumulated: acumA))
+                }
+
+                // Fusión para total (actividad + basal)
+                var i = 0, j = 0
+                var acumTotal: Double = 0
+                var totalPoints: [CaloriePoint] = []
+                totalPoints.append(CaloriePoint(date: startOfPeriod, accumulated: 0))
+
+                while i < a.count || j < b.count {
+                    let nextA = i < a.count ? a[i] : nil
+                    let nextB = j < b.count ? b[j] : nil
+
+                    if let sa = nextA, let sb = nextB {
+                        if sa.startDate <= sb.startDate {
+                            let kcal = sa.quantity.doubleValue(for: .kilocalorie())
+                            acumTotal += kcal
+                            totalPoints.append(CaloriePoint(date: sa.startDate, accumulated: acumTotal))
+                            i += 1
+                        } else {
+                            let kcal = sb.quantity.doubleValue(for: .kilocalorie())
+                            acumTotal += kcal
+                            totalPoints.append(CaloriePoint(date: sb.startDate, accumulated: acumTotal))
+                            j += 1
+                        }
+                    } else if let sa = nextA {
+                        let kcal = sa.quantity.doubleValue(for: .kilocalorie())
+                        acumTotal += kcal
+                        totalPoints.append(CaloriePoint(date: sa.startDate, accumulated: acumTotal))
+                        i += 1
+                    } else if let sb = nextB {
+                        let kcal = sb.quantity.doubleValue(for: .kilocalorie())
+                        acumTotal += kcal
+                        totalPoints.append(CaloriePoint(date: sb.startDate, accumulated: acumTotal))
+                        j += 1
+                    }
+                }
+
+                #if DEBUG
+                print("[DEBUG] burnedActivityPoints:")
+                for p in activityPoints { print("Hora: \(p.date), Acumuladas: \(p.accumulated)") }
+                print("[DEBUG] burnedTotalPoints:")
+                for p in totalPoints { print("Hora: \(p.date), Acumuladas: \(p.accumulated)") }
+                #endif
+
+                DispatchQueue.main.async {
+                    self.burnedActivityPoints = activityPoints
+                    self.burnedTotalPoints = totalPoints
+                }
             }
         }
     }

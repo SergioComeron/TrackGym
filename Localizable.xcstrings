@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "·" : {
+
+    },
     "/ %lld%@" : {
       "localizations" : {
         "en" : {
@@ -13,6 +16,16 @@
     },
     "%" : {
 
+    },
+    "%@%lld kcal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$lld kcal"
+          }
+        }
+      }
     },
     "%lld" : {
 
@@ -218,6 +231,9 @@
           }
         }
       }
+    },
+    "Actividad" : {
+
     },
     "aductor_maquina_desc" : {
       "extractionState" : "manual",
@@ -845,6 +861,9 @@
         }
       }
     },
+    "Balance diario (últimos 30 días)" : {
+
+    },
     "batata_cruda_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1200,6 +1219,9 @@
 
     },
     "Consumidas acumuladas" : {
+
+    },
+    "consumidas: %lld" : {
 
     },
     "Consumido" : {
@@ -2067,6 +2089,12 @@
     "Detalle" : {
 
     },
+    "Día" : {
+
+    },
+    "Diferencia (kcal)" : {
+
+    },
     "dominadas_pronas_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2890,7 +2918,10 @@
     "Gastadas" : {
 
     },
-    "Gastadas acumuladas" : {
+    "Gastadas totales" : {
+
+    },
+    "gastadas: %lld" : {
 
     },
     "gemelo_de_pie_maquina_desc" : {
@@ -5180,9 +5211,6 @@
     "Perfil guardado" : {
 
     },
-    "Periodo" : {
-
-    },
     "Peso" : {
 
     },
@@ -6419,6 +6447,9 @@
     "Récord personal en este entrenamiento" : {
 
     },
+    "Referencia" : {
+
+    },
     "remo_barra_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6827,6 +6858,9 @@
         }
       }
     },
+    "Repetir comida" : {
+
+    },
     "reps" : {
 
     },
@@ -6849,6 +6883,9 @@
 
     },
     "Resumen de tu último entrenamiento (AI)" : {
+
+    },
+    "Rojo = superávit (consumidas > gastadas). Verde = déficit." : {
 
     },
     "salmon_crudo_desc" : {
@@ -7373,6 +7410,9 @@
           }
         }
       }
+    },
+    "Toca una barra para ver detalle." : {
+
     },
     "tomate_crudo_desc" : {
       "extractionState" : "manual",
