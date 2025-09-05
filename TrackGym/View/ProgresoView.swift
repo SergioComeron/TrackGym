@@ -127,9 +127,9 @@ struct ProgresoView: View {
     @Query private var meals: [Meal]
     
     @State private var selectedSlug: String? = nil
-    @State private var resumenEntrenoHoy: String? = nil
-    @State private var cargandoResumenEntrenoHoy = false
-    @State private var lastResumenEntrenoID: UUID? = nil
+//    @State private var resumenEntrenoHoy: String? = nil
+//    @State private var cargandoResumenEntrenoHoy = false
+//    @State private var lastResumenEntrenoID: UUID? = nil
     
     @State private var resumenSemana: String? = nil
     @State private var cargandoResumenSemana = false
@@ -158,8 +158,8 @@ struct ProgresoView: View {
     @State private var burnedTotalPoints: [CaloriePoint] = []
     @State private var burnedActivityPoints: [CaloriePoint] = []
 
-    private let resumenEntrenoKey = "ResumenEntrenoHoy"
-    private let resumenEntrenoIDKey = "LastResumenEntrenoID"
+//    private let resumenEntrenoKey = "ResumenEntrenoHoy"
+//    private let resumenEntrenoIDKey = "LastResumenEntrenoID"
     private let resumenSemanaKey = "ResumenSemanaAI"
     private let resumenSemanaDateKey = "FechaResumenSemanaAI"
 
@@ -364,18 +364,18 @@ struct ProgresoView: View {
                 MonthlyBalanceChartView(monthlyBalances: monthlyBalances, selected: $selectedMonthlyBalance)
                 #endif
 
-                if cargandoResumenEntrenoHoy {
-                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
-                        ProgressView()
-                            .padding(.vertical, 8)
-                    }
-                } else if let resumen = resumenEntrenoHoy {
-                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
-                        Text(resumen)
-                            .font(.callout)
-                            .padding(.vertical, 8)
-                    }
-                }
+//                if cargandoResumenEntrenoHoy {
+//                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
+//                        ProgressView()
+//                            .padding(.vertical, 8)
+//                    }
+//                } else if let resumen = resumenEntrenoHoy {
+//                    GroupBox(label: Label("Resumen de tu último entrenamiento (AI)", systemImage: "sparkles")) {
+//                        Text(resumen)
+//                            .font(.callout)
+//                            .padding(.vertical, 8)
+//                    }
+//                }
 
                 if cargandoResumenSemana {
                     GroupBox(label: Label("Resumen de tu semana (AI)", systemImage: "calendar")) {
@@ -454,12 +454,12 @@ struct ProgresoView: View {
             if selectedSlug == nil, let primero = ejercicioMasFrecuenteSlug ?? slugsEjerciciosRealizados.first {
                 selectedSlug = primero
             }
-            if let storedID = UserDefaults.standard.string(forKey: resumenEntrenoIDKey),
-               let uuid = UUID(uuidString: storedID) {
-                lastResumenEntrenoID = uuid
-            }
-            resumenEntrenoHoy = UserDefaults.standard.string(forKey: resumenEntrenoKey)
-            generarResumenEntrenoHoy()
+//            if let storedID = UserDefaults.standard.string(forKey: resumenEntrenoIDKey),
+//               let uuid = UUID(uuidString: storedID) {
+//                lastResumenEntrenoID = uuid
+//            }
+//            resumenEntrenoHoy = UserDefaults.standard.string(forKey: resumenEntrenoKey)
+//            generarResumenEntrenoHoy()
 
             // NO llamar directamente a generarResumenSemana()
             checkAndGenerateResumenSemana()
@@ -855,79 +855,79 @@ struct ProgresoView: View {
         }
     }
 
-    private func generarResumenEntrenoHoy() {
-        cargandoResumenEntrenoHoy = true
-        guard let entreno = entrenamientosTerminados.first else {
-            cargandoResumenEntrenoHoy = false
-            return
-        }
-        let currentID = entreno.id
-        if currentID == lastResumenEntrenoID, resumenEntrenoHoy != nil {
-            cargandoResumenEntrenoHoy = false
-            return
-        }
-        resumenEntrenoHoy = nil
-        
-        let perfil = perfiles.first
-        var perfilStr = ""
-        if let perfil = perfil {
-            var restriccionesStr = ""
-            if let restricciones = perfil.restricciones, !restricciones.isEmpty {
-                restriccionesStr = ", Restricciones: \(restricciones)"
-            }
-            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo: \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
-        }
-        
-        let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
-        let ejerciciosStr = entreno.ejercicios.map { ejercicio -> String in
-            let exerciseSeed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
-            let setsText = ejercicio.sets.map { set -> String in
-                if let seed = exerciseSeed {
-                    switch seed.type {
-                    case .duration:
-                        return "\(Int(set.reps))seg@\(String(format: "%.1f", set.weight))kg"
-                    case .reps:
-                        return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
-                    }
-                } else {
-                    // Por defecto reps
-                    return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
-                }
-            }.joined(separator: ", ")
-            return "\(nombreEjercicioDesdeSlug(ejercicio.slug)): \(setsText)"
-        }.joined(separator: "\n")
-        let gruposTrabajados = Set(entreno.gruposMusculares)
-        let ejerciciosDisponibles = defaultExercises.filter { gruposTrabajados.contains($0.group) }
-            .map { $0.name }
-            .joined(separator: ", ")
-        
-        let prompt = """
-            \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza este entrenamiento que he registrado hoy:
-            - Grupos musculares trabajados: \(grupos)
-            - Ejercicios realizados:
-            \(ejerciciosStr)
-
-            Quiero que me digas:
-            1. Si los ejercicios que hice cubren bien todos los músculos trabajados.
-            2. Si tendría que haber añadido algún otro ejercicio de esta lista para que el entrenamiento fuera más completo: \(ejerciciosDisponibles). Explica por qué lo sugieres.
-            3. Si las series, repeticiones y pesos que usé están bien para un objetivo de hipertrofia o si debería hacer algún ajuste.
-
-            Responde en español, de forma clara, directa y en un máximo de dos párrafos.
-            """
-        print(prompt)
-        Task {
-            let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
-            if let respuesta = try? await session.respond(to: prompt) {
-                await MainActor.run {
-                    resumenEntrenoHoy = respuesta.content
-                    lastResumenEntrenoID = currentID
-                    UserDefaults.standard.setValue(currentID.uuidString, forKey: resumenEntrenoIDKey)
-                    UserDefaults.standard.setValue(respuesta.content, forKey: resumenEntrenoKey)
-                }
-            }
-            await MainActor.run { cargandoResumenEntrenoHoy = false }
-        }
-    }
+//    private func generarResumenEntrenoHoy() {
+//        cargandoResumenEntrenoHoy = true
+//        guard let entreno = entrenamientosTerminados.first else {
+//            cargandoResumenEntrenoHoy = false
+//            return
+//        }
+//        let currentID = entreno.id
+//        if currentID == lastResumenEntrenoID, resumenEntrenoHoy != nil {
+//            cargandoResumenEntrenoHoy = false
+//            return
+//        }
+//        resumenEntrenoHoy = nil
+//        
+//        let perfil = perfiles.first
+//        var perfilStr = ""
+//        if let perfil = perfil {
+//            var restriccionesStr = ""
+//            if let restricciones = perfil.restricciones, !restricciones.isEmpty {
+//                restriccionesStr = ", Restricciones: \(restricciones)"
+//            }
+//            perfilStr = "Perfil: Edad \(perfil.edad), Peso \(Int(perfil.peso)) kg, Altura \(Int(perfil.altura)) cm, Sexo \(perfil.sexo), Objetivo: \(perfil.objetivo), Nivel actividad: \(perfil.nivelActividad)\(restriccionesStr)\n"
+//        }
+//        
+//        let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
+//        let ejerciciosStr = entreno.ejercicios.map { ejercicio -> String in
+//            let exerciseSeed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
+//            let setsText = ejercicio.sets.map { set -> String in
+//                if let seed = exerciseSeed {
+//                    switch seed.type {
+//                    case .duration:
+//                        return "\(Int(set.reps))seg@\(String(format: "%.1f", set.weight))kg"
+//                    case .reps:
+//                        return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+//                    }
+//                } else {
+//                    // Por defecto reps
+//                    return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+//                }
+//            }.joined(separator: ", ")
+//            return "\(nombreEjercicioDesdeSlug(ejercicio.slug)): \(setsText)"
+//        }.joined(separator: "\n")
+//        let gruposTrabajados = Set(entreno.gruposMusculares)
+//        let ejerciciosDisponibles = defaultExercises.filter { gruposTrabajados.contains($0.group) }
+//            .map { $0.name }
+//            .joined(separator: ", ")
+//        
+//        let prompt = """
+//            \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza este entrenamiento que he registrado hoy:
+//            - Grupos musculares trabajados: \(grupos)
+//            - Ejercicios realizados:
+//            \(ejerciciosStr)
+//
+//            Quiero que me digas:
+//            1. Si los ejercicios que hice cubren bien todos los músculos trabajados.
+//            2. Si tendría que haber añadido algún otro ejercicio de esta lista para que el entrenamiento fuera más completo: \(ejerciciosDisponibles). Explica por qué lo sugieres.
+//            3. Si las series, repeticiones y pesos que usé están bien para un objetivo de hipertrofia o si debería hacer algún ajuste.
+//
+//            Responde en español, de forma clara, directa y en un máximo de dos párrafos.
+//            """
+//        print(prompt)
+//        Task {
+//            let session = LanguageModelSession(instructions: "Eres un entrenador personal crítico, experto en mejora física y fuerza. Da consejos realistas, analiza posibles errores y propone cambios concretos. Responde en español.")
+//            if let respuesta = try? await session.respond(to: prompt) {
+//                await MainActor.run {
+//                    resumenEntrenoHoy = respuesta.content
+//                    lastResumenEntrenoID = currentID
+//                    UserDefaults.standard.setValue(currentID.uuidString, forKey: resumenEntrenoIDKey)
+//                    UserDefaults.standard.setValue(respuesta.content, forKey: resumenEntrenoKey)
+//                }
+//            }
+//            await MainActor.run { cargandoResumenEntrenoHoy = false }
+//        }
+//    }
     
     private func generarResumenSemana() {
         cargandoResumenSemana = true

@@ -21,74 +21,195 @@ struct EntrenamientoDetailView: View {
     @State private var isShowingExercisePicker = false
     @State private var isGroupSectionExpanded = false
     @State private var selectedExercise: PerformedExercise?
+    @State private var isGeneratingAISummary = false
+    @State private var isShowingGroupEditor = false
 
     private var isFinished: Bool { entrenamiento.endDate != nil }
 
     @Query(sort: [SortDescriptor(\Entrenamiento.startDate, order: .reverse)])
     private var entrenamientos: [Entrenamiento]
+    
+    @Query
+    private var perfiles: [Perfil]
 
     var body: some View {
         Form {
-            Section("Inicio") {
-                LabeledContent("Inicio") {
-                    Text(entrenamiento.startDate.map { DateFormatter.cachedDateTime.string(from: $0) } ?? "Sin inicio")
-                        .foregroundStyle(.secondary)
-                }
-            }
+            // Encabezado compacto con estado e inicio/fin (no en secciones)
+            VStack(alignment: .leading, spacing: 8) {
+                if let end = entrenamiento.endDate, let start = entrenamiento.startDate {
+                    Label {
+                        Text("Terminado el \(DateFormatter.cachedDateTime.string(from: end))")
+                    } icon: {
+                        Image(systemName: "checkmark.seal.fill").foregroundStyle(.green)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
 
-            // MARK: - Grupos Musculares / Resumen (según estado)
-            if isFinished {
-                Section("Resumen") {
-                    if entrenamiento.gruposMusculares.isEmpty {
-                        Text("Sin grupos marcados").foregroundStyle(.secondary)
-                    } else {
-                        Text(entrenamiento.gruposUnicos
-                            .map { $0.localizedName }
-                            .joined(separator: " · "))
-                            .foregroundStyle(.secondary)
+                    Text("Inicio: \(DateFormatter.cachedDateTime.string(from: start))")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else if let start = entrenamiento.startDate {
+                    Label {
+                        Text("En curso desde \(DateFormatter.cachedDateTime.string(from: start))")
+                    } icon: {
+                        Image(systemName: "record.circle.fill").foregroundStyle(.red)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                } else {
+                    Label {
+                        Text("Sin inicio")
+                    } icon: {
+                        Image(systemName: "clock").foregroundStyle(.secondary)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                }
+
+                // Acciones (no dentro de secciones)
+                HStack(spacing: 12) {
+                    if entrenamiento.startDate == nil {
+                        Button {
+                            entrenamiento.startDate = Date()
+                            try? context.save()
+                            Task {
+                                await LiveActivityManager.shared.start(
+                                    title: "Entrenamiento",
+                                    startedAt: entrenamiento.startDate ?? Date(),
+                                    entrenamientoID: entrenamiento.id,
+                                    progress: entrenamiento.progresoEjercicios
+                                )
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Text("Empezar")
+                                Image(systemName: "play.fill")
+                            }
+                        }
+                        .buttonStyle(.plain)
+
+                    } else if entrenamiento.endDate == nil {
+                        Button(role: .destructive) {
+                            Task {
+                                entrenamiento.endDate = Date()
+                                cleanupDuplicates()
+                                try? context.save()
+
+                                isGeneratingAISummary = true
+                                defer { isGeneratingAISummary = false }
+                                if let resumen = await generarResumenEntrenoAI(para: entrenamiento) {
+                                    entrenamiento.aiSummary = resumen
+                                    try? context.save()
+
+                                    let preview = flattenAISummary(resumen)
+                                    print("""
+                                    \n🧠 IA PLAIN (Preview de render)
+                                    --------------------------------
+                                    \(preview)
+                                    --------------------------------
+                                    """)
+                                }
+                                await LiveActivityManager.shared.end()
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Text("Terminar")
+                                Image(systemName: "stop.circle")
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.red)
                     }
                 }
-            } else {
-                Section {
+                .padding(.top, 2)
+            }
+            .padding(.vertical, 6)
+            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 4, trailing: 16))
+
+            // CTA cuando no hay grupos seleccionados
+            if entrenamiento.gruposMusculares.isEmpty {
+                HStack {
                     Button {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            isGroupSectionExpanded.toggle()
-                        }
+                        isShowingGroupEditor = true
                     } label: {
-                        HStack {
-                            Text("Grupos musculares")
-                            Spacer()
-                            Image(systemName: isGroupSectionExpanded ? "chevron.down" : "chevron.right")
-                                .foregroundStyle(.secondary)
-                                .animation(.easeInOut(duration: 0.2), value: isGroupSectionExpanded)
+                        HStack(spacing: 6) {
+                            Text("Añadir grupos musculares")
+                            Image(systemName: "square.grid.2x2")
                         }
-                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(isGroupSectionExpanded ? "Ocultar grupos musculares" : "Mostrar grupos muscululares")
+                    Spacer()
+                }
+                .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 0, trailing: 16))
+            }
 
-                    if !isGroupSectionExpanded && !entrenamiento.gruposMusculares.isEmpty {
-                        Text(entrenamiento.gruposMusculares.map { $0.localizedName }.joined(separator: " · "))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .padding(.top, 2)
-                    }
-                    
-                    if !isGroupSectionExpanded && entrenamiento.gruposMusculares.isEmpty {
-                        Text("Despliega para añadir")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .padding(.top, 2)
-                    }
-
-                    if isGroupSectionExpanded {
-                        ForEach(GrupoMuscular.allCases, id: \.self) { grupo in
-                            Toggle(grupo.localizedName, isOn: binding(for: grupo))
+            // Grupos musculares como píldoras (solo los trabajados)
+            if !entrenamiento.gruposMusculares.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Grupos musculares")
+                        .font(.headline)
+                    let selected = Array(Set(entrenamiento.gruposMusculares)).sorted { $0.localizedName < $1.localizedName }
+                    let columns = [GridItem(.adaptive(minimum: 110), spacing: 8)]
+                    LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+                        ForEach(selected, id: \.self) { grupo in
+                            Text(grupo.localizedName)
+                                .font(.subheadline)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(
+                                    Capsule().fill(Color.accentColor.opacity(0.15))
+                                )
+                                .overlay(
+                                    Capsule().stroke(Color.accentColor, lineWidth: 1)
+                                )
+                                .foregroundStyle(.primary)
+                                .accessibilityLabel("Grupo muscular: \(grupo.localizedName)")
                         }
                     }
-                } header: {
-                    EmptyView()
+                    HStack {
+                        Button {
+                            isShowingGroupEditor = true
+                        } label: {
+                            HStack(spacing: 6) {
+                                Text("Editar grupos")
+                                Image(systemName: "slider.horizontal.3")
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        Spacer()
+                    }
+                    .padding(.top, 4)
                 }
+                .padding(.vertical, 6)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+            }
+
+            // Resumen IA (sección ligera solo para este bloque)
+            Section {
+                if isGeneratingAISummary {
+                    AIActivityIndicator()
+                        .padding(.vertical, 4)
+                } else if let raw = entrenamiento.aiSummary, !raw.isEmpty {
+                    let plain = flattenAISummary(raw)
+                    Text(plain)
+                        .font(.callout)
+                        .textSelection(.enabled)
+                        .lineSpacing(0)
+                        .contextMenu {
+                            Button {
+                                regenerateAISummary()
+                            } label: {
+                                Label("Regenerar resumen (IA)", systemImage: "arrow.clockwise")
+                            }
+                        }
+                } else {
+                    Text("Aún no hay resumen. Pulsa \"Terminar\" para generarlo.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            } header: {
+                Text("Resumen (IA)")
+                    .onTapGesture(count: 5) { regenerateAISummary() }
             }
 
             // MARK: - Ejercicios realizados
@@ -116,43 +237,6 @@ struct EntrenamientoDetailView: View {
                     }
                 }
             }
-
-            Section("Estado") {
-                if entrenamiento.startDate == nil {
-                    Button {
-                        entrenamiento.startDate = Date()
-                        try? context.save()
-                        
-                        Task {
-                            await LiveActivityManager.shared.start(
-                                title: "Entrenamiento",
-                                startedAt: entrenamiento.startDate ?? Date(),
-                                entrenamientoID: entrenamiento.id,
-                                progress: entrenamiento.progresoEjercicios
-                            )
-                        }
-                    } label: {
-                        Label("Empezar entrenamiento", systemImage: "play.fill")
-                    }
-                    Text("El entrenamiento aún no ha comenzado. Puedes preparar ejercicios o grupos.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                } else if let end = entrenamiento.endDate {
-                    Text("Terminado el \(DateFormatter.cachedDateTime.string(from: end))")
-                        .foregroundStyle(.secondary)
-                } else {
-                    Button {
-                        entrenamiento.endDate = Date()
-                        cleanupDuplicates()
-                        try? context.save()
-                        Task {
-                            await LiveActivityManager.shared.end()
-                        }
-                    } label: {
-                        Label("Terminar entrenamiento", systemImage: "stop.circle")
-                    }
-                }
-            }
         }
         .navigationTitle("Detalle")
         .toolbar {
@@ -170,6 +254,11 @@ struct EntrenamientoDetailView: View {
                 }
             )
         }
+        .sheet(isPresented: $isShowingGroupEditor) {
+            GroupSelectorSheet(entrenamiento: entrenamiento) {
+                try? context.save()
+            }
+        }
         .navigationDestination(item: $selectedExercise) { exercise in
             ExerciseSetsEditorView(performedExercise: exercise, isFinished: entrenamiento.endDate != nil)
         }
@@ -178,10 +267,10 @@ struct EntrenamientoDetailView: View {
 //            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
 //                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
 //            }
-//            
+//
 //            // COMENTAR TEMPORALMENTE la migración para aislar el problema
 //             migrateLegacyExerciseOrderIfNeeded()
-//            
+//
 //            print("🔍 OnAppear - Estado FINAL:")
 //            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
 //                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order) - id: \(ejercicio.id)")
@@ -197,6 +286,23 @@ struct EntrenamientoDetailView: View {
 //            print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
 //        }
         return sorted
+    }
+    
+    /// Convierte la salida del modelo a un único párrafo sin Markdown ni listas
+    private func flattenAISummary(_ text: String) -> String {
+        var s = text
+            .replacingOccurrences(of: "\r\n", with: "\n")
+            .replacingOccurrences(of: "\r", with: "\n")
+        // Quitar negritas/itálicas Markdown
+        s = s.replacingOccurrences(of: "**", with: "")
+        s = s.replacingOccurrences(of: "__", with: "")
+        s = s.replacingOccurrences(of: "*", with: "")
+        s = s.replacingOccurrences(of: "_", with: "")
+        // Quitar bullets al inicio de línea
+        s = regexReplace(s, pattern: #"(?m)^\s*[-•·\*]\s+"#, replacement: "")
+        // Colapsar saltos de línea y espacios múltiples a un solo espacio
+        s = regexReplace(s, pattern: #"\s+"#, replacement: " ")
+        return s.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     // MARK: - Helpers de UI para grupos
@@ -378,6 +484,107 @@ struct EntrenamientoDetailView: View {
         }
     }
     
+    /// Genera el resumen del entrenamiento con Apple Intelligence y lo devuelve.
+    private func generarResumenEntrenoAI(para entreno: Entrenamiento) async -> String? {
+        // Perfil (opcional)
+        var perfilStr = ""
+        if let p = perfiles.first {
+            var restriccionesStr = ""
+            if let r = p.restricciones, !r.isEmpty { restriccionesStr = ", Restricciones: \(r)" }
+            perfilStr = "Perfil: Edad \(p.edad), Peso \(Int(p.peso)) kg, Altura \(Int(p.altura)) cm, Sexo \(p.sexo), Objetivo: \(p.objetivo), Nivel actividad: \(p.nivelActividad)\(restriccionesStr)\n"
+        }
+
+        // Grupos y ejercicios
+        let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
+
+        let ejerciciosStr = entreno.ejercicios
+            .sorted { $0.order < $1.order }
+            .map { ejercicio -> String in
+                let seed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
+                let setsText = ejercicio.sets
+                    .sorted { $0.order < $1.order }
+                    .map { set -> String in
+                        if let seed {
+                            switch seed.type {
+                            case .duration: return "\(Int(set.duration))seg@\(String(format: "%.1f", set.weight))kg"
+                            case .reps:     return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+                            }
+                        }
+                        return "\(set.reps)x\(String(format: "%.1f", set.weight))kg"
+                    }
+                    .joined(separator: ", ")
+                let name = seed?.name
+                    ?? ejercicio.slug
+                        .replacingOccurrences(of: "-", with: " ")
+                        .replacingOccurrences(of: "_", with: " ")
+                        .capitalized
+                return "\(name): \(setsText)"
+            }
+            .joined(separator: "\n")
+
+
+        let prompt = """
+        \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza SOLO este entrenamiento terminado.
+        DATOS:
+        - Grupos trabajados: \(grupos)
+        - Ejercicios (serie x peso o seg):
+        \(ejerciciosStr)
+
+        OBJETIVO: decirme si el entreno es adecuado para el/los grupo(s) considerando series, reps y pesos; y darme 1–2 recomendaciones prácticas.
+
+        FORMATO DE SALIDA (OBLIGATORIO):
+        - Un único párrafo, estilo conversación de tú a tú.
+        - Sin encabezados, sin listas, sin saltos de línea, sin Markdown, sin comillas.
+        - Máx. 3 frases cortas, separadas por punto y coma o punto.
+        - Incluye un veredicto breve (Correcto o Mejorable), 1–2 aciertos y 1–2 ajustes.
+        - No repitas los datos de entrada.
+        """
+
+        let instrucciones = """
+        Eres un entrenador conciso. Responde SOLO con un párrafo sin formato ni saltos de línea.
+        Prohibido Markdown, asteriscos, guiones y títulos. Usa frases breves y directas.
+        Máximo ~300 caracteres. Evita relleno. No repitas datos del prompt.
+        """
+
+        do {
+            let session = LanguageModelSession(instructions: instrucciones)
+            let respuesta = try await session.respond(to: prompt)
+            let raw = respuesta.content
+            print("""
+            
+            🧠 IA RAW (Resumen Entreno)
+            ---------------------------
+            \(raw)
+            ---------------------------
+            """)
+            return raw
+        } catch {
+            print("❌ Error generando resumen IA: \(error)")
+            return nil
+        }
+    }
+    
+    /// Regenera el resumen IA (easter egg: 5 taps en el header o long press context menu)
+    private func regenerateAISummary() {
+        Task {
+            guard entrenamiento.endDate != nil else { return } // solo si está terminado
+            isGeneratingAISummary = true
+            defer { isGeneratingAISummary = false }
+            if let resumen = await generarResumenEntrenoAI(para: entrenamiento) {
+                entrenamiento.aiSummary = resumen
+                try? context.save()
+
+                let preview = flattenAISummary(resumen)
+                print("""
+                🧠 IA PLAIN (Preview de render)
+                --------------------------------
+                \(preview)
+                --------------------------------
+                """)
+            }
+        }
+    }
+
     /// Migra ejercicios antiguos asignándoles un 'order' secuencial según la fecha de creación si el campo no está bien definido.
     private func migrateLegacyExerciseOrderIfNeeded() {
         let ejercicios = entrenamiento.ejercicios
@@ -456,28 +663,28 @@ private func suggestNextReps(for performedExercise: PerformedExercise, setsHisto
     let summary = recentReps.isEmpty ? "sin historial" : recentReps.map(String.init).joined(separator: ", ")
 
     let prompt = """
-    TAREA: Próxima serie → devuelve solo un número entero (reps).
-    EJERCICIO: \(nombre)\(grupo)
-    HISTÓRICO REPS RECIENTES: [\(summary)]
-    OBJETIVO: \(perfilObjetivo ?? "Ganar músculo") (rango objetivo: \(baseRange.0)–\(baseRange.1))
-    SERIE ACTUAL: \(setIndex + 1)
-    POLÍTICA:
-    - Si la última serie fue muy fácil (≥ techo del rango), sugiere +1 dentro de rango.
-    - Si fue muy dura (≤ suelo del rango), sugiere −1 dentro de rango.
-    - Si estuvo dentro, mantén.
-    RANGO PERMITIDO (reps): min=\(minA), max=\(maxA)
-    PASO MÁXIMO vs ÚLTIMO USADO: ±\(stepCap) reps
-    FORMATO: solo el número entero (ej. 12)
+    TAREA: Proponer SOLO un número entero de repeticiones para la PRÓXIMA SERIE.
+    CONTEXTO:
+    - Ejercicio: \(nombre)\(grupo)
+    - Histórico (reps recientes): [\(summary)]  // solo información, no formatees
+    - Objetivo: \(perfilObjetivo ?? "Ganar músculo") → rango objetivo: \(baseRange.0)–\(baseRange.1) reps
+    - Serie actual (nº): \(setIndex + 1)
+
+    REGLAS DURAS (OBLIGATORIAS):
+    1) PRINCIPIO DE PROGRESIÓN: si en la última sesión o en esta misma llevabas **el mismo peso** y alcanzaste el techo del rango (≥ \(baseRange.1) reps), incrementa reps en +1 (siempre dentro del rango permitido) o, si ya estás en el techo, mantén reps y sugiere subir peso (pero IGUAL devuelve reps dentro del rango permitido).
+    2) Si la última serie estuvo **por debajo** del rango (≤ \(baseRange.0)−1), baja reps en −1 (mínimo \(baseRange.0)).
+    3) Si estuvo **dentro** del rango, **mantén**.
+    4) RANGO PERMITIDO PARA ESTA PROPUESTA: min=\(minA), max=\(maxA) reps.
+    5) PASO MÁXIMO respecto a la última serie: ±\(stepCap) reps.
+
+    FORMATO DE RESPUESTA: escribe **solo** un número entero (ej. 12). Sin texto extra.
     """
 
     let instrucciones = """
-    Eres un entrenador personal estricto. Devuelves solo un número entero (reps).
-    REGLAS DURAS:
-    - Nunca propongas repeticiones fuera del rango permitido que recibe el prompt.
-    - No cambies más de \(stepCap) reps respecto a la última serie si existe histórico.
-    - Ajusta el peso en función del rango objetivo de repeticiones: por encima del rango ⇒ subir; por debajo ⇒ bajar; dentro ⇒ mantener o micro-ajustar.
-    - Si no hay datos suficientes, elige un valor centrado del rango objetivo.
-    - Responde solo el número, sin texto ni unidades.
+    Eres un entrenador de fuerza/hipertrofia. Devuelves **solo un número entero** (reps).
+    Sigue las REGLAS DURAS literalmente; si hay conflicto, prioriza el RANGO PERMITIDO y el PASO MÁXIMO.
+    Si detectas que se alcanzó el techo del rango con el mismo peso en la última referencia, empuja a progresar: +1 rep si cabe; si no cabe, mantén reps (y deja implícito que habrá que subir peso en la siguiente serie, pero NO lo escribas).
+    Prohibido texto adicional o unidades.
     """
 
     do {
@@ -501,6 +708,8 @@ private func suggestNextReps(for performedExercise: PerformedExercise, setsHisto
     if lastReps > 0 { return max(minA, min(maxA, lastReps)) }
     return max(baseRange.0, min(baseRange.1, mid))
 }
+
+
 
 private func suggestNextWeight(for performedExercise: PerformedExercise, setsHistoricos: [ExerciseSet], perfilObjetivo: String? = nil, exerciseName: String? = nil, exerciseGroup: String? = nil) async -> Double {
     // Si Apple Intelligence (Foundation Models) está disponible
@@ -549,31 +758,29 @@ private func suggestNextWeight(for performedExercise: PerformedExercise, setsHis
     let summary = lastWeights.isEmpty ? "sin historial" : lastWeights.map { String(format: "%.1f", $0) }.joined(separator: ", ")
     let setIndex = performedExercise.sets.count
     let prompt = """
-    TAREA: Próxima serie → devuelve solo un número (kg).
-    EJERCICIO: \(nombre)\(grupo)
-    HISTÓRICO KILOS RECIENTES: [\(summary)]
-    REPS RECIENTES (última serie actual): \(currentSetsSorted.last?.reps ?? reps)
-    OBJETIVO: \(objetivo) ⇒ rango objetivo de reps: \(repRange.0)–\(repRange.1)
-    SERIE ACTUAL (en esta sesión): \(setIndex + 1)
-    POLÍTICA:
-    - Si la última serie estuvo por ENCIMA del rango objetivo, sube ligeramente el peso.
-    - Si la última serie estuvo por DEBAJO, baja ligeramente el peso.
-    - Si estuvo DENTRO, mantén el peso o micro-ajuste.
-    RANGO PERMITIDO (kg): min=\(String(format: "%.1f", minAllowed)), max=\(String(format: "%.1f", maxAllowed))
-    SUGERENCIA INICIAL (no obligatoria): \(String(format: "%.1f", proposedClamped))
-    PASO MÁXIMO vs ÚLTIMO USADO: ±10%
-    FORMATO: solo el número con 1 decimal (ej. 37.5)
+    TAREA: Proponer SOLO un número en kg (1 decimal) para la PRÓXIMA SERIE.
+    CONTEXTO:
+    - Ejercicio: \(nombre)\(grupo)
+    - Histórico (kg recientes): [\(summary)]  // más reciente al final
+    - Reps última serie actual: \(currentSetsSorted.last?.reps ?? reps)
+    - Objetivo: \(objetivo) → rango objetivo de reps: \(repRange.0)–\(repRange.1)
+    - Serie actual (nº): \(setIndex + 1)
+
+    REGLAS DURAS (OBLIGATORIAS):
+    1) PROGRESIÓN (hipertrofia): Si con el **mismo peso** alcanzaste el **techo del rango** (≥ \(repRange.1) reps) en la última referencia válida (histórico o serie previa), **sube el peso** ligeramente.
+    2) Si quedaste **por debajo** del rango (≤ \(repRange.0)−1), **baja** ligeramente el peso.
+    3) Si quedaste **dentro** del rango, **mantén** o micro-ajusta.
+    4) RANGO PERMITIDO (kg): min=\(String(format: "%.1f", minAllowed)), max=\(String(format: "%.1f", maxAllowed)).
+    5) SUGERENCIA BASE: \(String(format: "%.1f", proposedClamped)) kg (puedes modificarla si lo exigen las reglas 1–3).
+    6) PASO MÁXIMO vs el último peso usado: ±10% y nunca más de \(String(format: "%.1f", inc)).
+
+    FORMATO DE RESPUESTA: escribe **solo** un número con 1 decimal (ej. 37.5). Sin texto extra.
     """
-    print(prompt)
 
     let instrucciones = """
-    Eres un entrenador personal estricto. Devuelves solo un número en kg (máx 1 decimal).
-    REGLAS DURAS:
-    - Nunca propongas pesos fuera del rango permitido que recibe en el prompt.
-    - No superes el 120% del máximo histórico.
-    - Si no hay historial suficiente, sugiere el último peso ±10% como máximo.
-    - Ajusta el peso en función del rango objetivo de repeticiones: por encima del rango ⇒ subir; por debajo ⇒ bajar; dentro ⇒ mantener o micro-ajustar.
-    - Responde solo el número, sin texto ni unidades.
+    Eres un entrenador de fuerza/hipertrofia. Devuelves **solo un número** con 1 decimal.
+    Aplica estrictamente las reglas de PROGRESIÓN y el RANGO PERMITIDO. Si la última referencia alcanzó el techo del rango con el mismo peso, prioriza subir ligeramente el peso (sin salirte del rango y del paso máximo). Si estuvo por debajo, reduce; si estuvo dentro, mantén.
+    No añadas texto, símbolos ni unidades.
     """
 
     do {
@@ -601,6 +808,94 @@ private func suggestNextWeight(for performedExercise: PerformedExercise, setsHis
     }
     // Fallback: prefer the proposedClamped value if model output is missing or off
     return proposedClamped
+}
+
+// Custom AI spinner indicator for summaries
+private struct AIActivityIndicator: View {
+    @State private var spin = false
+    var text: String = "Generando resumen…"
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "apple.intelligence")
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(Color.accentColor, Color.accentColor.opacity(0.45))
+                .font(.title3)
+                .symbolEffect(.rotate, options: .repeating, value: spin)
+                .symbolEffect(.variableColor, options: .repeating, value: spin)
+            Text(text)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .onAppear { spin = true }
+    }
+}
+
+private struct GroupSelectorSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
+    @Bindable var entrenamiento: Entrenamiento
+    var onSave: () -> Void
+
+    private let columns = [GridItem(.adaptive(minimum: 120), spacing: 10)]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(GrupoMuscular.allCases, id: \.self) { grupo in
+                        let isOn = entrenamiento.gruposMusculares.contains(grupo)
+                        Button {
+                            toggle(grupo)
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
+                                Text(grupo.localizedName)
+                                    .lineLimit(1)
+                            }
+                            .font(.subheadline)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(isOn ? Color.accentColor.opacity(0.15) : Color.secondary.opacity(0.08))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(isOn ? Color.accentColor : Color.secondary.opacity(0.4), lineWidth: 1)
+                            )
+                            .foregroundStyle(.primary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(16)
+            }
+            .navigationTitle("Grupos musculares")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancelar") { dismiss() }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Listo") {
+                        onSave()
+                        dismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
+        }
+    }
+
+    private func toggle(_ grupo: GrupoMuscular) {
+        if let idx = entrenamiento.gruposMusculares.firstIndex(of: grupo) {
+            entrenamiento.gruposMusculares.remove(at: idx)
+        } else {
+            entrenamiento.gruposMusculares.append(grupo)
+        }
+        try? context.save()
+    }
 }
 
 // MARK: - ExercisePickerView
@@ -847,13 +1142,8 @@ private struct ExerciseSetsEditorView: View {
                     .onDelete(perform: deleteSets)
                     
                     if isSuggestingWeight {
-                        HStack {
-                            ProgressView()
-                            Text("Calculando sugerencia de peso...")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.vertical, 4)
+                        AIActivityIndicator(text: "Calculando sugerencia…")
+                            .padding(.vertical, 4)
                     }
                 }
 #if canImport(Charts)
@@ -1150,3 +1440,122 @@ private func resumenSetsStatic(for ejercicio: PerformedExercise) -> String {
     }.joined(separator: ", ")
 }
 
+
+    /// Arregla casos donde la IA deja un par de asteriscos sin cerrar para negritas
+    private func sanitizeUnclosedBold(in text: String) -> String {
+        // Arreglar por párrafos para no arrastrar negritas a todo el documento
+        let paragraphs = text.replacingOccurrences(of: "\r\n", with: "\n")
+            .replacingOccurrences(of: "\r", with: "\n")
+            .components(separatedBy: "\n\n")
+        let fixed = paragraphs.map { p -> String in
+            let count = p.components(separatedBy: "**").count - 1
+            if count % 2 != 0 { return p + "**" } // cerrar dentro del párrafo
+            return p
+        }
+        return fixed.joined(separator: "\n\n")
+    }
+
+    /// Normaliza el Markdown para mejorar la presentación: cierra negritas sueltas, inserta saltos de párrafo razonables.
+    private func normalizeMarkdownForDisplay(_ text: String) -> String {
+        var md = text
+            .replacingOccurrences(of: "\r\n", with: "\n")
+            .replacingOccurrences(of: "\r", with: "\n")
+
+        // 1) Forzar salto de párrafo antes de secciones en negrita que vienen pegadas al punto
+
+        // 2) Asegurar un salto de párrafo antes de items de lista que empiezan por '* '
+        md = regexReplace(md, pattern: #"(?<!\n\n)\n\*\s"#, replacement: "\n\n* ")
+
+        // 2b) Normalizar bullets: convertir "* " a "- " al inicio de línea
+        md = regexReplace(md, pattern: #"(?m)^\*\s"#, replacement: "- ")
+
+        // 2c) Asegurar salto de párrafo antes de items de lista que empiezan por '- '
+        md = regexReplace(md, pattern: #"(?<!\n\n)\n-\s"#, replacement: "\n\n- ")
+
+        // 2d) Limpiar bullets duplicados del modelo ("- - texto" o "- - - texto") → "- texto"
+        md = regexReplace(md, pattern: #"(?m)^-\s+-\s+-\s+"#, replacement: "- ")
+        md = regexReplace(md, pattern: #"(?m)^-\s+-\s+"#, replacement: "- ")
+
+        // 2e) Eliminar líneas sueltas que solo contienen "**"
+        md = regexReplace(md, pattern: #"(?m)^\s*\*\*\s*$"#, replacement: "")
+
+        // 3) Convertir saltos simples en dobles (párrafo) cuando no haya ya uno doble
+        md = regexReplace(md, pattern: #"(?<!\n)\n(?!\n)"#, replacement: "\n\n")
+
+        // 4) Evitar triples saltos
+        md = md.replacingOccurrences(of: "\n\n\n", with: "\n\n")
+
+        // 5) Titulares tipo "Palabra: " al inicio de línea → envolver en ** ** si no lo están
+        // Evita duplicar si ya tiene ** al principio
+        md = regexReplace(md, pattern: #"(?m)^(\s*)(?!\*\*)([A-ZÁÉÍÓÚ][^\n:]{2,60}):\s"#, replacement: "$1**$2:** ")
+
+        return md
+    }
+
+    /// Utilidad de reemplazo regex segura
+    private func regexReplace(_ source: String, pattern: String, replacement: String) -> String {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: []) else { return source }
+        let range = NSRange(source.startIndex..., in: source)
+        return re.stringByReplacingMatches(in: source, options: [], range: range, withTemplate: replacement)
+    }
+
+    /// Formatea el resumen IA al esquema Markdown esperado
+    private func formatAISummaryForDisplay(_ text: String) -> String {
+        var md = normalizeMarkdownForDisplay(text)
+
+        // Si los encabezados aparecen pegados al texto y SIN negrita, separarlos y poner en negrita (solo al inicio de línea, sin crear líneas con solo '**')
+        md = regexReplace(md, pattern: #"(?m)^(?!\*\*)\s*(Veredicto|Puntos fuertes|Ajustes recomendados|Aspectos a vigilar):\s*"#, replacement: "**$1:**\n\n")
+
+        // Asegurar encabezados en líneas separadas (si vienen pegados al texto)
+        md = regexReplace(md, pattern: #"(?<!\n\n)\*\*(Puntos fuertes|Ajustes recomendados|Aspectos a vigilar):\*\*"#, replacement: "\n\n**$1:**")
+
+        // Forzar salto doble después de la línea de Veredicto
+        md = regexReplace(md, pattern: #"\*\*Veredicto:\*\*\s*([^\n]+)"#, replacement: "**Veredicto:** $1\n\n")
+
+        // Convertir contenido plano en bullets si no lo es ya
+        md = ensureBullets(in: md, heading: "Puntos fuertes", maxItems: 3)
+        md = ensureBullets(in: md, heading: "Ajustes recomendados", maxItems: 3)
+        md = ensureBullets(in: md, heading: "Aspectos a vigilar", maxItems: 2)
+
+        // Limpieza de saltos extra
+        md = md.replacingOccurrences(of: "\n\n\n", with: "\n\n")
+        return md
+    }
+
+    /// Garantiza que el cuerpo bajo un encabezado esté en bullets '- '
+    private func ensureBullets(in source: String, heading: String, maxItems: Int) -> String {
+        let escapedHeading = NSRegularExpression.escapedPattern(for: heading)
+        let pattern = #"(?s)(\*\*#HEADING:\*\*)\s*(.*?)(?=\n\n\*\*|\z)"#.replacingOccurrences(of: "#HEADING", with: escapedHeading)
+        guard let re = try? NSRegularExpression(pattern: pattern, options: []) else { return source }
+        let ns = source as NSString
+        var result = source
+        let matches = re.matches(in: source, options: [], range: NSRange(location: 0, length: ns.length))
+        for m in matches.reversed() {
+            let headerRange = m.range(at: 1)
+            let bodyRange = m.range(at: 2)
+            let header = ns.substring(with: headerRange)
+            let bodyRaw = ns.substring(with: bodyRange).trimmingCharacters(in: .whitespacesAndNewlines)
+
+            // Si ya tiene bullets, no tocar (tolerar espacios/saltos antes del guion)
+            if bodyRaw.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("- ") { continue }
+
+            // Partir por puntos, punto y coma o saltos simples
+            let pieces = bodyRaw
+                .replacingOccurrences(of: "•", with: ". ")
+                .replacingOccurrences(of: "·", with: ". ")
+                .split(whereSeparator: { ".;\n".contains($0) })
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+
+            if pieces.isEmpty { continue }
+            let items = Array(pieces.prefix(maxItems))
+            let bullets = items.map { "- \($0)" }.joined(separator: "\n")
+            let replacement = "\(header)\n\n\(bullets)\n\n"
+
+            let fullRange = NSRange(location: headerRange.location, length: (bodyRange.location + bodyRange.length) - headerRange.location)
+            if let r = Range(fullRange, in: result) {
+                result.replaceSubrange(r, with: replacement)
+            }
+        }
+        return result
+    }

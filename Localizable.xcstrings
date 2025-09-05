@@ -407,6 +407,9 @@
     "Añadir entrenamiento" : {
 
     },
+    "Añadir grupos musculares" : {
+
+    },
     "Análisis de macros" : {
 
     },
@@ -824,6 +827,9 @@
     "Aún no has registrado este ejercicio." : {
 
     },
+    "Aún no hay resumen. Pulsa \"Terminar\" para generarlo." : {
+
+    },
     "Aún no tienes entrenos finalizados" : {
 
     },
@@ -979,9 +985,6 @@
 
     },
     "Cadera" : {
-
-    },
-    "Calculando sugerencia de peso..." : {
 
     },
     "Cambiar" : {
@@ -2083,9 +2086,6 @@
     "Déficit calórico: %lld kcal" : {
 
     },
-    "Despliega para añadir" : {
-
-    },
     "Detalle" : {
 
     },
@@ -2175,13 +2175,13 @@
     "Edad: %lld" : {
 
     },
+    "Editar grupos" : {
+
+    },
     "Ejercicio seleccionado" : {
 
     },
     "Ejercicios" : {
-
-    },
-    "El entrenamiento aún no ha comenzado. Puedes preparar ejercicios o grupos." : {
 
     },
     "Elegir ejercicio" : {
@@ -2425,10 +2425,13 @@
         }
       }
     },
-    "Empezar entrenamiento" : {
+    "Empezar" : {
 
     },
     "En curso" : {
+
+    },
+    "En curso desde %@" : {
 
     },
     "encogimientos_barra_desc" : {
@@ -2506,9 +2509,6 @@
 
     },
     "Entrenos" : {
-
-    },
-    "Estado" : {
 
     },
     "Evolución de calorías en el día" : {
@@ -3162,6 +3162,9 @@
         }
       }
     },
+    "Generando resumen…" : {
+
+    },
     "giros_rusos_disco_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3473,6 +3476,9 @@
           }
         }
       }
+    },
+    "Grupo muscular: %@" : {
+
     },
     "Grupos musculares" : {
 
@@ -3916,6 +3922,9 @@
 
     },
     "Limpiar" : {
+
+    },
+    "Listo" : {
 
     },
     "lumbar_banco_desc" : {
@@ -4406,9 +4415,6 @@
     "minutos" : {
 
     },
-    "Mostrar grupos muscululares" : {
-
-    },
     "naranja_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4604,9 +4610,6 @@
 
     },
     "Objetivos estimados con Mifflin-St Jeor y tu nivel de actividad y objetivo del perfil." : {
-
-    },
-    "Ocultar grupos musculares" : {
 
     },
     "Off" : {
@@ -6450,6 +6453,9 @@
     "Referencia" : {
 
     },
+    "Regenerar resumen (IA)" : {
+
+    },
     "remo_barra_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6876,13 +6882,10 @@
     "Restricciones alimenticias, lesiones, etc." : {
 
     },
-    "Resumen" : {
+    "Resumen (IA)" : {
 
     },
     "Resumen de tu semana (AI)" : {
-
-    },
-    "Resumen de tu último entrenamiento (AI)" : {
 
     },
     "Rojo = superávit (consumidas > gastadas). Verde = déficit." : {
@@ -7224,9 +7227,6 @@
     "Sin entrenamientos" : {
 
     },
-    "Sin grupos marcados" : {
-
-    },
     "Sin inicio" : {
 
     },
@@ -7285,7 +7285,7 @@
     "Terminados" : {
 
     },
-    "Terminar entrenamiento" : {
+    "Terminar" : {
 
     },
     "ternera_magra_5_cruda_desc" : {

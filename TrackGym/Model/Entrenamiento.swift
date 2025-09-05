@@ -14,14 +14,17 @@ final class Entrenamiento {
     var startDate: Date?
     var endDate: Date?
     var gruposMusculares: [GrupoMuscular] = []
+    // Resumen generado por IA al finalizar el entrenamiento
+    public var aiSummary: String? = nil
     
     @Relationship(deleteRule: .cascade)
     var ejercicios: [PerformedExercise] = []
     
-    init(id: UUID = UUID(), startDate: Date? = Date(), endDate: Date? = nil) {
+    init(id: UUID = UUID(), startDate: Date? = Date(), endDate: Date? = nil, aiSumary: String? = nil) {
         self.id = id
         self.startDate = startDate
         self.endDate = endDate
+        self.aiSummary = aiSumary
     }
     
     // 🔹 Helper para obtener los grupos sin duplicados y ordenados
