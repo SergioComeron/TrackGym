@@ -5032,6 +5032,40 @@
         }
       }
     },
+    "vips_club_pollo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VIPS Club Chicken"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VIPS Club Pollo"
+          }
+        }
+      }
+    },
+    "vips_club_pollo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triple sandwich with chicken, bacon, lettuce, tomato and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sándwich triple con pollo, bacon, lechuga, tomate y mayonesa."
+          }
+        }
+      }
+    },
     "patatas_fritas_racion_desc" : {
       "extractionState" : "manual",
       "localizations" : {

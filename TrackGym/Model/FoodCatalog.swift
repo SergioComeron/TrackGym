@@ -112,7 +112,11 @@ let preparedFoods: [FoodSeed] = [
     FoodSeed(slug: "patatas_fritas_racion", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312),
 
     // Patatas fritas (media ración, aprox 75 g -> mismos valores por 100 g).
-    FoodSeed(slug: "patatas_fritas_media", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312)
+    FoodSeed(slug: "patatas_fritas_media", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312),
+
+    // VIPS Club Pollo (realista, por 100 g).
+    // Valores nutricionales según datos disponibles.
+    FoodSeed(slug: "vips_club_pollo", category: .misc, protein: 15.0, carbs: 10.0, fat: 15.0, kcal: 770)
 ]
 
 /// Tamaños de ración sugeridos (en gramos) para ciertos alimentos preparados.
@@ -121,7 +125,8 @@ let preparedFoods: [FoodSeed] = [
 let defaultServingGrams: [String: Double] = [
     "bocadillo_calamares": 380,
     "patatas_fritas_racion": 150,
-    "patatas_fritas_media": 75
+    "patatas_fritas_media": 75,
+    "vips_club_pollo": 320
 ]
 
 let defaultServingGramsMcdonalds: [String: Double] = [
