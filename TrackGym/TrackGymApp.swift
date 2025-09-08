@@ -1,10 +1,3 @@
-//
-//  TrackGymApp.swift
-//  TrackGym
-//
-//  Created by Sergio Comerón on 17/8/25.
-//
-
 import SwiftUI
 import SwiftData
 import Observation
@@ -49,7 +42,36 @@ struct TrackGymApp: App {
                     }
                 }
         }
-        .modelContainer(for: [Entrenamiento.self, PerformedExercise.self, ExerciseSet.self, Perfil.self, FoodLog.self])
+        .modelContainer(createModelContainer())
+    }
+    
+    // MARK: - CloudKit Configuration
+    private func createModelContainer() -> ModelContainer {
+        let schema = Schema([
+            Entrenamiento.self,
+            PerformedExercise.self,
+            ExerciseSet.self,
+            Perfil.self,
+            FoodLog.self
+        ])
+        
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .automatic  // 👈 Esto es clave para CloudKit
+        )
+        
+        do {
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            
+            // Opcional: Log para debug
+            print("✅ ModelContainer creado exitosamente con CloudKit")
+            
+            return container
+        } catch {
+            print("❌ Error creando ModelContainer: \(error)")
+            fatalError("No se pudo crear el ModelContainer: \(error)")
+        }
     }
 }
 
@@ -94,4 +116,3 @@ struct EntrenamientoDetailLoaderView: View {
         }
     }
 }
-

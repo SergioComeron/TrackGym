@@ -3,18 +3,18 @@ import SwiftData
 
 @Model
 class Perfil {
-    var edad: Int
-    var peso: Double
-    var altura: Double
-    var sexo: String
-    var objetivo: String
-    var pecho: Double
-    var cintura: Double
-    var cadera: Double
-    var biceps: Double
-    var grasaCorporal: Double? // Opcional
-    var nivelActividad: String
-    var restricciones: String?
+    var edad: Int = 0
+    var peso: Double = 0
+    var altura: Double = 0
+    var sexo: String = "Masculino"
+    var objetivo: String = "Perder peso"
+    var pecho: Double = 0
+    var cintura: Double = 0
+    var cadera: Double = 0
+    var biceps: Double = 0
+    var grasaCorporal: Double? = nil // Opcional
+    var nivelActividad: String = "Bajo"
+    var restricciones: String? = nil
 
     init(edad: Int, peso: Double, altura: Double, sexo: String, objetivo: String, pecho: Double, cintura: Double, cadera: Double, biceps: Double, grasaCorporal: Double?, nivelActividad: String, restricciones: String?) {
         self.edad = edad

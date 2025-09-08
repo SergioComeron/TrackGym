@@ -167,7 +167,13 @@ struct EntrenamientoListView: View {
         for index in offsets {
             context.delete(items[index])
         }
-        try? context.save()
+        do {
+            try context.save()
+            print("✅ Guardado tras borrar entrenamientos")
+        } catch {
+            print("❌ Error al guardar tras borrar entrenamientos: \(error)")
+            context.rollback()
+        }
     }
 
     // Helpers de presentación (modelo con opcionales)
@@ -231,15 +237,24 @@ struct EntrenamientoListView: View {
     }
 
     private func tieneRecordEnAlgunaSerie(_ entrenamiento: Entrenamiento) -> Bool {
-        // Para cada ejercicio realizado en este entrenamiento
-        for ejercicio in entrenamiento.ejercicios {
+        // Desempaquetar ejercicios del entrenamiento (nil cuenta como vacío)
+        let ejerciciosEnEntreno: [PerformedExercise] = entrenamiento.ejercicios ?? []
+        guard !ejerciciosEnEntreno.isEmpty else { return false }
+
+        for ejercicio in ejerciciosEnEntreno {
             // Buscar todos los sets de ese slug en todos los entrenamientos
-            let allSets = entrenamientos.flatMap { $0.ejercicios }
+            let allSets: [ExerciseSet] = entrenamientos
+                .compactMap { $0.ejercicios }   // [[PerformedExercise]]
+                .flatMap { $0 }                  // [PerformedExercise]
                 .filter { $0.slug == ejercicio.slug }
-                .flatMap { $0.sets }
+                .compactMap { $0.sets }          // [[ExerciseSet]]?
+                .flatMap { $0 }                  // [ExerciseSet]
+
             let maxPeso = allSets.map { $0.weight }.max() ?? 0
+
             // ¿Algún set de este ejercicio iguala el máximo?
-            if ejercicio.sets.contains(where: { abs($0.weight - maxPeso) < 0.0001 && maxPeso > 0 }) {
+            let setsEjercicio: [ExerciseSet] = ejercicio.sets ?? []
+            if setsEjercicio.contains(where: { abs($0.weight - maxPeso) < 0.0001 && maxPeso > 0 }) {
                 return true
             }
         }

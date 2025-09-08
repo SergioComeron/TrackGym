@@ -759,14 +759,22 @@ struct ProgresoView: View {
     }
 
     private var slugsEjerciciosRealizados: [String] {
-        let ejercicios = entrenamientosTerminados.flatMap { $0.ejercicios }
+        let ejercicios: [PerformedExercise] = entrenamientosTerminados
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
         let slugs = ejercicios.map { $0.slug }
         return Array(Set(slugs)).sorted()
     }
     
     private func resumenEjercicioSeleccionado(slug: String) -> some View {
-        let ejercicios = entrenamientosTerminados.flatMap { $0.ejercicios }.filter { $0.slug == slug }
-        let series = ejercicios.flatMap { $0.sets }
+        let ejercicios: [PerformedExercise] = entrenamientosTerminados
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
+            .filter { $0.slug == slug }
+
+        let series: [ExerciseSet] = ejercicios
+            .compactMap { $0.sets }
+            .flatMap { $0 }
         return Group {
             if series.isEmpty {
                 Text("Aún no has registrado este ejercicio.")
@@ -788,7 +796,9 @@ struct ProgresoView: View {
     }
 
     private var ejercicioMasFrecuenteSlug: String? {
-        let ejercicios = entrenamientosTerminados.flatMap { $0.ejercicios }
+        let ejercicios: [PerformedExercise] = entrenamientosTerminados
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
         let counts = Dictionary(grouping: ejercicios, by: { $0.slug }).mapValues { $0.count }
         return counts.max(by: { $0.value < $1.value })?.key
     }
@@ -967,7 +977,10 @@ struct ProgresoView: View {
         let grupos = gruposSet.map { $0.localizedName }.joined(separator: ", ")
         
         // Ejercicios realizados en la semana con sets y reps/pesos resumidos
-        let ejerciciosSemana = entrenosSemana.flatMap { $0.ejercicios }
+        let ejerciciosSemana: [PerformedExercise] = entrenosSemana
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
+
         let ejerciciosPorSlug = Dictionary(grouping: ejerciciosSemana, by: { $0.slug })
         
         // Crear listado de entrenamientos con detalle para IA
@@ -983,14 +996,18 @@ struct ProgresoView: View {
             let diaSemana = entreno.startDate.map { diaFormatter.string(from: $0).capitalized } ?? "Día desconocido"
             let fechaCorta = entreno.startDate.map { fechaFormatter.string(from: $0) } ?? "??/??"
             let gruposTrabajados = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
-            let ejerciciosNames = entreno.ejercicios.map { nombreEjercicioDesdeSlug($0.slug) }.joined(separator: ", ")
+            let ejerciciosNames = (entreno.ejercicios ?? [])
+                .map { nombreEjercicioDesdeSlug($0.slug) }
+                .joined(separator: ", ")
             return "- \(diaSemana) (\(fechaCorta)): Grupos trabajados: \(gruposTrabajados). Ejercicios: \(ejerciciosNames)"
         }.joined(separator: "\n")
         
         let ejerciciosStr = ejerciciosPorSlug.map { slug, ejercicios -> String in
             let exerciseSeed = defaultExercises.first(where: { $0.slug == slug })
             // sumar total sets, reps y peso medio aproximado
-            let allSets = ejercicios.flatMap { $0.sets }
+            let allSets: [ExerciseSet] = ejercicios
+                .compactMap { $0.sets }
+                .flatMap { $0 }
             let totalSets = allSets.count
             let totalReps = allSets.reduce(0) { $0 + $1.reps }
             let avgWeight = allSets.isEmpty ? 0 : allSets.reduce(0.0) { $0 + Double($1.weight) } / Double(allSets.count)
@@ -1183,11 +1200,13 @@ private struct PesoChartView: View {
     let entrenamientos: [Entrenamiento]
     
     var body: some View {
-        let sets = entrenamientos
-            .flatMap { $0.ejercicios }
+        let sets: [ExerciseSet] = entrenamientos
+            .compactMap { $0.ejercicios }   // [[PerformedExercise]]
+            .flatMap { $0 }                  // [PerformedExercise]
             .filter { $0.slug == slug }
-            .flatMap { $0.sets }
-            .sorted(by: { $0.createdAt < $1.createdAt })
+            .compactMap { $0.sets }          // [[ExerciseSet]]?
+            .flatMap { $0 }                  // [ExerciseSet]
+            .sorted { $0.createdAt < $1.createdAt }
         
         let exerciseSeed = defaultExercises.first(where: { $0.slug == slug })
         

@@ -18,7 +18,7 @@ final class ExerciseSet {
     var duration: Int = 0
     var createdAt: Date = Date()
     @Relationship(inverse: \PerformedExercise.sets)
-    var performedExercise: PerformedExercise?
+    var performedExercise: PerformedExercise? = nil
 
     init(reps: Int, weight: Double, order: Int = 0, duration: Int = 0, performedExercise: PerformedExercise? = nil, createdAt: Date = Date()) {
         self.reps = reps

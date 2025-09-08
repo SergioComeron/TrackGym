@@ -16,10 +16,10 @@ final class PerformedExercise {
     var createdAt: Date = Date()
     var order: Int = 0
     @Relationship(inverse: \Entrenamiento.ejercicios)
-    var entrenamiento: Entrenamiento?
+    var entrenamiento: Entrenamiento? = nil
 
     @Relationship(deleteRule: .cascade)
-    var sets: [ExerciseSet] = []
+    var sets: [ExerciseSet]? = nil
 
     init(slug: String, entrenamiento: Entrenamiento? = nil) {
         self.slug = slug

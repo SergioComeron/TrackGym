@@ -12,19 +12,19 @@ import Foundation
 /// Normaliza contra el catálogo para no duplicar macros/nombres.
 @Model
 final class FoodLog {
-    @Attribute(.unique) var entryUUID: UUID
-    var date: Date                 // cuándo se añadió/consumió
-    var slug: String               // slug del alimento en el catálogo fijo
-    var grams: Double              // cantidad en gramos
-    var notes: String?
+    var entryUUID: UUID = UUID()
+    var date: Date = Date()                // cuándo se añadió/consumió
+    var slug: String = ""              // slug del alimento en el catálogo fijo
+    var grams: Double = 0             // cantidad en gramos
+    var notes: String? = nil
 
     // Marca cuándo se exportó esta entrada a HealthKit (nil = aún no exportada)
-    var exportedToHealthKitAt: Date?
+    var exportedToHealthKitAt: Date? = nil
     /// Identificador único del objeto en HealthKit (si existe)
-    var healthKitUUID: UUID?
+    var healthKitUUID: UUID? = nil
 
     // Relación con su Meal (opcional, permite añadir suelto y agrupar después)
-    var meal: Meal?
+    var meal: Meal? = nil
 
     init(date: Date, slug: String, grams: Double, notes: String? = nil, meal: Meal? = nil, healthKitUUID: UUID? = nil) {
         self.entryUUID = UUID()

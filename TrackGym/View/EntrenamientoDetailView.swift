@@ -280,12 +280,8 @@ struct EntrenamientoDetailView: View {
     
     // MARK: - Computed property para ejercicios únicos
     private var uniqueEjercicios: [PerformedExercise] {
-        let sorted = entrenamiento.ejercicios.sorted(by: { $0.order < $1.order })
-//        print("🔍 uniqueEjercicios - Ejercicios ordenados:")
-//        for (i, ejercicio) in sorted.enumerated() {
-//            print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
-//        }
-        return sorted
+        let ejercicios = entrenamiento.ejercicios ?? []
+        return ejercicios.sorted { $0.order < $1.order }
     }
     
     /// Convierte la salida del modelo a un único párrafo sin Markdown ni listas
@@ -330,8 +326,10 @@ struct EntrenamientoDetailView: View {
         guard !selectedGroups.isEmpty else { return [] }
         
         // Filtrar ejercicios ya añadidos para evitar duplicados en la UI
-        let existingSlugs = Set(entrenamiento.ejercicios.map { $0.slug })
-        
+        guard let ejercicios = entrenamiento.ejercicios else {
+            return []
+        }
+        let existingSlugs = Set(ejercicios.map { $0.slug })
         return defaultExercises.filter { exercise in
             selectedGroups.contains(exercise.group) && !existingSlugs.contains(exercise.slug)
         }
@@ -341,7 +339,7 @@ struct EntrenamientoDetailView: View {
         guard !isFinished else { return }
         
         // Doble verificación más robusta
-        let existingExercise = entrenamiento.ejercicios.first { $0.slug == slug }
+        let existingExercise = (entrenamiento.ejercicios ?? []).first { $0.slug == slug }
         guard existingExercise == nil else {
             print("⚠️ Ejercicio \(slug) ya existe, evitando duplicado")
             return
@@ -350,10 +348,11 @@ struct EntrenamientoDetailView: View {
         // Crear con ID único para CloudKit
         let pe = PerformedExercise(slug: slug, entrenamiento: entrenamiento)
         pe.id = UUID()
-        pe.order = (entrenamiento.ejercicios.map { $0.order }.max() ?? -1) + 1
-        
+        pe.order = ((entrenamiento.ejercicios ?? []).map { $0.order }.max() ?? -1) + 1
+
         context.insert(pe)
-        entrenamiento.ejercicios.append(pe)
+        if entrenamiento.ejercicios == nil { entrenamiento.ejercicios = [] }
+        entrenamiento.ejercicios?.append(pe)
         
         // RENUMERAR order tras añadir ejercicio (no se especificó sets aquí, pero se recomienda coherencia)
         // (No sets renumerado aquí porque sets están en ExerciseSetsEditorView)
@@ -367,120 +366,102 @@ struct EntrenamientoDetailView: View {
             context.rollback()
         }
     }
-
+    
     private func removePerformedExercises(at offsets: IndexSet) {
-        let exercisesToRemove = offsets.map { entrenamiento.ejercicios[$0] }
-        
-        for pe in exercisesToRemove {
+        var current = entrenamiento.ejercicios ?? []
+        let toRemove = offsets.compactMap { current[safe: $0] }
+
+        for pe in toRemove {
             context.delete(pe)
         }
-        
-        entrenamiento.ejercicios.remove(atOffsets: offsets)
-        
+
+        current.remove(atOffsets: offsets)
+        entrenamiento.ejercicios = current
+
+        // Reenumerar los órdenes después de borrar para mantener el orden
+        let reOrdered = (entrenamiento.ejercicios ?? []).sorted { $0.order < $1.order }
+        for (idx, ejercicio) in reOrdered.enumerated() {
+            ejercicio.order = idx
+        }
+        entrenamiento.ejercicios = reOrdered
+
         do {
             try context.save()
         } catch {
             print("❌ Error al eliminar ejercicios: \(error)")
             context.rollback()
         }
-        
-        // Reenumerar los órdenes después de borrar para mantener el orden limpio tras eliminar
-        let ejerciciosOrdenados = entrenamiento.ejercicios.sorted { $0.order < $1.order }
-        for (idx, ejercicio) in ejerciciosOrdenados.enumerated() {
-            ejercicio.order = idx
-        }
-        entrenamiento.ejercicios = ejerciciosOrdenados
-        try? context.save()
     }
-    
+
     private func movePerformedExercises(from source: IndexSet, to destination: Int) {
-//        print("🔧 Iniciando movimiento agresivo...")
-        
-        var ejerciciosOrdenados = entrenamiento.ejercicios.sorted { $0.order < $1.order }
+        var ejerciciosOrdenados = (entrenamiento.ejercicios ?? []).sorted { $0.order < $1.order }
         ejerciciosOrdenados.move(fromOffsets: source, toOffset: destination)
-        
+
         // Actualizar los values de 'order'
         for (idx, ejercicio) in ejerciciosOrdenados.enumerated() {
             ejercicio.order = idx
-//            print("🔧 Actualizando \(ejercicio.slug) order = \(idx)")
         }
-        
-        // 🔑 VERSIÓN AGRESIVA: Vaciar completamente y reconstruir
-        let ejerciciosReordenados = ejerciciosOrdenados
-//        print("🔧 Vaciando array...")
-        entrenamiento.ejercicios.removeAll()
-        
-        // Primer guardado (array vacío)
+
+        // Vaciar y reconstruir de forma segura
+        entrenamiento.ejercicios = []
         do {
             try context.save()
-            print("✅ Array vaciado y guardado")
-        } catch {
-            print("❌ Error al vaciar: \(error)")
-            context.rollback()
-            return
-        }
-        
-        // Reconstruir con el orden correcto
-//        print("🔧 Reconstruyendo array en orden correcto...")
-        entrenamiento.ejercicios = ejerciciosReordenados
-        
-        // Segundo guardado (array reordenado)
-        do {
+            entrenamiento.ejercicios = ejerciciosOrdenados
             try context.save()
-//            print("✅ Array reconstruido y guardado")
-            
-            // Verificación final
-//            print("🔍 Verificación post-reconstrucción:")
-//            for (i, ejercicio) in entrenamiento.ejercicios.enumerated() {
-//                print("  [\(i)] \(ejercicio.slug) - order: \(ejercicio.order)")
-//            }
         } catch {
             print("❌ Error al guardar reconstrucción: \(error)")
             context.rollback()
         }
     }
     
-    // MARK: - Limpieza de duplicados (crucial para CloudKit)
     private func cleanupDuplicates() {
-        let slugGroups = Dictionary(grouping: entrenamiento.ejercicios) { $0.slug }
+        let current = entrenamiento.ejercicios ?? []
+        let slugGroups = Dictionary(grouping: current) { $0.slug }
         var exercisesToDelete: [PerformedExercise] = []
-        
+
         for (slug, exercises) in slugGroups where exercises.count > 1 {
             print("🔧 Encontrados \(exercises.count) duplicados para \(slug)")
-            
-            // Mantener el más reciente (por fecha de creación)
-            let sortedExercises = exercises.sorted { first, second in
-                let firstDate = first.createdAt
-                let secondDate = second.createdAt
-                return firstDate > secondDate
-            }
-            
-            // Marcar para eliminación todos excepto el primero
+            // Mantener el más reciente
+            let sortedExercises = exercises.sorted { $0.createdAt > $1.createdAt }
             exercisesToDelete.append(contentsOf: Array(sortedExercises.dropFirst()))
         }
-        
-        // Eliminar duplicados
-        for exercise in exercisesToDelete {
-            if let index = entrenamiento.ejercicios.firstIndex(of: exercise) {
-                entrenamiento.ejercicios.remove(at: index)
-            }
-            context.delete(exercise)
-        }
-        
+
         if !exercisesToDelete.isEmpty {
+            var updated = current
+            for exercise in exercisesToDelete {
+                if let index = updated.firstIndex(of: exercise) {
+                    updated.remove(at: index)
+                }
+                context.delete(exercise)
+            }
+            entrenamiento.ejercicios = updated
             print("🗑️ Eliminados \(exercisesToDelete.count) ejercicios duplicados")
+            do {
+                try context.save()
+            } catch {
+                print("❌ Error guardando tras cleanupDuplicates: \(error)")
+                context.rollback()
+            }
         }
     }
     
     private func cleanupDuplicatesInMemory() {
-        let uniqueExercises = entrenamiento.ejercicios.reduce(into: [String: PerformedExercise]()) { result, exercise in
-            if result[exercise.slug] == nil {
-                result[exercise.slug] = exercise
+        let current = entrenamiento.ejercicios ?? []
+        var unique: [String: PerformedExercise] = [:]
+        for e in current {
+            if unique[e.slug] == nil {
+                unique[e.slug] = e
             }
         }
-        
-        if uniqueExercises.count != entrenamiento.ejercicios.count {
-            entrenamiento.ejercicios = Array(uniqueExercises.values)
+        let uniqArr = Array(unique.values)
+        if uniqArr.count != current.count {
+            entrenamiento.ejercicios = uniqArr
+            do {
+                try context.save()
+            } catch {
+                print("❌ Error guardando tras cleanupDuplicatesInMemory: \(error)")
+                context.rollback()
+            }
         }
     }
     
@@ -497,11 +478,11 @@ struct EntrenamientoDetailView: View {
         // Grupos y ejercicios
         let grupos = entreno.gruposMusculares.map { $0.localizedName }.joined(separator: ", ")
 
-        let ejerciciosStr = entreno.ejercicios
+        let ejerciciosStr = (entreno.ejercicios ?? [])
             .sorted { $0.order < $1.order }
             .map { ejercicio -> String in
                 let seed = defaultExercises.first(where: { $0.slug == ejercicio.slug })
-                let setsText = ejercicio.sets
+                let setsText = (ejercicio.sets ?? [])
                     .sorted { $0.order < $1.order }
                     .map { set -> String in
                         if let seed {
@@ -587,29 +568,26 @@ struct EntrenamientoDetailView: View {
 
     /// Migra ejercicios antiguos asignándoles un 'order' secuencial según la fecha de creación si el campo no está bien definido.
     private func migrateLegacyExerciseOrderIfNeeded() {
-        let ejercicios = entrenamiento.ejercicios
-        
+        let ejercicios = entrenamiento.ejercicios ?? []
+
         // Solo migrar si realmente hay un problema
         let hasInvalidOrder = ejercicios.isEmpty ||
                              Set(ejercicios.map { $0.order }).count != ejercicios.count ||
                              ejercicios.allSatisfy { $0.order == 0 }
-        
+
         guard hasInvalidOrder else {
             print("✅ Orden ya es válido, no se necesita migración")
             return
         }
-        
-//        print("🔧 Migrando orden legacy...")
-        
+
         // Ordenar por fecha de creación y asignar order
         let sorted = ejercicios.sorted { $0.createdAt < $1.createdAt }
         for (idx, ejercicio) in sorted.enumerated() {
             ejercicio.order = idx
         }
-        
+
         // Usar el mismo método agresivo para persistir
-        entrenamiento.ejercicios.removeAll()
-        
+        entrenamiento.ejercicios = []
         do {
             try context.save()
             entrenamiento.ejercicios = sorted
@@ -652,7 +630,7 @@ private func suggestNextReps(for performedExercise: PerformedExercise, setsHisto
     let maxAllowed = min(baseRange.1, lastReps == 0 ? baseRange.1 : lastReps + stepCap)
 
     // Intra-session fatigue tweak: reduce maxAllowed by 1 if 3+ sets (not below minAllowed)
-    let setIndex = performedExercise.sets.count
+    let setIndex = performedExercise.sets?.count ?? 0
     let minA = minAllowed
     var maxA = maxAllowed
     if setIndex >= 3 { maxA = max(minA, maxA - 1) }
@@ -743,7 +721,7 @@ private func suggestNextWeight(for performedExercise: PerformedExercise, setsHis
     let inc: Double = max(plateStep, last * pct)
 
     // Intra-session logic: use current set reps and weight
-    let currentSetsSorted = performedExercise.sets.sorted { $0.order < $1.order }
+    let currentSetsSorted = performedExercise.setsOrEmpty.sorted { $0.order < $1.order }
     let lastCurrentReps = currentSetsSorted.last?.reps
     var proposed = last
     if let lastCurrentReps = lastCurrentReps {
@@ -756,7 +734,7 @@ private func suggestNextWeight(for performedExercise: PerformedExercise, setsHis
     let lastWeights = setsHistoricos.suffix(5).map { $0.weight }
     let reps = setsHistoricos.last?.reps ?? 10
     let summary = lastWeights.isEmpty ? "sin historial" : lastWeights.map { String(format: "%.1f", $0) }.joined(separator: ", ")
-    let setIndex = performedExercise.sets.count
+    let setIndex = performedExercise.setsOrEmpty.count
     let prompt = """
     TAREA: Proponer SOLO un número en kg (1 decimal) para la PRÓXIMA SERIE.
     CONTEXTO:
@@ -808,6 +786,14 @@ private func suggestNextWeight(for performedExercise: PerformedExercise, setsHis
     }
     // Fallback: prefer the proposedClamped value if model output is missing or off
     return proposedClamped
+}
+
+
+extension PerformedExercise {
+    /// Devuelve siempre un array (vacío si `sets` es nil)
+    var setsOrEmpty: [ExerciseSet] {
+        sets ?? []
+    }
 }
 
 // Custom AI spinner indicator for summaries
@@ -945,32 +931,88 @@ private struct ExerciseSetsEditorView: View {
     
     @Query
     private var perfiles: [Perfil]
+    
+    
+    
+    
+    // MARK: - Precomputed data to keep `body` simple (avoid heavy type-checking)
+    private var exerciseSeed: ExerciseSeed? {
+        defaultExercises.first { $0.slug == performedExercise.slug }
+    }
+    private var exerciseType: ExerciseType { exerciseSeed?.type ?? .reps }
+
+    private var allEjercicios: [PerformedExercise] {
+        let arrays = entrenamientos.compactMap { $0.ejercicios }
+        return arrays.flatMap { $0 }
+    }
+    private var ejerciciosMismoSlug: [PerformedExercise] {
+        allEjercicios.filter { $0.slug == performedExercise.slug }
+    }
+    private var setsHistoricos: [ExerciseSet] {
+        let arrays = ejerciciosMismoSlug.map { $0.setsOrEmpty }
+        return arrays.flatMap { $0 }
+    }
+    private var setMax: ExerciseSet? {
+        setsHistoricos.max(by: { $0.weight < $1.weight })
+    }
+    private var entrenoMax: Entrenamiento? {
+        guard let pe = setMax?.performedExercise else { return nil }
+        return entrenamientos.first { ($0.ejercicios ?? []).contains(pe) }
+    }
+    private var fechaMax: Date? { entrenoMax?.startDate }
+
+    private var entrenamientosAnteriores: [Entrenamiento] {
+        entrenamientos
+            .filter { ($0.ejercicios ?? []).contains(where: { $0.slug == performedExercise.slug }) && $0 != performedExercise.entrenamiento }
+            .sorted { ($0.startDate ?? .distantPast) > ($1.startDate ?? .distantPast) }
+    }
+    private var anterior: Entrenamiento? { entrenamientosAnteriores.first }
+    private var fechaAnt: Date? { anterior?.startDate }
+    private var anteriorSets: [ExerciseSet] {
+        let ejercicios = anterior?.ejercicios?.filter { $0.slug == performedExercise.slug } ?? []
+        let arrays = ejercicios.map { $0.setsOrEmpty.sorted { $0.createdAt < $1.createdAt } }
+        return arrays.flatMap { $0 }
+    }
+
+    private var isEditable: Bool {
+        performedExercise.entrenamiento?.startDate != nil && !isFinished
+    }
+    
+    
+    
+    
+    
 
     var body: some View {
         
-        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
-        let exerciseType = exerciseSeed?.type ?? .reps
-        
-        let setsHistoricos = entrenamientos.flatMap { $0.ejercicios }
-            .filter { $0.slug == performedExercise.slug }
-            .flatMap { $0.sets }
-        
-        // Nueva declaración simplificada fuera del VStack header
-        let setMax = setsHistoricos.max(by: { $0.weight < $1.weight })
-        let peMax = setMax?.performedExercise
-        let entrenoMax = peMax.flatMap { pe in entrenamientos.first(where: { $0.ejercicios.contains(pe) }) }
-        let fechaMax = entrenoMax?.startDate
-        let entrenamientosAnteriores = entrenamientos.filter { $0.ejercicios.contains(where: { $0.slug == performedExercise.slug }) && $0 != performedExercise.entrenamiento }.sorted { ($0.startDate ?? .distantPast) > ($1.startDate ?? .distantPast) }
-        let anterior = entrenamientosAnteriores.first
-        let fechaAnt = anterior?.startDate
-        // Ordenar las series de la última sesión previa por fecha (createdAt) ascendente
-        let anteriorSets: [ExerciseSet] = anterior?
-            .ejercicios
-            .filter { $0.slug == performedExercise.slug }
-            .flatMap { $0.sets.sorted { $0.createdAt < $1.createdAt } } ?? []
-
-        // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
-        let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
+//        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
+//        let exerciseType = exerciseSeed?.type ?? .reps
+//        
+//        let ejercicios: [PerformedExercise] = entrenamientos
+//            .compactMap { $0.ejercicios }
+//            .flatMap { $0 }
+//
+//        let ejerciciosMismoSlug = ejercicios.filter { $0.slug == performedExercise.slug } // o `pe.slug`
+//        let setsHistoricos: [ExerciseSet] = ejerciciosMismoSlug.flatMap { $0.setsOrEmpty }
+//        
+//        // Nueva declaración simplificada fuera del VStack header
+//        let setMax = setsHistoricos.max(by: { $0.weight < $1.weight })
+//        let peMax = setMax?.performedExercise
+//        let entrenoMax = peMax.flatMap { pe in entrenamientos.first(where: { ($0.ejercicios ?? []).contains(pe) }) }
+//        let fechaMax = entrenoMax?.startDate
+//        let entrenamientosAnteriores = entrenamientos
+//            .filter { ($0.ejercicios ?? []).contains(where: { $0.slug == performedExercise.slug }) && $0 != performedExercise.entrenamiento }
+//            .sorted { ($0.startDate ?? .distantPast) > ($1.startDate ?? .distantPast) }
+//        let anterior = entrenamientosAnteriores.first
+//        let fechaAnt = anterior?.startDate
+//        // Ordenar las series de la última sesión previa por fecha (createdAt) ascendente
+//        let anteriorSets: [ExerciseSet] = (anterior?
+//            .ejercicios?
+//            .filter { $0.slug == performedExercise.slug }
+//            .flatMap { $0.setsOrEmpty.sorted { $0.createdAt < $1.createdAt } }) ?? []
+//        
+//        // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
+//        let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
         
         VStack(alignment: .leading) {
             
@@ -1011,7 +1053,7 @@ private struct ExerciseSetsEditorView: View {
                     }
                 ) {
                     // Mostrar sets ORDENADOS por 'order' ascendente para coherencia visual
-                    let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                    let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
                     ForEach(Array(sortedSets.enumerated()), id: \.element.id) { index, set in
                         HStack {
                             Text("Serie \(index + 1):")
@@ -1037,7 +1079,7 @@ private struct ExerciseSetsEditorView: View {
                                 .frame(width: 70)
                                 .multilineTextAlignment(.trailing)
                                 .onChange(of: durationStrings) {
-                                    let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                    let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
                                     guard index < sortedSets.count else { return }
                                     if let intValue = Int(durationStrings[safe: index] ?? ""), intValue >= 0 {
                                         sortedSets[index].duration = intValue
@@ -1067,7 +1109,7 @@ private struct ExerciseSetsEditorView: View {
                                 .frame(width: 70)
                                 .multilineTextAlignment(.trailing)
                                 .onChange(of: weightStrings) {
-                                    let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                    let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
                                     guard index < sortedSets.count else { return }
                                     let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
                                     if let doubleValue = Double(valueString), doubleValue >= 0 {
@@ -1097,7 +1139,7 @@ private struct ExerciseSetsEditorView: View {
                                 .frame(width: 50)
                                 .multilineTextAlignment(.trailing)
                                 .onChange(of: repsStrings) {
-                                    let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                    let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
                                     guard index < sortedSets.count else { return }
                                     if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
                                         sortedSets[index].reps = intValue
@@ -1126,7 +1168,7 @@ private struct ExerciseSetsEditorView: View {
                                 .frame(width: 70)
                                 .multilineTextAlignment(.trailing)
                                 .onChange(of: weightStrings) {
-                                    let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+                                    let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
                                     guard index < sortedSets.count else { return }
                                     let valueString = weightStrings[safe: index]?.replacingOccurrences(of: ",", with: ".") ?? ""
                                     if let doubleValue = Double(valueString), doubleValue >= 0 {
@@ -1148,7 +1190,7 @@ private struct ExerciseSetsEditorView: View {
                 }
 #if canImport(Charts)
                 Section {
-                    let currentSets = performedExercise.sets.sorted { $0.order < $1.order }
+                    let currentSets = performedExercise.setsOrEmpty.sorted { $0.order < $1.order }
                     let historicalMax = setsHistoricos.max(by: { $0.weight < $1.weight })?.weight ?? 0
                     let historicalMin = setsHistoricos.min(by: { $0.weight < $1.weight })?.weight ?? 0
                     if !currentSets.isEmpty {
@@ -1227,16 +1269,18 @@ private struct ExerciseSetsEditorView: View {
 
     // Función auxiliar para obtener la última serie (en este u otros entrenamientos) para repetir
     private func getLastSetToRepeat() -> ExerciseSet? {
-        let allSets = entrenamientos.flatMap { $0.ejercicios }
+        let allSets: [ExerciseSet] = entrenamientos
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
             .filter { $0.slug == performedExercise.slug }
-            .flatMap { $0.sets }
+            .flatMap { $0.setsOrEmpty }     // 👈 usa helper para evitar opcionales
             .sorted { $0.createdAt > $1.createdAt }
         return allSets.first
     }
     
     // Función auxiliar para repetir la última serie copiada
     private func repeatLastSet(lastSet: ExerciseSet) {
-        let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
+        let newOrder = (performedExercise.setsOrEmpty.map { $0.order }.max() ?? -1) + 1
         let newSet = ExerciseSet(
             reps: lastSet.reps,
             weight: lastSet.weight,
@@ -1247,9 +1291,11 @@ private struct ExerciseSetsEditorView: View {
         newSet.id = UUID()
         newSet.duration = lastSet.duration
         context.insert(newSet)
-        performedExercise.sets.append(newSet)
-        // RENUMERAR order por coherencia visual
-        let sorted = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        if performedExercise.sets == nil {
+            performedExercise.sets = []
+        }
+        performedExercise.sets?.append(newSet)        // RENUMERAR order por coherencia visual
+        let sorted = performedExercise.setsOrEmpty.sorted(by: { $0.createdAt < $1.createdAt })
         for (idx, set) in sorted.enumerated() { set.order = idx }
         saveContext()
         syncStringsWithModel()
@@ -1259,7 +1305,7 @@ private struct ExerciseSetsEditorView: View {
     // Sincroniza los arrays de String con los valores actuales del modelo
     // Se usa el array ordenado por 'order' ascendente para reflejar correctamente Serie 1 arriba, Serie N abajo
     private func syncStringsWithModel() {
-        let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
+        let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
         let newRepsStrings = sortedSets.map { String($0.reps) }
         let newWeightStrings = sortedSets.map { String(format: "%.1f", $0.weight) }
         let newDurationStrings = sortedSets.map { String($0.duration) }
@@ -1277,7 +1323,7 @@ private struct ExerciseSetsEditorView: View {
     
     private func ensureProperOrdering() {
         // Verificar que todos los sets tienen un order válido
-        let sortedSets = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.createdAt < $1.createdAt })
         for (idx, set) in sortedSets.enumerated() {
             set.order = idx
         }
@@ -1288,7 +1334,11 @@ private struct ExerciseSetsEditorView: View {
         let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
         let exerciseType = exerciseSeed?.type ?? .reps
         
-        let allSets = entrenamientos.flatMap { $0.ejercicios }.filter { $0.slug == performedExercise.slug }.flatMap { $0.sets }
+        let allSets: [ExerciseSet] = entrenamientos
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
+            .filter { $0.slug == performedExercise.slug }
+            .flatMap { $0.setsOrEmpty }
         let perfilObjetivo = perfiles.first?.objetivo
         let nombreEjercicio = exerciseSeed?.name ?? performedExercise.slug
         let grupoMuscular = exerciseSeed.map { $0.group.localizedName } ?? ""
@@ -1302,7 +1352,7 @@ private struct ExerciseSetsEditorView: View {
             exerciseGroup: grupoMuscular
         )
 
-        let newOrder = (performedExercise.sets.map { $0.order }.max() ?? -1) + 1
+        let newOrder = (performedExercise.setsOrEmpty.map { $0.order }.max() ?? -1) + 1
 
         let newSet: ExerciseSet
         if exerciseType == .duration {
@@ -1314,10 +1364,12 @@ private struct ExerciseSetsEditorView: View {
         }
         newSet.id = UUID()
         context.insert(newSet)
-        performedExercise.sets.append(newSet)
-        
+        if performedExercise.sets == nil {
+            performedExercise.sets = []
+        }
+        performedExercise.sets?.append(newSet)
         // RENUMERAR order tras añadir set para garantizar orden visual coherente por 'order'
-        let sorted = performedExercise.sets.sorted(by: { $0.createdAt < $1.createdAt })
+        let sorted = performedExercise.setsOrEmpty.sorted(by: { $0.createdAt < $1.createdAt })
         for (idx, set) in sorted.enumerated() {
             set.order = idx
         }
@@ -1328,24 +1380,32 @@ private struct ExerciseSetsEditorView: View {
     }
 
     private func deleteSets(at offsets: IndexSet) {
-        let sortedSets = performedExercise.sets.sorted(by: { $0.order < $1.order })
-        let setsToRemove = offsets.map { sortedSets[$0] }
+        // 1) Copia ordenada segura
+        var current = performedExercise.setsOrEmpty.sorted { $0.order < $1.order }
+
+        // 2) Asegura índices válidos y elimina en orden descendente
+        let valid = offsets.filter { $0 < current.count }.sorted(by: >)
+        let setsToRemove = valid.map { current[$0] }
+        for idx in valid {
+            current.remove(at: idx)
+        }
+
+        // 3) Borra de SwiftData los objetos eliminados
         for set in setsToRemove {
-            if let index = performedExercise.sets.firstIndex(of: set) {
-                performedExercise.sets.remove(at: index)
-                context.delete(set)
-            }
+            context.delete(set)
         }
-        // Reenumerar los órdenes secuencialmente empezando desde 0 usando order
-        let sorted = performedExercise.sets.sorted(by: { $0.order < $1.order })
-        for (idx, set) in sorted.enumerated() {
-            set.order = idx
+
+        // 4) Reenumera `order`
+        for (i, set) in current.enumerated() {
+            set.order = i
         }
+
+        // 5) Reasigna al modelo (opcional) y guarda
+        performedExercise.sets = current
         saveContext()
         syncStringsWithModel()
         actualizarProgresoLiveActivity()
     }
-
     private func saveContext() {
         do {
             try context.save()
@@ -1396,9 +1456,14 @@ private struct ExerciseRowView: View {
     
     var body: some View {
         let resumen = resumenSetsStatic(for: pe)
-        let allSets = entrenamientos.flatMap { $0.ejercicios }.filter { $0.slug == pe.slug }.flatMap { $0.sets }
+        let allSets: [ExerciseSet] = entrenamientos
+            .compactMap { $0.ejercicios }
+            .flatMap { $0 }
+            .filter { $0.slug == pe.slug }
+            .flatMap { $0.setsOrEmpty }
+            .sorted { $0.createdAt > $1.createdAt }
         let historicMax = allSets.map { $0.weight }.max() ?? 0
-        let hasHistoricMax = pe.sets.contains(where: { abs($0.weight - historicMax) < 0.0001 && historicMax > 0 })
+        let hasHistoricMax = pe.setsOrEmpty.contains(where: { abs($0.weight - historicMax) < 0.0001 && historicMax > 0 })
         
         if let seed = defaultExercises.first(where: { $0.slug == pe.slug }) {
             VStack(alignment: .leading, spacing: 2) {
@@ -1431,7 +1496,7 @@ private struct ExerciseRowView: View {
 
 // Static helper para uso en struct auxiliar
 private func resumenSetsStatic(for ejercicio: PerformedExercise) -> String {
-    let sets = ejercicio.sets.sorted { $0.order < $1.order }
+    let sets = ejercicio.setsOrEmpty.sorted { $0.order < $1.order }
     guard !sets.isEmpty else { return "" }
     return sets.map { set in
         let reps = set.reps

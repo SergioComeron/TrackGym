@@ -10,15 +10,15 @@ import Foundation
 
 @Model
 final class Entrenamiento {
-    var id: UUID
-    var startDate: Date?
-    var endDate: Date?
+    var id: UUID = UUID()
+    var startDate: Date? = nil
+    var endDate: Date? = nil
     var gruposMusculares: [GrupoMuscular] = []
     // Resumen generado por IA al finalizar el entrenamiento
     public var aiSummary: String? = nil
     
     @Relationship(deleteRule: .cascade)
-    var ejercicios: [PerformedExercise] = []
+    var ejercicios: [PerformedExercise]? = []
     
     init(id: UUID = UUID(), startDate: Date? = Date(), endDate: Date? = nil, aiSumary: String? = nil) {
         self.id = id
@@ -56,8 +56,10 @@ extension GrupoMuscular {
 extension Entrenamiento {
     /// Proporción de ejercicios con al menos una serie registrada (0.0 a 1.0)
     var progresoEjercicios: Double {
-        guard !ejercicios.isEmpty else { return 0.0 }
-        let completados = ejercicios.filter { !$0.sets.isEmpty }.count
+        guard let ejercicios = ejercicios, !ejercicios.isEmpty else {
+            return 0.0
+        }
+        let completados = ejercicios.filter { !($0.sets?.isEmpty ?? true) }.count
         return Double(completados) / Double(ejercicios.count)
     }
 }

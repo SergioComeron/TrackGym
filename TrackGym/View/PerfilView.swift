@@ -120,7 +120,7 @@ struct PerfilView: View {
             .onAppear {
                 cargarDatosPerfil()
             }
-            .onChange(of: perfiles) { // Reacciona cuando cambian los datos en SwiftData
+            .onChange(of: perfiles) { _, _ in // Reacciona cuando cambian los datos en SwiftData
                 cargarDatosPerfil()
             }
         }
@@ -182,8 +182,10 @@ struct PerfilView: View {
         // Guardar cambios
         do {
             try context.save()
+            print("✅ Perfil guardado correctamente")
         } catch {
-            print("Error al guardar el perfil: \(error)")
+            print("❌ Error al guardar el perfil: \(error)")
+            context.rollback()
         }
     }
 }

@@ -114,9 +114,9 @@ let preparedFoods: [FoodSeed] = [
     // Patatas fritas (media ración, aprox 75 g -> mismos valores por 100 g).
     FoodSeed(slug: "patatas_fritas_media", category: .misc, protein: 3.0, carbs: 41.0, fat: 15.0, kcal: 312),
 
-    // VIPS Club Pollo (realista, por 100 g).
-    // Valores nutricionales según datos disponibles.
-    FoodSeed(slug: "vips_club_pollo", category: .misc, protein: 15.0, carbs: 10.0, fat: 15.0, kcal: 770)
+    // VIPS Club Pollo (por 100 g, valores ajustados)
+    // Referencia general club sandwich (~223 kcal/100 g): P 12.6 / C 19.9 / G 10.0
+    FoodSeed(slug: "vips_club_pollo", category: .misc, protein: 12.6, carbs: 19.9, fat: 10.0, kcal: 223)
 ]
 
 /// Tamaños de ración sugeridos (en gramos) para ciertos alimentos preparados.

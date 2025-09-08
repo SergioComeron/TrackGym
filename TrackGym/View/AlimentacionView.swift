@@ -99,6 +99,8 @@ struct AlimentacionView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 NavigationLink(destination: MealDetailView(meal: meal)) {
                                     VStack(alignment: .leading, spacing: 8) {
+                                        // Debug: mostrar si hay entradas sin exportar (opcional-safe)
+                                        let unexported = meal.entriesOrEmpty.filter { $0.exportedToHealthKitAt == nil }.count
                                         // Header de la comida
                                         HStack {
                                             Text(meal.type.rawValue.capitalized)
@@ -107,8 +109,6 @@ struct AlimentacionView: View {
                                             Text(timeFormatted(meal.date))
                                                 .font(.caption)
                                                 .foregroundStyle(.secondary)
-                                            // Debug: mostrar si hay entradas sin exportar
-                                            let unexported = meal.entries.filter { $0.exportedToHealthKitAt == nil }.count
                                             if unexported > 0 {
                                                 Text("⚠️\(unexported)")
                                                     .font(.caption2)
@@ -125,10 +125,10 @@ struct AlimentacionView: View {
                                         }
                                         .font(.caption)
                                         
-                                        // Lista de alimentos existentes
-                                        if !meal.entries.isEmpty {
+                                        // Lista de alimentos existentes (opcional-safe)
+                                        if !meal.entriesOrEmpty.isEmpty {
                                             VStack(alignment: .leading, spacing: 2) {
-                                                ForEach(meal.entries) { entry in
+                                                ForEach(meal.entriesOrEmpty) { entry in
                                                     HStack {
                                                         Text(foodName(for: entry.slug))
                                                         Spacer(minLength: 8)
@@ -202,7 +202,7 @@ struct AlimentacionView: View {
                                             }
                                             .buttonStyle(.borderless)
                                             .controlSize(.regular)
-                                            .disabled(meal.entries.isEmpty)
+                                            .disabled(meal.entriesOrEmpty.isEmpty)
                                         }
                                     }
                                     .padding(.vertical, 4)
@@ -385,8 +385,10 @@ struct AlimentacionView: View {
                                 // Tu código de guardado existente...
                                 let entry = FoodLog(date: Date(), slug: food.slug, grams: grams, notes: notes, meal: meal)
                                 context.insert(entry)
-                                meal.entries.append(entry)
-                                
+                                if meal.entries == nil {
+                                    meal.entries = []
+                                }
+                                meal.entries?.append(entry)
                                 do {
                                     try context.save()
                                     print("✅ CoreData save successful")
@@ -669,7 +671,7 @@ struct AlimentacionView: View {
                 if success {
                     print("✅ Successfully exported complete meal to HealthKit")
                     let now = Date()
-                    for entry in meal.entries {
+                    for entry in meal.entriesOrEmpty {
                         entry.exportedToHealthKitAt = now
                         // Asegúrate de que FoodLog tiene la propiedad healthKitUUID: UUID?
                         entry.healthKitUUID = uuid
@@ -695,10 +697,12 @@ struct AlimentacionView: View {
 
     private func deleteEntries(for meal: Meal, at offsets: IndexSet) {
         for index in offsets {
-            let entry = meal.entries[index]
+            let entry = meal.entriesOrEmpty[index]
             context.delete(entry)
         }
-        meal.entries.remove(atOffsets: offsets)
+        var current = meal.entries ?? []
+        current.remove(atOffsets: offsets)
+        meal.entries = current
         try? context.save()
     }
 
@@ -710,7 +714,7 @@ struct AlimentacionView: View {
         context.insert(newMeal)
 
         // Copiar todas las entradas (alimentos) con las mismas cantidades
-        for oldEntry in original.entries {
+        for oldEntry in original.entriesOrEmpty {
             let newEntry = FoodLog(
                 date: now,
                 slug: oldEntry.slug,
@@ -719,8 +723,9 @@ struct AlimentacionView: View {
                 meal: newMeal
             )
             context.insert(newEntry)
-            newMeal.entries.append(newEntry)
-
+            if newMeal.entries == nil { newMeal.entries = [] }
+            newMeal.entries?.append(newEntry)
+            
             // Exportar a HealthKit como en el alta manual
             if let seed = foodBySlug[oldEntry.slug] {
                 exportEntryDirectly(newEntry, food: seed)
@@ -731,12 +736,14 @@ struct AlimentacionView: View {
 
         do {
             try context.save()
-            print("✅ Meal repeated successfully with \(newMeal.entries.count) entries")
+            print("✅ Meal repeated successfully with \(newMeal.entriesOrEmpty.count) entries")
         } catch {
             print("❌ Error repeating meal: \(error)")
         }
     }
 }
+
+
 
 struct FoodSelectionView: View {
     let foods: [FoodSeed]
@@ -794,6 +801,13 @@ struct FoodSelectionView: View {
     
     private var groupedFoods: [FoodCategory: [FoodSeed]] {
         Dictionary(grouping: foods) { $0.category }
+    }
+}
+
+extension Meal {
+    /// Devuelve siempre un array (vacío si `entries` es nil)
+    var entriesOrEmpty: [FoodLog] {
+        entries ?? []
     }
 }
 
@@ -1073,9 +1087,7 @@ struct SearchBar: View {
         .modelContainer(for: [Meal.self, FoodLog.self], inMemory: true)
 }
 
-
-
-//// Helper to get default grams for a food slug (returns Double? or nil if not found)
+/// Helper to get default grams for a food slug (returns Double? or nil if not found)
 //private func defaultGrams(for slug: String) -> Double? {
 //    foodBySlug[slug]?.defaultServingGrams
 //}

@@ -13,12 +13,12 @@ struct MealDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Alimentos en la comida")) {
-                if meal.entries.isEmpty {
+                if (meal.entries ?? []).isEmpty {
                     Text("Sin alimentos registrados.")
                         .foregroundStyle(.secondary)
                         .font(.caption)
                 } else {
-                    ForEach(meal.entries) { entry in
+                    ForEach(meal.entries ?? []) { entry in
                         HStack {
                             Text(foodName(for: entry.slug))
                                 .font(.body)
@@ -74,10 +74,10 @@ struct MealDetailView: View {
     }
 
     private func deleteEntries(at offsets: IndexSet) {
+        guard var entries = meal.entries else { return }
         for index in offsets {
-            let entry = meal.entries[index]
+            let entry = entries[index]
             // Usamos el mismo syncId que se utilizó al guardar en HealthKit
-//            let syncId: String = entry.entryUUID?.uuidString ?? "\(entry.slug)-\(Int(entry.grams))-\(Int(entry.date.timeIntervalSince1970))"
             let syncId: String = entry.entryUUID.uuidString
             print("[HK] 🗑️ Borrando por SyncIdentifier: \(syncId)")
 
@@ -90,8 +90,15 @@ struct MealDetailView: View {
             }
             context.delete(entry)
         }
-        meal.entries.remove(atOffsets: offsets)
-        try? context.save()
+        entries.remove(atOffsets: offsets)
+        meal.entries = entries
+        do {
+            try context.save()
+            print("✅ Guardado tras borrar entries de la comida")
+        } catch {
+            print("❌ Error guardando tras borrar entries: \(error)")
+            context.rollback()
+        }
     }
     
     

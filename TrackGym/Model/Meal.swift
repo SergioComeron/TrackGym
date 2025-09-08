@@ -9,11 +9,11 @@ import Foundation
 
 @Model
 final class Meal {
-    var date: Date                 // fecha/hora real de la comida
-    var type: MealType             // tipo de comida
+    var date: Date = Date()                // fecha/hora real de la comida
+    var type: MealType = MealType.desayuno            // tipo de comida
 
     @Relationship(deleteRule: .cascade, inverse: \FoodLog.meal)
-    var entries: [FoodLog] = []    // raciones que componen la comida
+    var entries: [FoodLog]? = []    // raciones que componen la comida
 
     init(date: Date, type: MealType) {
         self.date = date
@@ -21,10 +21,22 @@ final class Meal {
     }
 
     // Totales de la comida
-    var totalProtein: Double { entries.reduce(0) { $0 + $1.protein } }
-    var totalCarbs: Double   { entries.reduce(0) { $0 + $1.carbs } }
-    var totalFat: Double     { entries.reduce(0) { $0 + $1.fat } }
-    var totalKcal: Double    { entries.reduce(0) { $0 + $1.kcal } }
+    var totalProtein: Double {
+        guard let entries = entries else { return 0 }
+        return entries.reduce(0) { $0 + $1.protein }
+    }
+    var totalCarbs: Double {
+        guard let entries = entries else { return 0 }
+        return entries.reduce(0) { $0 + $1.carbs }
+    }
+    var totalFat: Double {
+        guard let entries = entries else { return 0 }
+        return entries.reduce(0) { $0 + $1.fat }
+    }
+    var totalKcal: Double {
+        guard let entries = entries else { return 0 }
+        return entries.reduce(0) { $0 + $1.kcal }
+    }
 
     // Día normalizado (útil para agrupar en la UI)
     var day: Date { date.startOfDay() }
