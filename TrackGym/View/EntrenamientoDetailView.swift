@@ -218,7 +218,7 @@ struct EntrenamientoDetailView: View {
                     Text("Aún no has añadido ejercicios")
                         .foregroundStyle(.secondary)
                 } else {
-                    ForEach(uniqueEjercicios) { pe in
+                    ForEach(uniqueEjercicios, id: \.id) { pe in
                         Button {
                             selectedExercise = pe
                         } label: {
@@ -368,18 +368,25 @@ struct EntrenamientoDetailView: View {
     }
     
     private func removePerformedExercises(at offsets: IndexSet) {
-        var current = entrenamiento.ejercicios ?? []
-        let toRemove = offsets.compactMap { current[safe: $0] }
+        // Trabajar SIEMPRE sobre la misma vista ordenada que ve el usuario
+        let sortedView = (entrenamiento.ejercicios ?? []).sorted { $0.order < $1.order }
 
-        for pe in toRemove {
-            context.delete(pe)
+        // Mapear los índices visibles (offsets) a los objetos reales a eliminar
+        let toRemove: [PerformedExercise] = offsets.compactMap { idx in
+            sortedView.indices.contains(idx) ? sortedView[idx] : nil
         }
 
-        current.remove(atOffsets: offsets)
-        entrenamiento.ejercicios = current
+        // Eliminar en el contexto y de la colección original por identidad
+        var original = entrenamiento.ejercicios ?? []
+        for pe in toRemove {
+            context.delete(pe)
+            if let i = original.firstIndex(where: { $0.id == pe.id }) {
+                original.remove(at: i)
+            }
+        }
 
-        // Reenumerar los órdenes después de borrar para mantener el orden
-        let reOrdered = (entrenamiento.ejercicios ?? []).sorted { $0.order < $1.order }
+        // Reenumerar 'order' para mantener coherencia visual
+        let reOrdered = original.sorted { $0.order < $1.order }
         for (idx, ejercicio) in reOrdered.enumerated() {
             ejercicio.order = idx
         }

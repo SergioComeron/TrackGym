@@ -42,36 +42,7 @@ struct TrackGymApp: App {
                     }
                 }
         }
-        .modelContainer(createModelContainer())
-    }
-    
-    // MARK: - CloudKit Configuration
-    private func createModelContainer() -> ModelContainer {
-        let schema = Schema([
-            Entrenamiento.self,
-            PerformedExercise.self,
-            ExerciseSet.self,
-            Perfil.self,
-            FoodLog.self
-        ])
-        
-        let modelConfiguration = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false,
-            cloudKitDatabase: .automatic  // 👈 Esto es clave para CloudKit
-        )
-        
-        do {
-            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
-            
-            // Opcional: Log para debug
-            print("✅ ModelContainer creado exitosamente con CloudKit")
-            
-            return container
-        } catch {
-            print("❌ Error creando ModelContainer: \(error)")
-            fatalError("No se pudo crear el ModelContainer: \(error)")
-        }
+        .modelContainer(for: [Entrenamiento.self, PerformedExercise.self, ExerciseSet.self, Perfil.self, FoodLog.self])
     }
 }
 

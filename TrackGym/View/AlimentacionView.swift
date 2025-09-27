@@ -401,11 +401,9 @@ struct AlimentacionView: View {
                                 exportEntryDirectly(entry, food: food)
                                 print("🎯 exportEntryDirectly called")
                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    resetFoodLogFields()
-                                    showingAddFoodLogFor = nil
-                                    print("📱 Sheet closed")
-                                }
+                                resetFoodLogFields()
+                                showingAddFoodLogFor = nil
+                                print("📱 Sheet closed")
                             }
                             .disabled(selectedFood == nil || grams <= 0)
                         }

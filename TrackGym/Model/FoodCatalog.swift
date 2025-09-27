@@ -46,7 +46,8 @@ let proteinFoods: [FoodSeed] = [
     FoodSeed(slug: "atun_lata_aceite_vegetal", category: .protein, protein: 23.0, carbs: 0.0, fat: 10.0, kcal: 180),
     // Lácteos altos en proteína (se miden tal cual)
     FoodSeed(slug: "queso_fresco_batido_0", category: .dairy, protein: 8.5, carbs: 3.8, fat: 0.2, kcal: 58),
-    FoodSeed(slug: "yogur_griego_0", category: .dairy, protein: 10.0, carbs: 3.5, fat: 0.2, kcal: 59)
+    FoodSeed(slug: "yogur_griego_0", category: .dairy, protein: 10.0, carbs: 3.5, fat: 0.2, kcal: 59),
+    FoodSeed(slug: "jamon_serrano", category: .protein, protein: 30.0, carbs: 0.0, fat: 12.0, kcal: 250),
 ]
 
 let carbFoods: [FoodSeed] = [
@@ -61,6 +62,8 @@ let carbFoods: [FoodSeed] = [
     FoodSeed(slug: "batata_cruda", category: .carb, protein: 1.6, carbs: 20.0, fat: 0.1, kcal: 85),
     // Pan y cereales listos para consumo (no aplica crudo)
     FoodSeed(slug: "pan_blanco", category: .carb, protein: 8.0, carbs: 49.0, fat: 3.0, kcal: 287),
+    FoodSeed(slug: "pan_integral", category: .carb, protein: 9.0, carbs: 42.0, fat: 2.0, kcal: 252),
+    FoodSeed(slug: "pan_normal", category: .carb, protein: 8.0, carbs: 49.0, fat: 3.0, kcal: 287),
     FoodSeed(slug: "tostas_centeno", category: .carb, protein: 11.0, carbs: 70.0, fat: 3.0, kcal: 361)
 ]
 
@@ -116,7 +119,11 @@ let preparedFoods: [FoodSeed] = [
 
     // VIPS Club Pollo (por 100 g, valores ajustados)
     // Referencia general club sandwich (~223 kcal/100 g): P 12.6 / C 19.9 / G 10.0
-    FoodSeed(slug: "vips_club_pollo", category: .misc, protein: 12.6, carbs: 19.9, fat: 10.0, kcal: 223)
+    FoodSeed(slug: "vips_club_pollo", category: .misc, protein: 12.6, carbs: 19.9, fat: 10.0, kcal: 223),
+
+    // Burger King preparados (aprox valores por 100 g)
+    FoodSeed(slug: "bk_whopper", category: .misc, protein: 13.0, carbs: 22.0, fat: 14.0, kcal: 260),
+    FoodSeed(slug: "bk_crispy_chicken", category: .misc, protein: 12.0, carbs: 25.0, fat: 15.0, kcal: 280)
 ]
 
 /// Tamaños de ración sugeridos (en gramos) para ciertos alimentos preparados.
@@ -126,7 +133,9 @@ let defaultServingGrams: [String: Double] = [
     "bocadillo_calamares": 380,
     "patatas_fritas_racion": 150,
     "patatas_fritas_media": 75,
-    "vips_club_pollo": 320
+    "vips_club_pollo": 320,
+    "bk_whopper": 270,
+    "bk_crispy_chicken": 200
 ]
 
 let defaultServingGramsMcdonalds: [String: Double] = [

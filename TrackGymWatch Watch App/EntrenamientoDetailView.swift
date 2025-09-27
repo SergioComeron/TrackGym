@@ -7,10 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import WatchKit
+import HealthKit
 
 struct EntrenamientoDetailView: View {
     let entrenamiento: Entrenamiento
     @Environment(\.modelContext) private var context
+    @StateObject private var workoutManager = WorkoutManager()
     @State private var repsInput: [UUID: Int] = [:]
     @State private var weightInput: [UUID: Double] = [:]
     @State private var selectedExerciseIndex: Int = 0
@@ -19,17 +22,23 @@ struct EntrenamientoDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                NavigationLink(isActive: $goToEnCurso) {
-                    EntrenamientoEnCursoWatchView(entrenamiento: entrenamiento)
-                } label: { EmptyView() }
-                .hidden()
+                Button("", action: { goToEnCurso = true })
+                    .hidden()
+                    .navigationDestination(isPresented: $goToEnCurso) {
+                        EntrenamientoEnCursoWatchView(entrenamiento: entrenamiento)
+                            .environmentObject(workoutManager)
+                    }
 
                 if entrenamiento.startDate == nil || entrenamiento.endDate == nil {
                     Button {
                         if entrenamiento.startDate == nil {
+                            // Iniciar entrenamiento
                             entrenamiento.startDate = Date()
                             do {
                                 try context.save()
+                                // HealthKit: solicitar permisos y arrancar sesión de entrenamiento
+                                workoutManager.requestAuthorization()
+                                workoutManager.selectedWorkout = .traditionalStrengthTraining
                                 goToEnCurso = true
                             } catch {
                                 if entrenamiento.startDate == nil {
@@ -39,10 +48,15 @@ struct EntrenamientoDetailView: View {
                                 }
                             }
                         } else if entrenamiento.endDate == nil {
+                            // Finalizar entrenamiento
                             entrenamiento.endDate = Date()
-                            do { try context.save() } catch {
+                            do {
+                                try context.save()
+                            } catch {
                                 print("❌ Error al finalizar entrenamiento: \(error)")
                             }
+                            // HealthKit: terminar sesión
+                            workoutManager.endWorkout()
                         }
                     } label: {
                         HStack(spacing: 8) {
@@ -60,6 +74,11 @@ struct EntrenamientoDetailView: View {
                 // Si ya está iniciado y no terminado, ofrecer ir a la vista en curso
                 if entrenamiento.startDate != nil && entrenamiento.endDate == nil {
                     Button {
+                        if workoutManager.session == nil {
+                            // Arranca el workout si por algún motivo aún no está iniciado
+                            workoutManager.requestAuthorization()
+                            workoutManager.selectedWorkout = .traditionalStrengthTraining
+                        }
                         goToEnCurso = true
                     } label: {
                         HStack(spacing: 8) {
@@ -87,6 +106,7 @@ private struct ExerciseCard: View {
     @Environment(\.modelContext) private var context
     @State private var setToEdit: ExerciseSet? = nil
     @State private var showEditSheet: Bool = false
+    @State private var showHistory: Bool = false
     var onAdd: (Int, Double) -> Void
 
     var body: some View {
@@ -120,60 +140,82 @@ private struct ExerciseCard: View {
             }
             .frame(maxWidth: .infinity)
 
-            Button {
-                onAdd(reps, weight)
-            } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "plus.circle.fill")
-                    Text("Añadir serie")
-                        .font(.subheadline)
+            VStack(spacing: 8) {
+                // Acción principal: añadir serie
+                Button {
+                    onAdd(reps, weight)
+                } label: {
+                    Label("Añadir serie", systemImage: "plus.circle.fill")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.accentColor.opacity(0.2)))
+                .buttonStyle(.borderedProminent)
             }
-            .buttonStyle(.plain)
+        }
+        .safeAreaInset(edge: .bottom) {
+            HStack {
+                SmallCornerButton(systemName: "arrow.uturn.backward.circle") {
+                    if let last = (ejercicio.sets ?? []).max(by: { $0.order < $1.order }) {
+                        reps = last.reps
+                        weight = last.weight
+                    }
+                }
+                .accessibilityLabel("Usar última serie")
+                .opacity(((ejercicio.sets ?? []).isEmpty) ? 0.4 : 1)
+                .disabled((ejercicio.sets ?? []).isEmpty)
 
-            // Últimas series (si las hay)
-            if let sets = ejercicio.sets, !sets.isEmpty {
-                let todas = sets.sorted { $0.order < $1.order }
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(todas, id: \.id) { s in
+                Spacer(minLength: 0)
+
+                SmallCornerButton(systemName: "list.bullet") {
+                    showHistory = true
+                }
+                .accessibilityLabel("Ver series")
+            }
+            .padding(.horizontal, 6)
+        }
+        .sheet(isPresented: $showHistory) {
+            let sets = (ejercicio.sets ?? []).sorted { $0.order < $1.order }
+            NavigationStack {
+                List(sets, id: \.id) { s in
+                    Button {
+                        // Abrir editor de la serie seleccionada
+                        setToEdit = s
+                        showEditSheet = true
+                    } label: {
                         HStack {
-                            Text("• \(s.reps) reps × \(String(format: "%.1f", s.weight)) kg")
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                            Spacer(minLength: 0)
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            setToEdit = s
-                            showEditSheet = true
+                            Text("#\(s.order)")
+                            Spacer(minLength: 4)
+                            Text("\(s.reps) reps × \(String(format: "%.1f", s.weight)) kg")
                         }
                     }
                 }
-                .padding(.top, 2)
-                .sheet(isPresented: $showEditSheet) {
-                    if let target = setToEdit {
-                        EditSetSheet(set: target) { newReps, newWeight in
-                            target.reps = newReps
-                            target.weight = newWeight
-                            do { try context.save() } catch { print("❌ Error guardando edición: \(error)") }
-                        } onDelete: {
-                            if let idx = (ejercicio.sets ?? []).firstIndex(where: { $0.id == target.id }) {
-                                ejercicio.sets?.remove(at: idx)
-                            }
-                            context.delete(target)
-                            do { try context.save() } catch { print("❌ Error eliminando serie: \(error)") }
-                        }
-                    } else {
-                        Text("Sin serie seleccionada")
+                .navigationTitle("Series")
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cerrar") { showHistory = false }
                     }
                 }
             }
         }
+        .sheet(isPresented: $showEditSheet) {
+            if let target = setToEdit {
+                EditSetSheet(set: target) { newReps, newWeight in
+                    target.reps = newReps
+                    target.weight = newWeight
+                    do { try context.save() } catch { print("❌ Error guardando edición: \(error)") }
+                } onDelete: {
+                    if let idx = (ejercicio.sets ?? []).firstIndex(where: { $0.id == target.id }) {
+                        ejercicio.sets?.remove(at: idx)
+                    }
+                    context.delete(target)
+                    do { try context.save() } catch { print("❌ Error eliminando serie: \(error)") }
+                }
+            } else {
+                Text("Sin serie seleccionada")
+            }
+        }
         .padding(12)
-        
     }
 
     private var ejercicioNombre: String {
@@ -205,6 +247,21 @@ private struct ExerciseCard: View {
             )
             .clipShape(Circle())
         }
+    }
+}
+
+private struct SmallCornerButton: View {
+    let systemName: String
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.caption)
+                .frame(width: 26, height: 26)
+        }
+        .buttonStyle(.plain)
+        .background(Circle().fill(Color.secondary.opacity(0.2)))
+        .clipShape(Circle())
     }
 }
 
@@ -296,12 +353,23 @@ private struct RoundIconButton: View {
 
 private extension EntrenamientoDetailView {
     func addSet(reps: Int, weight: Double, to ejercicio: PerformedExercise) {
-        let order = (ejercicio.sets?.count ?? 0) + 1
-        let nuevo = ExerciseSet(reps: reps, weight: weight, order: order, duration: 0, performedExercise: ejercicio, createdAt: Date())
+        let nextOrder = ((ejercicio.sets ?? []).map { $0.order }.max() ?? 0) + 1
+        let nuevo = ExerciseSet(
+            reps: reps,
+            weight: weight,
+            order: nextOrder,
+            duration: 0,
+            performedExercise: ejercicio,
+            createdAt: Date()
+        )
         context.insert(nuevo)
-        if ejercicio.sets == nil { ejercicio.sets = [] }
-        ejercicio.sets?.append(nuevo)
-        do { try context.save(); print("✅ Serie añadida: reps=\(reps), peso=\(weight)") } catch { print("❌ Error guardando serie: \(error)"); context.rollback() }
+        do {
+            try context.save()
+            print("✅ Serie añadida (watch→CK): reps=\(reps), peso=\(weight), order=\(nextOrder)")
+        } catch {
+            print("❌ Error guardando serie: \(error)")
+            context.rollback()
+        }
     }
 }
 
@@ -310,21 +378,36 @@ struct EntrenamientoEnCursoWatchView: View {
     let entrenamiento: Entrenamiento
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var workoutManager: WorkoutManager
     @State private var repsInput: [UUID: Int] = [:]
     @State private var weightInput: [UUID: Double] = [:]
-    @State private var selectedIndex: Int = 0
+    @State private var selectedIndex: Int = 1
 
     var body: some View {
         let ejercicios = (entrenamiento.ejercicios ?? []).sorted { lhs, rhs in
             if lhs.createdAt == rhs.createdAt { return lhs.order < rhs.order }
             return lhs.createdAt < rhs.createdAt
         }
-        let currentTitle = selectedIndex < ejercicios.count ? exerciseName(for: ejercicios[selectedIndex]) : NSLocalizedString("Finalizar", comment: "")
+        let currentTitle: String = {
+            if selectedIndex == 0 {
+                return NSLocalizedString("Reproduciendo", comment: "")
+            } else if selectedIndex >= 1 && selectedIndex <= ejercicios.count {
+                return exerciseName(for: ejercicios[selectedIndex - 1])
+            } else {
+                return NSLocalizedString("Controles", comment: "")
+            }
+        }()
         VStack(spacing: 8) {
             if ejercicios.isEmpty {
                 ContentUnavailableView("Sin ejercicios", systemImage: "dumbbell")
             } else {
                 TabView(selection: $selectedIndex) {
+                    // Página 0: Reproduciendo (sistema)
+                    NowPlayingView()
+                        .padding(.horizontal)
+                        .tag(0)
+
+                    // Páginas 1..N: un ejercicio por página, con scroll vertical por sus series/controles
                     ForEach(Array(ejercicios.enumerated()), id: \.element.id) { index, ej in
                         ScrollView {
                             ExerciseCard(
@@ -338,32 +421,82 @@ struct EntrenamientoEnCursoWatchView: View {
                             .padding(.horizontal)
                             .padding(.bottom, 12)
                         }
-                        .tag(index)
+                        .tag(index + 1)
                     }
 
-                    // Página final: finalizar
-                    FinalizarCard {
-                        entrenamiento.endDate = Date()
-                        do { try context.save() } catch { print("❌ Error al finalizar: \(error)") }
-                        dismiss()
+                    // Página final: Controles (pausar/reanudar y finalizar)
+                    ScrollView {
+                        VStack(spacing: 12) {
+
+                            // Estado actual
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(workoutManager.running ? Color.green.opacity(0.6) : Color.orange.opacity(0.6))
+                                    .frame(width: 10, height: 10)
+                                Text(workoutManager.running ? NSLocalizedString("En marcha", comment: "") : NSLocalizedString("En pausa", comment: ""))
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            // Botón pausar/reanudar
+                            Button {
+                                workoutManager.togglePause()
+                            } label: {
+                                Label(workoutManager.running ? NSLocalizedString("Pausar", comment: "") : NSLocalizedString("Reanudar", comment: ""),
+                                      systemImage: workoutManager.running ? "pause.fill" : "play.fill")
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 10)
+                                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.15)))
+                            }
+                            .buttonStyle(.plain)
+
+                            // Botón finalizar
+                            Button(role: .destructive) {
+                                entrenamiento.endDate = Date()
+                                do { try context.save() } catch { print("❌ Error al finalizar: \(error)") }
+                                workoutManager.endWorkout()
+                                dismiss()
+                            } label: {
+                                Label(NSLocalizedString("Finalizar entrenamiento", comment: ""), systemImage: "stop.fill")
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 10)
+                                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.red.opacity(0.2)))
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(.horizontal)
                     }
-                    .tag(ejercicios.count)
-                    .padding(.horizontal)
+                    .tag(ejercicios.count + 1)
                 }
                 .tabViewStyle(.page)
-                .indexViewStyle(.page)            }
+                .indexViewStyle(.page)
+                .onAppear { selectedIndex = ejercicios.isEmpty ? 0 : 1 }
+            }
         }
         .navigationTitle(currentTitle)
         .safeAreaPadding(.top, 16)
     }
 
     private func addSet(reps: Int, weight: Double, to ejercicio: PerformedExercise) {
-        let order = (ejercicio.sets?.count ?? 0) + 1
-        let nuevo = ExerciseSet(reps: reps, weight: weight, order: order, duration: 0, performedExercise: ejercicio, createdAt: Date())
+        let nextOrder = ((ejercicio.sets ?? []).map { $0.order }.max() ?? 0) + 1
+        let nuevo = ExerciseSet(
+            reps: reps,
+            weight: weight,
+            order: nextOrder,
+            duration: 0,
+            performedExercise: ejercicio,
+            createdAt: Date()
+        )
         context.insert(nuevo)
-        if ejercicio.sets == nil { ejercicio.sets = [] }
-        ejercicio.sets?.append(nuevo)
-        do { try context.save() } catch { print("❌ Error guardando serie: \(error)") }
+        do {
+            try context.save()
+            print("✅ Serie añadida en watch: reps=\(reps), peso=\(weight), order=\(nextOrder)")
+        } catch {
+            print("❌ Error guardando serie (watch): \(error)")
+            context.rollback()
+        }
     }
     
     private func exerciseName(for ejercicio: PerformedExercise) -> String {
@@ -444,3 +577,4 @@ private struct FinalizarCard: View {
         .modelContainer(container)
 }
 #endif
+

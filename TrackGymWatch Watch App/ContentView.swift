@@ -52,6 +52,17 @@ struct ContentView: View {
                             }
                         }
                     }
+                    if !entrenamientosTerminados.isEmpty {
+                        Section("Terminados") {
+                            ForEach(entrenamientosTerminados) { e in
+                                NavigationLink(destination: EntrenamientoDetailView(entrenamiento: e)) {
+                                    rowTerminado(e)
+                                }
+                                .accessibilityElement(children: .combine)
+                                .accessibilityLabel("Entrenamiento en curso. \(fechaInicioText(e)). \(gruposResumen(e))")
+                            }
+                        }
+                    }
                 }
                 .navigationTitle("Entrenamientos")
             }

@@ -4726,6 +4726,48 @@
         }
       }
     },
+    "jamon_serrano_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Serrano ham" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Jamón serrano" } }
+      }
+    },
+    "jamon_serrano_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Traditional Spanish cured ham, rich in protein and flavor." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Jamón curado tradicional español, rico en proteína y sabor." } }
+      }
+    },
+    "pan_integral_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Whole wheat bread" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan integral" } }
+      }
+    },
+    "pan_integral_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Whole grain bread, higher in fiber than white bread." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan elaborado con grano entero, más alto en fibra que el pan blanco." } }
+      }
+    },
+    "pan_normal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Regular bread" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan normal" } }
+      }
+    },
+    "pan_normal_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Classic bread, soft and versatile, high in carbohydrates." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan clásico, blando y versátil, alto en carbohidratos." } }
+      }
+    },
     "pasta_cruda_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5045,6 +5087,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VIPS Club Pollo"
+          }
+        }
+      }
+    },
+    "bk_whopper_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whopper"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whopper"
+          }
+        }
+      }
+    },
+    "bk_whopper_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flame-grilled beef burger with tomato, lettuce, onion, pickles, and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa de vacuno a la parrilla con tomate, lechuga, cebolla, pepinillos y mayonesa."
+          }
+        }
+      }
+    },
+    "bk_crispy_chicken_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy Chicken"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy Chicken"
+          }
+        }
+      }
+    },
+    "bk_crispy_chicken_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy breaded chicken sandwich with lettuce and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sándwich de pollo empanado crujiente con lechuga y mayonesa."
           }
         }
       }
