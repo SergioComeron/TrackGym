@@ -65,6 +65,9 @@
     "+" : {
 
     },
+    "+ paso" : {
+
+    },
     "⚠️%lld" : {
 
     },
@@ -408,6 +411,12 @@
 
     },
     "Añadir grupos musculares" : {
+
+    },
+    "Añadir serie con incremento histórico" : {
+
+    },
+    "Añadir serie con sugerencia IA" : {
 
     },
     "Análisis de macros" : {
@@ -937,6 +946,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Big Mac"
+          }
+        }
+      }
+    },
+    "bk_crispy_chicken_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy breaded chicken sandwich with lettuce and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sándwich de pollo empanado crujiente con lechuga y mayonesa."
+          }
+        }
+      }
+    },
+    "bk_crispy_chicken_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy Chicken"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crispy Chicken"
+          }
+        }
+      }
+    },
+    "bk_whopper_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flame-grilled beef burger with tomato, lettuce, onion, pickles, and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamburguesa de vacuno a la parrilla con tomate, lechuga, cebolla, pepinillos y mayonesa."
+          }
+        }
+      }
+    },
+    "bk_whopper_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whopper"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whopper"
           }
         }
       }
@@ -3878,6 +3955,40 @@
         }
       }
     },
+    "jamon_serrano_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traditional Spanish cured ham, rich in protein and flavor."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jamón curado tradicional español, rico en proteína y sabor."
+          }
+        }
+      }
+    },
+    "jamon_serrano_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serrano ham"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jamón serrano"
+          }
+        }
+      }
+    },
     "judias_verdes_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3920,6 +4031,40 @@
     },
     "kg" : {
 
+    },
+    "kiwi_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tropical green fruit, tangy and rich in vitamin C and fiber."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fruta tropical verde, ácida y rica en vitamina C y fibra."
+          }
+        }
+      }
+    },
+    "kiwi_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiwi"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiwi"
+          }
+        }
+      }
     },
     "Limpiar" : {
 
@@ -4726,46 +4871,72 @@
         }
       }
     },
-    "jamon_serrano_name" : {
+    "pan_integral_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Serrano ham" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Jamón serrano" } }
-      }
-    },
-    "jamon_serrano_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Traditional Spanish cured ham, rich in protein and flavor." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Jamón curado tradicional español, rico en proteína y sabor." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whole grain bread, higher in fiber than white bread."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan elaborado con grano entero, más alto en fibra que el pan blanco."
+          }
+        }
       }
     },
     "pan_integral_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Whole wheat bread" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan integral" } }
-      }
-    },
-    "pan_integral_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Whole grain bread, higher in fiber than white bread." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan elaborado con grano entero, más alto en fibra que el pan blanco." } }
-      }
-    },
-    "pan_normal_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Regular bread" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan normal" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whole wheat bread"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan integral"
+          }
+        }
       }
     },
     "pan_normal_desc" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Classic bread, soft and versatile, high in carbohydrates." } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pan clásico, blando y versátil, alto en carbohidratos." } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classic bread, soft and versatile, high in carbohydrates."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan clásico, blando y versátil, alto en carbohidratos."
+          }
+        }
+      }
+    },
+    "pan_normal_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regular bread"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pan normal"
+          }
+        }
       }
     },
     "pasta_cruda_desc" : {
@@ -5070,108 +5241,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Patatas fritas (media ración)"
-          }
-        }
-      }
-    },
-    "vips_club_pollo_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VIPS Club Chicken"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VIPS Club Pollo"
-          }
-        }
-      }
-    },
-    "bk_whopper_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Whopper"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Whopper"
-          }
-        }
-      }
-    },
-    "bk_whopper_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flame-grilled beef burger with tomato, lettuce, onion, pickles, and mayonnaise."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hamburguesa de vacuno a la parrilla con tomate, lechuga, cebolla, pepinillos y mayonesa."
-          }
-        }
-      }
-    },
-    "bk_crispy_chicken_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crispy Chicken"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crispy Chicken"
-          }
-        }
-      }
-    },
-    "bk_crispy_chicken_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crispy breaded chicken sandwich with lettuce and mayonnaise."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sándwich de pollo empanado crujiente con lechuga y mayonesa."
-          }
-        }
-      }
-    },
-    "vips_club_pollo_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Triple sandwich with chicken, bacon, lettuce, tomato and mayonnaise."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sándwich triple con pollo, bacon, lechuga, tomate y mayonesa."
           }
         }
       }
@@ -5678,40 +5747,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plátano"
-          }
-        }
-      }
-    },
-    "kiwi_name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kiwi"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kiwi"
-          }
-        }
-      }
-    },
-    "kiwi_desc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tropical green fruit, tangy and rich in vitamin C and fiber."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fruta tropical verde, ácida y rica en vitamina C y fibra."
           }
         }
       }
@@ -7045,6 +7080,9 @@
     "Repetir comida" : {
 
     },
+    "Repetir última serie" : {
+
+    },
     "reps" : {
 
     },
@@ -7702,6 +7740,40 @@
     },
     "Usar ración estándar (%lld g)" : {
 
+    },
+    "vips_club_pollo_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triple sandwich with chicken, bacon, lettuce, tomato and mayonnaise."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sándwich triple con pollo, bacon, lechuga, tomate y mayonesa."
+          }
+        }
+      }
+    },
+    "vips_club_pollo_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VIPS Club Chicken"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VIPS Club Pollo"
+          }
+        }
+      }
     },
     "yogur_griego_0_desc" : {
       "extractionState" : "manual",

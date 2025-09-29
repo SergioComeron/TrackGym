@@ -994,14 +994,14 @@ private struct ExerciseSetsEditorView: View {
         
 //        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
 //        let exerciseType = exerciseSeed?.type ?? .reps
-//        
+//
 //        let ejercicios: [PerformedExercise] = entrenamientos
 //            .compactMap { $0.ejercicios }
 //            .flatMap { $0 }
 //
 //        let ejerciciosMismoSlug = ejercicios.filter { $0.slug == performedExercise.slug } // o `pe.slug`
 //        let setsHistoricos: [ExerciseSet] = ejerciciosMismoSlug.flatMap { $0.setsOrEmpty }
-//        
+//
 //        // Nueva declaración simplificada fuera del VStack header
 //        let setMax = setsHistoricos.max(by: { $0.weight < $1.weight })
 //        let peMax = setMax?.performedExercise
@@ -1017,7 +1017,7 @@ private struct ExerciseSetsEditorView: View {
 //            .ejercicios?
 //            .filter { $0.slug == performedExercise.slug }
 //            .flatMap { $0.setsOrEmpty.sorted { $0.createdAt < $1.createdAt } }) ?? []
-//        
+//
 //        // Nuevo: determinar si es editable (tiene startDate y no está finalizado)
 //        let isEditable = performedExercise.entrenamiento?.startDate != nil && !isFinished
         
@@ -1240,6 +1240,7 @@ private struct ExerciseSetsEditorView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
                     if !isFinished && (performedExercise.entrenamiento?.startDate != nil) {
+                        // IA-suggested set
                         Button {
                             Task {
                                 isSuggestingWeight = true
@@ -1248,13 +1249,26 @@ private struct ExerciseSetsEditorView: View {
                             }
                         } label: {
                             Label("+", systemImage: "sparkles")
+                                .accessibilityLabel("Añadir serie con sugerencia IA")
                         }
                         .disabled(isSuggestingWeight)
+
+                        // NEW: Step-aware + (infers historical increment like +5 kg)
+                        Button {
+                            addSetWithInferredStep()
+                        } label: {
+                            Label("+ paso", systemImage: "plus.circle")
+                                .accessibilityLabel("Añadir serie con incremento histórico")
+                        }
+                        .disabled(isSuggestingWeight)
+
+                        // Repeat last set (exact copy)
                         if let lastSetToRepeat = getLastSetToRepeat() {
                             Button {
                                 repeatLastSet(lastSet: lastSetToRepeat)
                             } label: {
                                 Text("+")
+                                    .accessibilityLabel("Repetir última serie")
                             }
                             .disabled(isSuggestingWeight)
                         }
@@ -1335,6 +1349,83 @@ private struct ExerciseSetsEditorView: View {
             set.order = idx
         }
         saveContext()
+    }
+
+    /// Infers the most likely plate increment from historical weights of this exercise.
+    /// Returns nil if there's not enough data or no consistent positive step is found.
+    private func inferredStep(from weights: [Double]) -> Double? {
+        // Keep only positive weights, deduplicate and sort ascending
+        let uniq = Array(Set(weights.filter { $0 > 0 })).sorted()
+        guard uniq.count >= 3 else { return nil } // need at least 3 points to infer a pattern reliably
+
+        // Compute consecutive positive diffs
+        let diffs = zip(uniq.dropFirst(), uniq).map { $0 - $1 }.filter { $0 > 0 }
+        guard !diffs.isEmpty else { return nil }
+
+        // Bin diffs with a small tolerance (to absorb 24.9/25.0 noise). Bucket size 0.25kg
+        let bucketSize = 0.25
+        var buckets: [Double: Int] = [:]
+        for d in diffs {
+            let b = (d / bucketSize).rounded() * bucketSize
+            buckets[b, default: 0] += 1
+        }
+        // Pick the most frequent positive bucket as the step
+        if let (step, count) = buckets.max(by: { $0.value < $1.value }), step > 0, count >= 2 {
+            return step
+        }
+        return nil
+    }
+
+    /// Adds a new set using an inferred step from historical weights (e.g., +5 kg).
+    /// If there isn't enough data to infer a step, repeats the last weight.
+    private func addSetWithInferredStep() {
+        let exerciseSeed = defaultExercises.first(where: { $0.slug == performedExercise.slug })
+        let exerciseType = exerciseSeed?.type ?? .reps
+
+        // Current ordered sets in this exercise
+        let currentSets = performedExercise.setsOrEmpty.sorted { $0.order < $1.order }
+        let lastCurrentWeight = currentSets.last?.weight
+        let lastCurrentReps = currentSets.last?.reps
+        let lastCurrentDuration = currentSets.last?.duration
+
+        // Historical weights for this exercise across trainings (already computed var)
+        let histWeights = setsHistoricos.map { $0.weight }
+        let step = inferredStep(from: histWeights)
+
+        // Decide base last weight (prefer current session, else historical last)
+        let lastHistWeight = setsHistoricos.sorted { $0.createdAt < $1.createdAt }.last?.weight
+        let baseLast = lastCurrentWeight ?? lastHistWeight ?? 0.0
+
+        // Next weight: if step exists, add it; otherwise repeat
+        var nextWeight = baseLast + (step ?? 0.0)
+        if step == nil { nextWeight = baseLast }
+        nextWeight = max(0.0, min(nextWeight, 200.0))
+
+        // Next reps/duration policy: replicate last values if available; otherwise sensible defaults
+        let nextReps = lastCurrentReps ?? 10
+        let nextDuration = lastCurrentDuration ?? 60
+
+        let newOrder = (performedExercise.setsOrEmpty.map { $0.order }.max() ?? -1) + 1
+        let newSet: ExerciseSet
+        if exerciseType == .duration {
+            newSet = ExerciseSet(reps: 0, weight: nextWeight, order: newOrder, performedExercise: performedExercise, createdAt: Date())
+            newSet.duration = nextDuration
+        } else {
+            newSet = ExerciseSet(reps: nextReps, weight: nextWeight, order: newOrder, performedExercise: performedExercise, createdAt: Date())
+            newSet.duration = 0
+        }
+        newSet.id = UUID()
+        context.insert(newSet)
+        if performedExercise.sets == nil { performedExercise.sets = [] }
+        performedExercise.sets?.append(newSet)
+
+        // Re-enumerate by createdAt to keep visual order coherent
+        let sorted = performedExercise.setsOrEmpty.sorted { $0.createdAt < $1.createdAt }
+        for (idx, set) in sorted.enumerated() { set.order = idx }
+
+        saveContext()
+        syncStringsWithModel()
+        actualizarProgresoLiveActivity()
     }
 
     private func addSet() async {
