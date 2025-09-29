@@ -5682,6 +5682,40 @@
         }
       }
     },
+    "kiwi_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiwi"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiwi"
+          }
+        }
+      }
+    },
+    "kiwi_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tropical green fruit, tangy and rich in vitamin C and fiber."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fruta tropical verde, ácida y rica en vitamina C y fibra."
+          }
+        }
+      }
+    },
     "pollo_pechuga_cruda_desc" : {
       "extractionState" : "manual",
       "localizations" : {

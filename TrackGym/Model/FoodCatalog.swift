@@ -92,7 +92,8 @@ let fruitFoods: [FoodSeed] = [
     FoodSeed(slug: "naranja", category: .fruit, protein: 0.9, carbs: 12.0, fat: 0.2, kcal: 47),
     FoodSeed(slug: "arandanos", category: .fruit, protein: 0.7, carbs: 14.5, fat: 0.3, kcal: 57),
     FoodSeed(slug: "frambuesas", category: .fruit, protein: 1.2, carbs: 12.0, fat: 0.7, kcal: 52),
-    FoodSeed(slug: "melocoton", category: .fruit, protein: 0.9, carbs: 10.0, fat: 0.3, kcal: 39)
+    FoodSeed(slug: "melocoton", category: .fruit, protein: 0.9, carbs: 10.0, fat: 0.3, kcal: 39),
+    FoodSeed(slug: "kiwi", category: .fruit, protein: 1.1, carbs: 15.0, fat: 0.5, kcal: 61),
 ]
 
 let supplementFoods: [FoodSeed] = [
