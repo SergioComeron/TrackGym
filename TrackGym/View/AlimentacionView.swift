@@ -383,7 +383,7 @@ struct AlimentacionView: View {
                                 print("📝 Food: \(food.name), Grams: \(grams)")
                                 
                                 // Tu código de guardado existente...
-                                let entry = FoodLog(date: Date(), slug: food.slug, grams: grams, notes: notes, meal: meal)
+                                let entry = FoodLog(date: meal.date, slug: food.slug, grams: grams, notes: notes, meal: meal)
                                 context.insert(entry)
                                 if meal.entries == nil {
                                     meal.entries = []

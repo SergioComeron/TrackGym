@@ -37,24 +37,43 @@ struct EntrenamientoListView: View {
                         Section("Pendientes") {
                             ForEach(entrenamientosPendientes) { e in
                                 NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "pause.circle")
-                                        VStack(alignment: .leading) {
-                                            Text("Sin inicio")
-                                                .font(.headline)
-                                            Text(gruposResumen(e))
-                                                .font(.footnote)
-                                                .foregroundStyle(.secondary)
-                                                .lineLimit(1)
+                                    VStack {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "pause.circle")
+                                            VStack(alignment: .leading) {
+                                                Text("Sin inicio")
+                                                    .font(.headline)
+                                                Text(gruposResumen(e))
+                                                    .font(.footnote)
+                                                    .foregroundStyle(.secondary)
+                                                    .lineLimit(1)
+                                            }
+                                            Spacer()
+                                            if tieneRecordEnAlgunaSerie(e) {
+                                                Image(systemName: "flame.fill")
+                                                    .foregroundStyle(.orange)
+                                                    .accessibilityLabel("Récord personal en este entrenamiento")
+                                            }
                                         }
-                                        Spacer()
-                                        if tieneRecordEnAlgunaSerie(e) {
-                                            Image(systemName: "flame.fill")
-                                                .foregroundStyle(.orange)
-                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        .padding(.vertical, 4)
+                                        HStack {
+                                            Spacer()
+                                            Button {
+                                                repetirEntrenamiento(e)
+                                            } label: {
+                                                HStack {
+                                                    Image(systemName: "gobackward")
+                                                    Text("Repetir entrenamiento")
+                                                }
+                                                .font(.subheadline)
+                                            }
+                                            .buttonStyle(.borderless)
+                                            .controlSize(.regular)
+                                            .help("Repetir este entrenamiento")
+                                            .accessibilityLabel("Repetir entrenamiento")
+                                            .disabled((e.ejercicios ?? []).isEmpty)
                                         }
                                     }
-                                    .padding(.vertical, 4)
                                 }
                             }
                             .onDelete { offsets in
@@ -67,33 +86,52 @@ struct EntrenamientoListView: View {
                         Section("En curso") {
                             ForEach(entrenamientosEnCurso) { e in
                                 NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "clock.arrow.circlepath")
-                                        VStack(alignment: .leading) {
-                                            Text(fechaInicioText(e))
-                                                .font(.headline)
-                                            if let start = e.startDate {
-                                                Text(elapsedText(since: start))
-                                                    .font(.subheadline)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "clock.arrow.circlepath")
+                                            VStack(alignment: .leading) {
+                                                Text(fechaInicioText(e))
+                                                    .font(.headline)
+                                                if let start = e.startDate {
+                                                    Text(elapsedText(since: start))
+                                                        .font(.subheadline)
+                                                        .foregroundStyle(.secondary)
+                                                } else {
+                                                    Text("En curso")
+                                                        .font(.subheadline)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                Text(gruposResumen(e))
+                                                    .font(.footnote)
                                                     .foregroundStyle(.secondary)
-                                            } else {
-                                                Text("En curso")
-                                                    .font(.subheadline)
-                                                    .foregroundStyle(.secondary)
+                                                    .lineLimit(1)
                                             }
-                                            Text(gruposResumen(e))
-                                                .font(.footnote)
-                                                .foregroundStyle(.secondary)
-                                                .lineLimit(1)
+                                            Spacer()
+                                            if tieneRecordEnAlgunaSerie(e) {
+                                                Image(systemName: "flame.fill")
+                                                    .foregroundStyle(.orange)
+                                                    .accessibilityLabel("Récord personal en este entrenamiento")
+                                            }
                                         }
-                                        Spacer()
-                                        if tieneRecordEnAlgunaSerie(e) {
-                                            Image(systemName: "flame.fill")
-                                                .foregroundStyle(.orange)
-                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        .padding(.vertical, 4)
+                                        HStack {
+                                            Spacer()
+                                            Button {
+                                                repetirEntrenamiento(e)
+                                            } label: {
+                                                HStack {
+                                                    Image(systemName: "gobackward")
+                                                    Text("Repetir entrenamiento")
+                                                }
+                                                .font(.subheadline)
+                                            }
+                                            .buttonStyle(.borderless)
+                                            .controlSize(.regular)
+                                            .help("Repetir este entrenamiento")
+                                            .accessibilityLabel("Repetir entrenamiento")
+                                            .disabled((e.ejercicios ?? []).isEmpty)
                                         }
                                     }
-                                    .padding(.vertical, 4)
                                 }
                             }
                             .onDelete { offsets in
@@ -106,29 +144,48 @@ struct EntrenamientoListView: View {
                         Section("Terminados") {
                             ForEach(entrenamientosTerminados) { e in
                                 NavigationLink(value: AppRoute.entrenamientoDetail(e.id)) {
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "clock")
-                                        VStack(alignment: .leading) {
-                                            Text(fechaInicioText(e))
-                                                .font(.headline)
-                                            if let end = e.endDate, let start = e.startDate {
-                                                Text("Inicio " + horaSoloText(start) + " · Duración " + duracionText(from: start, to: end))
-                                                    .font(.subheadline)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "clock")
+                                            VStack(alignment: .leading) {
+                                                Text(fechaInicioText(e))
+                                                    .font(.headline)
+                                                if let end = e.endDate, let start = e.startDate {
+                                                    Text("Inicio " + horaSoloText(start) + " · Duración " + duracionText(from: start, to: end))
+                                                        .font(.subheadline)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                Text(gruposResumen(e))
+                                                    .font(.footnote)
                                                     .foregroundStyle(.secondary)
+                                                    .lineLimit(1)
                                             }
-                                            Text(gruposResumen(e))
-                                                .font(.footnote)
-                                                .foregroundStyle(.secondary)
-                                                .lineLimit(1)
+                                            Spacer()
+                                            if tieneRecordEnAlgunaSerie(e) {
+                                                Image(systemName: "flame.fill")
+                                                    .foregroundStyle(.orange)
+                                                    .accessibilityLabel("Récord personal en este entrenamiento")
+                                            }
                                         }
-                                        Spacer()
-                                        if tieneRecordEnAlgunaSerie(e) {
-                                            Image(systemName: "flame.fill")
-                                                .foregroundStyle(.orange)
-                                                .accessibilityLabel("Récord personal en este entrenamiento")
+                                        .padding(.vertical, 4)
+                                        HStack {
+                                            Spacer()
+                                            Button {
+                                                repetirEntrenamiento(e)
+                                            } label: {
+                                                HStack {
+                                                    Image(systemName: "gobackward")
+                                                    Text("Repetir entrenamiento")
+                                                }
+                                                .font(.subheadline)
+                                            }
+                                            .buttonStyle(.borderless)
+                                            .controlSize(.regular)
+                                            .help("Repetir este entrenamiento")
+                                            .accessibilityLabel("Repetir entrenamiento")
+                                            .disabled((e.ejercicios ?? []).isEmpty)
                                         }
                                     }
-                                    .padding(.vertical, 4)
                                 }
                             }
                             .onDelete { offsets in
@@ -172,6 +229,46 @@ struct EntrenamientoListView: View {
             print("✅ Guardado tras borrar entrenamientos")
         } catch {
             print("❌ Error al guardar tras borrar entrenamientos: \(error)")
+            context.rollback()
+        }
+    }
+
+    /// Crea un nuevo entrenamiento con la misma selección de ejercicios y grupos musculares que `origen`,
+    /// sin fecha de inicio (pendiente) y sin fecha de fin.
+    private func repetirEntrenamiento(_ origen: Entrenamiento) {
+        // Crear un nuevo entrenamiento fechado en el momento de la duplicación
+        let nuevo = Entrenamiento(
+            id: UUID(),
+            startDate: nil,
+            endDate: nil
+        )
+
+        // Duplicar la estructura de ejercicios (mismos ejercicios; sets vacíos)
+        if let ejerciciosOrigen = origen.ejercicios, !ejerciciosOrigen.isEmpty {
+            var clonados: [PerformedExercise] = []
+            clonados.reserveCapacity(ejerciciosOrigen.count)
+            for pe in ejerciciosOrigen {
+                // Crear un nuevo PerformedExercise usando el inicializador disponible.
+                // Ajustamos a un inicializador mínimo (por ejemplo, solo slug) y dejamos los sets vacíos si aplica.
+                let nuevoPE = PerformedExercise(slug: pe.slug)
+                // Si `sets` es una propiedad opcional/var en tu modelo, déjala vacía explícitamente.
+                // Si no existe esta propiedad, puedes eliminar la siguiente línea sin afectar la compilación.
+                nuevoPE.sets = []
+                clonados.append(nuevoPE)
+            }
+            nuevo.ejercicios = clonados
+        }
+
+        // Copiar también los grupos musculares seleccionados
+        nuevo.gruposMusculares = origen.gruposMusculares
+
+        // Insertar y guardar
+        context.insert(nuevo)
+        do {
+            try context.save()
+            print("✅ Entrenamiento repetido correctamente: \(nuevo.id)")
+        } catch {
+            print("❌ Error al repetir entrenamiento: \(error)")
             context.rollback()
         }
     }
@@ -302,3 +399,4 @@ extension DateFormatter {
         .modelContainer(container)
 }
 #endif
+

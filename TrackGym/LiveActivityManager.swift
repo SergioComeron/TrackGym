@@ -15,7 +15,7 @@ final class LiveActivityManager {
 
     private var currentActivity: Activity<WorkoutActivityAttributes>?
 
-    func start(title: String, startedAt: Date, entrenamientoID: UUID, progress: Double) async {
+    func start(title: String, startedAt: Date, entrenamientoID: UUID, progress: Double, ejercicioActualID: UUID? = nil, ejercicioActualNombre: String? = nil, ultimaSerieNumero: Int? = nil, ultimaSerieReps: Int? = nil, ultimaSeriePeso: Double? = nil, ultimaSerieDuracion: Int? = nil) async {
         // Si ya hay una en marcha, la cerramos primero (opcional)
         if let act = currentActivity {
             await end(activity: act, dismissalPolicy: .immediate)
@@ -27,7 +27,17 @@ final class LiveActivityManager {
         }
 
         let attributes = WorkoutActivityAttributes(entrenamientoID: entrenamientoID, title: title)
-        let state = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, progress: progress)
+        let state = WorkoutActivityAttributes.ContentState(
+            startedAt: startedAt,
+            endedAt: nil,
+            progress: progress,
+            ejercicioActualID: ejercicioActualID,
+            ejercicioActualNombre: ejercicioActualNombre,
+            ultimaSerieNumero: ultimaSerieNumero,
+            ultimaSerieReps: ultimaSerieReps,
+            ultimaSeriePeso: ultimaSeriePeso,
+            ultimaSerieDuracion: ultimaSerieDuracion
+        )
         let stale = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         do {
             let activity = try Activity.request(
@@ -42,9 +52,19 @@ final class LiveActivityManager {
         }
     }
 
-    func update(startedAt: Date, progress: Double) async {
+    func update(startedAt: Date, progress: Double, ejercicioActualID: UUID? = nil, ejercicioActualNombre: String? = nil, ultimaSerieNumero: Int? = nil, ultimaSerieReps: Int? = nil, ultimaSeriePeso: Double? = nil, ultimaSerieDuracion: Int? = nil) async {
         guard let activity = currentActivity else { return }
-        let newState = WorkoutActivityAttributes.ContentState(startedAt: startedAt, endedAt: nil, progress: progress)
+        let newState = WorkoutActivityAttributes.ContentState(
+            startedAt: startedAt,
+            endedAt: nil,
+            progress: progress,
+            ejercicioActualID: ejercicioActualID,
+            ejercicioActualNombre: ejercicioActualNombre,
+            ultimaSerieNumero: ultimaSerieNumero,
+            ultimaSerieReps: ultimaSerieReps,
+            ultimaSeriePeso: ultimaSeriePeso,
+            ultimaSerieDuracion: ultimaSerieDuracion
+        )
         let newStaleDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         
         await activity.update(ActivityContent(state: newState, staleDate: newStaleDate))
@@ -61,7 +81,13 @@ final class LiveActivityManager {
         let finalState = WorkoutActivityAttributes.ContentState(
             startedAt: activity.content.state.startedAt,
             endedAt: Date(),
-            progress: activity.content.state.progress
+            progress: activity.content.state.progress,
+            ejercicioActualID: activity.content.state.ejercicioActualID,
+            ejercicioActualNombre: activity.content.state.ejercicioActualNombre,
+            ultimaSerieNumero: activity.content.state.ultimaSerieNumero,
+            ultimaSerieReps: activity.content.state.ultimaSerieReps,
+            ultimaSeriePeso: activity.content.state.ultimaSeriePeso,
+            ultimaSerieDuracion: activity.content.state.ultimaSerieDuracion
         )
         let finalStaleDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         await activity.end(ActivityContent(state: finalState, staleDate: finalStaleDate),
@@ -69,3 +95,4 @@ final class LiveActivityManager {
         print("Live Activity finalizada: \(activity.id)")
     }
 }
+

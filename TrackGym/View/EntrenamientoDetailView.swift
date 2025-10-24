@@ -77,7 +77,9 @@ struct EntrenamientoDetailView: View {
                                     title: "Entrenamiento",
                                     startedAt: entrenamiento.startDate ?? Date(),
                                     entrenamientoID: entrenamiento.id,
-                                    progress: entrenamiento.progresoEjercicios
+                                    progress: entrenamiento.progresoEjercicios,
+                                    ejercicioActualID: nil,
+                                    ejercicioActualNombre: nil
                                 )
                             }
                         } label: {
@@ -221,6 +223,33 @@ struct EntrenamientoDetailView: View {
                     ForEach(uniqueEjercicios, id: \.id) { pe in
                         Button {
                             selectedExercise = pe
+                            let nombre = defaultExercises.first(where: { $0.slug == pe.slug })?.name
+                                ?? pe.slug.replacingOccurrences(of: "-", with: " ")
+                                        .replacingOccurrences(of: "_", with: " ")
+                                        .capitalized
+                            let sortedSets = pe.setsOrEmpty.sorted { $0.order < $1.order }
+                            let lastReps = sortedSets.last?.reps
+                            let lastWeight = sortedSets.last?.weight
+                            let lastDuration = sortedSets.last?.duration
+                            let serieNumero = sortedSets.isEmpty ? nil : sortedSets.count
+                            
+                            let isDurationExercise = (defaultExercises.first(where: { $0.slug == pe.slug })?.type == .duration)
+                            let ultimaReps: Int? = isDurationExercise ? nil : lastReps
+                            let ultimaPeso: Double? = isDurationExercise ? nil : lastWeight
+                            let ultimaDur: Int? = isDurationExercise ? lastDuration : nil
+                            
+                            Task {
+                                await LiveActivityManager.shared.update(
+                                    startedAt: entrenamiento.startDate ?? Date(),
+                                    progress: entrenamiento.progresoEjercicios,
+                                    ejercicioActualID: pe.id,
+                                    ejercicioActualNombre: nombre,
+                                    ultimaSerieNumero: serieNumero,
+                                    ultimaSerieReps: ultimaReps,
+                                    ultimaSeriePeso: ultimaPeso,
+                                    ultimaSerieDuracion: ultimaDur
+                                )
+                            }
                         } label: {
                             ExerciseRowView(pe: pe, entrenamientos: entrenamientos)
                         }
@@ -510,28 +539,40 @@ struct EntrenamientoDetailView: View {
             }
             .joined(separator: "\n")
 
-
         let prompt = """
-        \(perfilStr)Eres un entrenador personal experto en hipertrofia. Analiza SOLO este entrenamiento terminado.
-        DATOS:
+        \(perfilStr)Actúa como entrenador personal especializado en hipertrofia. Evalúa EXCLUSIVAMENTE el entrenamiento indicado a continuación.
+
+        ALCANCE (OBLIGATORIO):
+        - Limítate a los GRUPOS seleccionados: \(grupos).
+        - Limítate a los EJERCICIOS realizados listados abajo (no inventes otros).
+        - No sugieras trabajar grupos NO listados ni planificaciones de otros días.
+
+        DATOS DEL ENTRENAMIENTO:
         - Grupos trabajados: \(grupos)
         - Ejercicios (serie x peso o seg):
         \(ejerciciosStr)
 
-        OBJETIVO: decirme si el entreno es adecuado para el/los grupo(s) considerando series, reps y pesos; y darme 1–2 recomendaciones prácticas.
+        OBJETIVO:
+        - Dar un veredicto sobre si el trabajo realizado es adecuado para esos grupos (volumen, rango de reps/tiempo y cargas).
+        - Proponer 1–2 ajustes concretos DENTRO de estos mismos grupos/ejercicios (por ejemplo: ajustar reps, cargas, descansos o el orden).
+
+        RESTRICCIONES DE CONTENIDO:
+        - Prohibido mencionar grupos no incluidos en la lista.
+        - Prohibido recomendar añadir ejercicios de otros grupos o moverlos a otros días.
+        - Si faltan datos, indica la limitación de forma breve y sigue con lo disponible.
 
         FORMATO DE SALIDA (OBLIGATORIO):
-        - Un único párrafo, estilo conversación de tú a tú.
-        - Sin encabezados, sin listas, sin saltos de línea, sin Markdown, sin comillas.
-        - Máx. 3 frases cortas, separadas por punto y coma o punto.
-        - Incluye un veredicto breve (Correcto o Mejorable), 1–2 aciertos y 1–2 ajustes.
-        - No repitas los datos de entrada.
+        - Un único párrafo, tono cercano.
+        - Máx. 3 frases cortas (≤ 300 caracteres en total).
+        - Estructura: Veredicto (Correcto/Mejorable); 1 acierto; 1–2 ajustes concretos del mismo grupo/ejercicios.
+        - Sin listas, sin Markdown, sin repetir datos tal cual.
         """
 
         let instrucciones = """
-        Eres un entrenador conciso. Responde SOLO con un párrafo sin formato ni saltos de línea.
-        Prohibido Markdown, asteriscos, guiones y títulos. Usa frases breves y directas.
-        Máximo ~300 caracteres. Evita relleno. No repitas datos del prompt.
+        Responde SOLO con un párrafo sin formato ni saltos de línea.
+        No menciones grupos no incluidos en \(grupos). No propongas ejercicios nuevos de otros grupos.
+        Prioriza ajustes sobre volumen, rango de repeticiones/duración, carga, descanso y orden de los ejercicios listados.
+        Máx. ~300 caracteres. Nada de emojis, títulos ni adornos.
         """
 
         do {
@@ -985,10 +1026,91 @@ private struct ExerciseSetsEditorView: View {
         performedExercise.entrenamiento?.startDate != nil && !isFinished
     }
     
-    
-    
-    
-    
+    /// Infers the target reps sequence using historical data from **other trainings** of this exercise.
+    /// Strategy:
+    /// - Agrupa series por sesión (PerformedExercise) excluyendo el entrenamiento actual.
+    /// - Para cada índice de serie (0,1,2,...) calcula la **moda** de reps entre sesiones; si hay empate, elige el valor más reciente.
+    /// - Si un índice no tiene datos, repite el último valor conocido (o 12 si es el primero).
+    /// - Fallback general: [15, 12, 10, 8] si no hay historial útil.
+    private func inferredRepsSequence(for performedExercise: PerformedExercise) -> [Int] {
+        // Reunir sets históricos EXCLUYENDO el entrenamiento actual
+        let currentEntrenamiento = performedExercise.entrenamiento
+        let historicalSets = ejerciciosMismoSlug
+            .filter { $0.entrenamiento != currentEntrenamiento } // solo otros entrenamientos
+            .flatMap { $0.setsOrEmpty }
+            .sorted { $0.createdAt < $1.createdAt }
+
+        guard !historicalSets.isEmpty else { return [15, 12, 10, 8] }
+
+        // Agrupar por sesión (PerformedExercise) para preservar los índices por serie
+        let bySession: [UUID: [ExerciseSet]] = Dictionary(grouping: historicalSets) { set in
+            // Cada ExerciseSet pertenece a un PerformedExercise con id asignado manualmente
+            return set.performedExercise?.id ?? UUID() // si faltara id, evitar crash (poco probable)
+        }
+
+        // Longitud máxima observada de secuencia (último índice de serie entre sesiones)
+        let maxIndex = bySession.values.map { sessionSets in
+            sessionSets.map { $0.order }.max() ?? -1
+        }.max() ?? -1
+
+        guard maxIndex >= 0 else { return [15, 12, 10, 8] }
+
+        var sequence: [Int] = []
+        for idx in 0...maxIndex {
+            // Recolectar reps en este índice entre sesiones
+            var repsAtIndex: [(reps: Int, date: Date)] = []
+            for sessionSets in bySession.values {
+                // Ordenar por order para indexar por serie
+                let ordered = sessionSets.sorted { $0.order < $1.order }
+                if let set = ordered.first(where: { $0.order == idx }) {
+                    repsAtIndex.append((set.reps, set.createdAt))
+                }
+            }
+
+            if repsAtIndex.isEmpty {
+                // Sin datos para este índice → repetir el último valor conocido o usar 12 si es el primero
+                sequence.append(sequence.last ?? 12)
+                continue
+            }
+
+            // Moda con desempate por **más reciente**
+            var counts: [Int: Int] = [:]
+            var latestDateForRep: [Int: Date] = [:]
+            for item in repsAtIndex {
+                counts[item.reps, default: 0] += 1
+                if let last = latestDateForRep[item.reps] {
+                    if item.date > last { latestDateForRep[item.reps] = item.date }
+                } else {
+                    latestDateForRep[item.reps] = item.date
+                }
+            }
+            // Encontrar el mayor conteo
+            let maxCount = counts.values.max() ?? 0
+            // Candidatos empatados por frecuencia
+            let tied = counts.filter { $0.value == maxCount }.map { $0.key }
+            // Elegir el candidato con fecha más reciente
+            let chosen: Int = tied.max(by: { (a, b) in
+                let da = latestDateForRep[a] ?? .distantPast
+                let db = latestDateForRep[b] ?? .distantPast
+                return da < db
+            }) ?? repsAtIndex.last?.reps ?? 12
+
+            sequence.append(chosen)
+        }
+
+        // Sanitizar: en hipertrofia suele ser descendente o estable; no forzamos, solo devolvemos lo observado
+        return sequence
+    }
+
+    /// Computes the next reps respecting the inferred sequence and the current number of sets.
+    private func nextRepsForInferredSequence(currentSets: [ExerciseSet], performedExercise: PerformedExercise) -> Int {
+        let seq = inferredRepsSequence(for: performedExercise)
+        guard !seq.isEmpty else { return currentSets.last?.reps ?? 12 }
+        let idx = currentSets.count // 0-based: primera serie → índice 0 → 15
+        if idx < seq.count { return seq[idx] }
+        // Si ya hemos superado la longitud de la secuencia, mantener el último valor (p. ej., 8)
+        return seq.last ?? (currentSets.last?.reps ?? 12)
+    }
 
     var body: some View {
         
@@ -1091,6 +1213,7 @@ private struct ExerciseSetsEditorView: View {
                                     if let intValue = Int(durationStrings[safe: index] ?? ""), intValue >= 0 {
                                         sortedSets[index].duration = intValue
                                         saveContext()
+                                        actualizarProgresoLiveActivity()
                                     }
                                 }
                                 Text("seg")
@@ -1122,6 +1245,7 @@ private struct ExerciseSetsEditorView: View {
                                     if let doubleValue = Double(valueString), doubleValue >= 0 {
                                         sortedSets[index].weight = doubleValue
                                         saveContext()
+                                        actualizarProgresoLiveActivity()
                                     }
                                 }
                                 Text("kg")
@@ -1151,6 +1275,7 @@ private struct ExerciseSetsEditorView: View {
                                     if let intValue = Int(repsStrings[safe: index] ?? ""), intValue >= 0 {
                                         sortedSets[index].reps = intValue
                                         saveContext()
+                                        actualizarProgresoLiveActivity()
                                     }
                                 }
                                 Text("reps")
@@ -1181,6 +1306,7 @@ private struct ExerciseSetsEditorView: View {
                                     if let doubleValue = Double(valueString), doubleValue >= 0 {
                                         sortedSets[index].weight = doubleValue
                                         saveContext()
+                                        actualizarProgresoLiveActivity()
                                     }
                                 }
                                 Text("kg")
@@ -1279,12 +1405,51 @@ private struct ExerciseSetsEditorView: View {
         .onAppear {
             ensureProperOrdering()
             syncStringsWithModel()
+            // Actualizar Live Activity con el ejercicio actual al entrar
+            let nombre = exerciseSeed?.name
+                ?? performedExercise.slug.replacingOccurrences(of: "-", with: " ")
+                    .replacingOccurrences(of: "_", with: " ")
+                    .capitalized
+            let progreso = performedExercise.entrenamiento?.progresoEjercicios ?? 0
+            let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
+            let lastReps = sortedSets.last?.reps
+            let lastWeight = sortedSets.last?.weight
+            let lastDuration = sortedSets.last?.duration
+            let dur = (exerciseType == .duration) ? lastDuration : nil
+            let reps = (exerciseType == .reps) ? lastReps : nil
+            let peso = (exerciseType == .reps) ? lastWeight : nil
+            let serieNumero = sortedSets.isEmpty ? nil : sortedSets.count
+            Task {
+                await LiveActivityManager.shared.update(
+                    startedAt: performedExercise.entrenamiento?.startDate ?? Date(),
+                    progress: progreso,
+                    ejercicioActualID: performedExercise.id,
+                    ejercicioActualNombre: nombre,
+                    ultimaSerieNumero: serieNumero,
+                    ultimaSerieReps: reps,
+                    ultimaSeriePeso: peso,
+                    ultimaSerieDuracion: dur
+                )
+            }
         }
         .onChange(of: performedExercise.sets) {
             syncStringsWithModel()
+            actualizarProgresoLiveActivity()
         }
         .onDisappear {
             saveContext()
+            let progreso = performedExercise.entrenamiento?.progresoEjercicios ?? 0
+            Task {
+                await LiveActivityManager.shared.update(
+                    startedAt: performedExercise.entrenamiento?.startDate ?? Date(),
+                    progress: progreso,
+                    ejercicioActualID: nil,
+                    ejercicioActualNombre: nil,
+                    ultimaSerieReps: nil,
+                    ultimaSeriePeso: nil,
+                    ultimaSerieDuracion: nil
+                )
+            }
         }
     }
 
@@ -1385,7 +1550,6 @@ private struct ExerciseSetsEditorView: View {
         // Current ordered sets in this exercise
         let currentSets = performedExercise.setsOrEmpty.sorted { $0.order < $1.order }
         let lastCurrentWeight = currentSets.last?.weight
-        let lastCurrentReps = currentSets.last?.reps
         let lastCurrentDuration = currentSets.last?.duration
 
         // Historical weights for this exercise across trainings (already computed var)
@@ -1401,8 +1565,8 @@ private struct ExerciseSetsEditorView: View {
         if step == nil { nextWeight = baseLast }
         nextWeight = max(0.0, min(nextWeight, 200.0))
 
-        // Next reps/duration policy: replicate last values if available; otherwise sensible defaults
-        let nextReps = lastCurrentReps ?? 10
+        // Next reps/duration policy: use inferred reps sequence (e.g., 15-12-10-8). If duration-based exercise, keep duration.
+        let nextReps = nextRepsForInferredSequence(currentSets: currentSets, performedExercise: performedExercise)
         let nextDuration = lastCurrentDuration ?? 60
 
         let newOrder = (performedExercise.setsOrEmpty.map { $0.order }.max() ?? -1) + 1
@@ -1530,10 +1694,28 @@ private struct ExerciseSetsEditorView: View {
     private func actualizarProgresoLiveActivity() {
         guard let entrenamiento = performedExercise.entrenamiento else { return }
         let progreso = entrenamiento.progresoEjercicios
+        let nombre = exerciseSeed?.name
+            ?? performedExercise.slug.replacingOccurrences(of: "-", with: " ")
+                .replacingOccurrences(of: "_", with: " ")
+                .capitalized
+        let sortedSets = performedExercise.setsOrEmpty.sorted(by: { $0.order < $1.order })
+        let lastReps = sortedSets.last?.reps
+        let lastWeight = sortedSets.last?.weight
+        let lastDuration = sortedSets.last?.duration
+        let dur = (exerciseType == .duration) ? lastDuration : nil
+        let reps = (exerciseType == .reps) ? lastReps : nil
+        let peso = (exerciseType == .reps) ? lastWeight : nil
+        let serieNumero = sortedSets.isEmpty ? nil : sortedSets.count
         Task {
             await LiveActivityManager.shared.update(
                 startedAt: entrenamiento.startDate ?? Date(),
-                progress: progreso
+                progress: progreso,
+                ejercicioActualID: performedExercise.id,
+                ejercicioActualNombre: nombre,
+                ultimaSerieNumero: serieNumero,
+                ultimaSerieReps: reps,
+                ultimaSeriePeso: peso,
+                ultimaSerieDuracion: dur
             )
         }
     }
@@ -1722,3 +1904,8 @@ private func resumenSetsStatic(for ejercicio: PerformedExercise) -> String {
         }
         return result
     }
+
+
+
+
+

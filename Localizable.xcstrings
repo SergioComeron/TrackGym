@@ -33,6 +33,9 @@
     "%lld kcal" : {
 
     },
+    "%lld seg" : {
+
+    },
     "%lld%@" : {
       "localizations" : {
         "en" : {
@@ -877,6 +880,9 @@
       }
     },
     "Balance diario (últimos 30 días)" : {
+
+    },
+    "Barra = gramos hoy" : {
 
     },
     "batata_cruda_desc" : {
@@ -2770,9 +2776,6 @@
     "Favorite Emoji" : {
 
     },
-    "Favorite Emoji:" : {
-
-    },
     "Fecha" : {
 
     },
@@ -3739,6 +3742,12 @@
     "Hora" : {
 
     },
+    "Hoy" : {
+
+    },
+    "Hoy (g)" : {
+
+    },
     "huevo_crudo_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4109,6 +4118,9 @@
     "Macro" : {
 
     },
+    "Macros de hoy" : {
+
+    },
     "mantequilla_cacahuete_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4414,6 +4426,9 @@
           }
         }
       }
+    },
+    "Media (g)" : {
+
     },
     "Medidas corporales (cm)" : {
 
@@ -6616,6 +6631,9 @@
     "Pulsa + para añadir tu primer entreno." : {
 
     },
+    "Punto = media" : {
+
+    },
     "queso_fresco_batido_0_desc" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7080,6 +7098,12 @@
     "Repetir comida" : {
 
     },
+    "Repetir entrenamiento" : {
+
+    },
+    "Repetir este entrenamiento" : {
+
+    },
     "Repetir última serie" : {
 
     },
@@ -7428,6 +7452,9 @@
     "Serie" : {
 
     },
+    "Serie %lld" : {
+
+    },
     "Serie %lld:" : {
 
     },
@@ -7539,9 +7566,6 @@
       }
     },
     "This is an example widget." : {
-
-    },
-    "Time:" : {
 
     },
     "Timer" : {

@@ -15,10 +15,26 @@ struct WorkoutActivityAttributes: ActivityAttributes {
         var endedAt: Date?
         var progress: Double
         
-        init(startedAt: Date, endedAt: Date? = nil, progress: Double = 0.0) {
+        /// Ejercicio actual en ejecución (opcional)
+        var ejercicioActualID: UUID?
+        var ejercicioActualNombre: String?
+
+        /// Última serie añadida (opcional)
+        var ultimaSerieNumero: Int?
+        var ultimaSerieReps: Int?
+        var ultimaSeriePeso: Double?
+        var ultimaSerieDuracion: Int?
+
+        init(startedAt: Date, endedAt: Date? = nil, progress: Double = 0.0, ejercicioActualID: UUID? = nil, ejercicioActualNombre: String? = nil, ultimaSerieNumero: Int? = nil, ultimaSerieReps: Int? = nil, ultimaSeriePeso: Double? = nil, ultimaSerieDuracion: Int? = nil) {
             self.startedAt = startedAt
             self.endedAt = endedAt
             self.progress = progress
+            self.ejercicioActualID = ejercicioActualID
+            self.ejercicioActualNombre = ejercicioActualNombre
+            self.ultimaSerieNumero = ultimaSerieNumero
+            self.ultimaSerieReps = ultimaSerieReps
+            self.ultimaSeriePeso = ultimaSeriePeso
+            self.ultimaSerieDuracion = ultimaSerieDuracion
         }
     }
 
@@ -26,3 +42,4 @@ struct WorkoutActivityAttributes: ActivityAttributes {
     var entrenamientoID: UUID
     var title: String
 }
+

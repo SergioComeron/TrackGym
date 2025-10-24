@@ -13,6 +13,7 @@ import SwiftUI
 private extension Date {
     var shortDateTime: String { self.formatted(date: .abbreviated, time: .shortened) }
     var shortTime: String { self.formatted(date: .omitted, time: .shortened) }
+    var dayAndTime: String { self.formatted(.dateTime.weekday(.abbreviated).hour().minute()) }
 }
 
 struct TrackGymWidgetsLiveActivity: Widget {
@@ -34,15 +35,40 @@ struct TrackGymWidgetsLiveActivity: Widget {
                         }
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(context.attributes.title)
-                                .font(.headline)
-                                .lineLimit(1)
-                            Text("Inicio: \(started.shortDateTime)")
-                                .font(.subheadline)
+                            Text(started.dayAndTime)
+                                .font(.caption)
                                 .foregroundStyle(.secondary)
                                 .lineLimit(1)
                         }
                         Spacer(minLength: 0)
+                        if let n = context.state.ultimaSerieNumero {
+                            VStack(alignment: .trailing, spacing: 2) {
+                                Text("Serie \(n)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                if let d = context.state.ultimaSerieDuracion {
+                                    Text("\(d) seg")
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.6)
+                                } else if let r = context.state.ultimaSerieReps,
+                                          let p = context.state.ultimaSeriePeso {
+                                    Text("\(r)x\(String(format: "%.1f", p)) kg")
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.6)
+                                }
+                            }
+                        }
+                    }
+                    if let nombre = context.state.ejercicioActualNombre {
+                        Text(nombre)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .lineLimit(3)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     ProgressView(value: context.state.progress)
                         .progressViewStyle(.linear)
@@ -70,26 +96,47 @@ struct TrackGymWidgetsLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text("Inicio")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        Text(context.state.startedAt.shortTime)
-                            .font(.caption)
-                            .monospacedDigit()
+                        if let n = context.state.ultimaSerieNumero {
+                            VStack(alignment: .trailing, spacing: 0) {
+                                Text("Serie \(n)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                if let d = context.state.ultimaSerieDuracion {
+                                    Text("\(d) seg")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                        .lineLimit(1)
+                                } else if let r = context.state.ultimaSerieReps,
+                                          let p = context.state.ultimaSeriePeso {
+                                    Text("\(r)x\(String(format: "%.1f", p)) kg")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                        .lineLimit(1)
+                                }
+                            }
+                        } else {
+                            Text(context.state.startedAt.dayAndTime)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .padding(.trailing, 12)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     TimelineView(.periodic(from: context.state.startedAt, by: 60)) { timeline in
-                        HStack(spacing: 8) {
-                            Text(context.attributes.title)
-                                .font(.subheadline)
-                                .lineLimit(1)
-                            Spacer(minLength: 0)
-                            Text("Progreso: \(Int(context.state.progress * 100))%")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .monospacedDigit()
+                        VStack(alignment: .leading, spacing: 4) {
+                            if let nombre = context.state.ejercicioActualNombre {
+                                Text(nombre)
+                                    .font(.headline)
+                                    .lineLimit(2)
+                            }
+                            HStack(spacing: 8) {
+                                Spacer(minLength: 0)
+                                Text("Progreso: \(Int(context.state.progress * 100))%")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .monospacedDigit()
+                            }
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 4)
@@ -125,7 +172,12 @@ extension WorkoutActivityAttributes.ContentState {
         WorkoutActivityAttributes.ContentState(
             startedAt: Date().addingTimeInterval(-1200), // hace 20 minutos
             endedAt: nil,
-            progress: 0.66
+            progress: 0.66,
+            ejercicioActualID: UUID(),
+            ejercicioActualNombre: "Press banca",
+            ultimaSerieNumero: 3,
+            ultimaSerieReps: 12,
+            ultimaSeriePeso: 60.0
         )
     }
      
@@ -133,7 +185,12 @@ extension WorkoutActivityAttributes.ContentState {
         WorkoutActivityAttributes.ContentState(
             startedAt: Date().addingTimeInterval(-1700), // hace 28 minutos
             endedAt: nil,
-            progress: 0.9
+            progress: 0.9,
+            ejercicioActualID: UUID(),
+            ejercicioActualNombre: "Remo con barra",
+            ultimaSerieNumero: 4,
+            ultimaSerieReps: 8,
+            ultimaSeriePeso: 80.0
         )
     }
 }
@@ -144,3 +201,4 @@ extension WorkoutActivityAttributes.ContentState {
     WorkoutActivityAttributes.ContentState.smiley
     WorkoutActivityAttributes.ContentState.starEyes
 }
+
